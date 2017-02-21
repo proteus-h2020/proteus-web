@@ -1,0 +1,66 @@
+<form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
+
+    <div class="row">
+        <div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group row">
+                <label for="chartTitle">Chart Title:</label>
+                <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
+                <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
+                    class="help-block sub-little-text">The name should be at least 5 characters</span>
+            </div>
+            <div class="form-group row">
+                <label>Chart Type:</label>
+                <select  formControlName="type" class="form-control">
+            <option value="Linechart">Linechart</option>
+            <option value="Barchart">Barchart</option>
+            <option>Scatterplot</option>
+            <option>Area</option>
+            <option>Heatmap</option>
+            <option>Streamgraph</option>
+            <option>Network</option>
+            <option>Sunburst</option>
+            <option>Swimlane</option>
+
+        </select>
+                <span [hidden]="form.controls.type.valid || (form.controls.type.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
+                    class="help-block sub-little-text">Choose a valid chart type</span>
+            </div>
+            <!-- Default fields for the selected chart-->
+            <!--<div *ngFor="let entry of defaults | keys" class="form-group row">
+                <label for="chartTitle">{{entry.key}}: </label>
+                <input  type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
+            </div>
+            -->
+
+        </div>
+
+        <div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <ba-card baCardClass="popular-app medium-card" title='Dataset' baCardClass="popular-app medium-card">
+                <dataset></dataset>
+            </ba-card>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+            <div class="form-group">
+                <button  [disabled]="!form.valid" type="submit" class="btn btn-info btn-with-icon"><i class="ion-android-checkmark-circle"></i>Confirm</button>
+            </div>
+        </div>
+
+        <div style="height: 200px; overflow-y: scroll;" class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <ba-card baCardClass="popular-app medium-card" title='Opciones de gráfica' baCardClass="popular-app medium-card">
+
+                <!-- Default fields for the selected chart-->
+                <div *ngFor="let entry of defaults | keys" class="form-group row">
+                    <label for="chartTitle">{{entry.key}}: </label>
+                    <input type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
+                </div>
+
+            </ba-card>
+
+        </div>
+    </div>
+
+</form>
