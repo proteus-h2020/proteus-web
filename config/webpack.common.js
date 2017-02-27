@@ -26,9 +26,9 @@ const ngcWebpack = require('ngc-webpack');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'ng2-admin - Angular 2 Admin Template',
+  title: 'PROTEUS Dashboard',
   description: 'Free Angular 2 and Bootstrap 4 Admin Template',
-  baseUrl: '/',
+  baseUrl: '/proteus',
   isDevServer: helpers.isWebpackDevServer()
 };
 
@@ -271,7 +271,7 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
         {from: 'src/assets', to: 'assets'},
-        {from: 'node_modules/ckeditor', to: 'ckeditor'},
+      //{from: 'node_modules/ckeditor', to: 'ckeditor'},
         {from: 'src/meta'}
       ]),
 

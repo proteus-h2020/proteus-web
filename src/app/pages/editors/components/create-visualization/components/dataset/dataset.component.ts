@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import {DatasetMode} from './dataset-mode-enum';
+import { FormGroup } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { DatasetMode } from './dataset-mode-enum';
 import 'style-loader!./dataset.scss';
 
 @Component({
@@ -8,8 +9,9 @@ import 'style-loader!./dataset.scss';
 })
 
 export class Dataset {
-
-    private mode : string = 'realtime';
+    
+    @Input() private parentGroup: FormGroup;
+    private mode: string = 'realtime';
 
     constructor() {
     }

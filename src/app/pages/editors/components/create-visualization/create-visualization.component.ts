@@ -1,14 +1,15 @@
+import { RealtimeChart } from './../../../../realtime-chart';
 import { Router } from '@angular/router';
 import { BatchChart } from './../../../../batch-chart';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Chart } from '../../../../chart.interface';
 import 'style-loader!./create-visualization.scss';
-import {DashboardService} from '../../../dashboard/dashboard.service';
+import { DashboardService } from '../../../dashboard/dashboard.service';
 
 import *  as defaultLinechartOptions from '../../../../../../node_modules/proteic/src/utils/defaults/linechart';
 import *  as defaultBarchartOptions from '../../../../../../node_modules/proteic/src/utils/defaults/barchart';
-import {getAvailableVisualizations} from 'proteic';
+import { getAvailableVisualizations } from 'proteic';
 
 @Component({
     selector: 'create-visualization',
@@ -16,30 +17,30 @@ import {getAvailableVisualizations} from 'proteic';
     providers: []
 })
 
-export class CreateVisualization implements OnInit {
+export class CreateVisualization implements OnInit, OnDestroy {
 
     public form: FormGroup;
     private submitted: boolean;
     private events: any[] = [];
     //private availableVisualizations;
-    
+
     private defaults: any;
 
 
     constructor(
         private _fb: FormBuilder,
-        private dashboardService : DashboardService,
-        private router : Router
+        private dashboardService: DashboardService,
+        private router: Router
     ) {
-     //   console.log(getAvailableVisualizations());
-     //   this.availableVisualizations = getAvailableVisualizations();
+        //   console.log(getAvailableVisualizations());
+        //   this.availableVisualizations = getAvailableVisualizations();
     }
 
 
-    save(model: Chart,  isValid: boolean) {
+    save(model: RealtimeChart, isValid: boolean) {
         this.submitted = true; // set form submit to true
-        if(isValid){
-            this.dashboardService.push(new BatchChart(model.title, model.type, model.conf, []));
+        if (isValid) {
+            this.dashboardService.push(model);
             this.router.navigateByUrl('dashboard');
         }
 
@@ -52,8 +53,16 @@ export class CreateVisualization implements OnInit {
         this.form = this._fb.group({
             title: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
             type: ['', [<any>Validators.required]],
-            conf: [{},[]]
+            conf: [{}, []],
+            websocketEndpoint: ['wss://proteicws.herokuapp.com/linechart', []] //TODO: Add validator starts with 'ws'
         });
+
+        this.form.valueChanges.subscribe( data => {            
+            this.changeDefaultProperties(data.type);
+        });
+    }
+
+    ngOnDestroy() {
     }
 
 
