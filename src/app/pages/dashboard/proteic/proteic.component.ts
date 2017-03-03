@@ -1,7 +1,7 @@
 import { RealtimeChart } from './../../../realtime-chart';
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 
-import { Linechart, Scatterplot, Barchart, WebsocketDatasource } from 'proteic';
+import { Colors, Linechart, Scatterplot, Barchart, Heatmap, WebsocketDatasource } from 'proteic';
 
 @Component({
   selector: 'proteic',
@@ -23,10 +23,12 @@ export class Proteic implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.id = 'proteic' + Date.now().toString();
-    this.chart.conf.marginRight = 30;
-    this.chart.conf.marginLeft = 50;
-    this.chart.conf.selector = '#' + this.id;
-    this.chart.conf.height = 250;
+    this.chart.configuration.marginRight = 30;
+    this.chart.configuration.marginLeft = 50;
+    this.chart.configuration.selector = '#' + this.id;
+    this.chart.configuration.height = 250;
+    this.chart.configuration.colorScale = Colors.category3();
+    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
     // this.conf.propertyY = 'C0007';
     // this.conf.propertyX = 'positionX';
     // this.conf.xAxisLabel = 'X Axis Title';
@@ -34,6 +36,27 @@ export class Proteic implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    let c = null;
+
+    console.log('configuration', this.chart.configuration);
+    switch (this.chart.type) {
+      case 'Linechart':
+        c = new Linechart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        break;
+      case 'Barchart':
+        c = new Barchart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        break;
+      case 'Scatterplot':
+        c = new Scatterplot([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        break;
+      case 'Heatmap':
+        c = new Heatmap([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        break;
+    }
+
+    this.chart.websocketEndpoint.start();
+
+    /*
     console.log('WEBSOCKEEEET', this.chart.websocketEndpoint);
     let ws = new WebsocketDatasource({endpoint: this.chart.websocketEndpoint});
     let c = null;
@@ -51,28 +74,8 @@ export class Proteic implements OnInit, AfterViewInit {
     }
 
     ws.start();
+    */
 
-    /**
-    let ds = new  WebsocketDatasource({ endpoint: 'ws://192.168.4.58:8080/KafkaConsumer/kafkaService' });
-    let chart = null;
-    switch(this.type) {
-      case 'Linechart':
-        chart = new  Linechart(this.data, this.conf);
-        chart.datasource(ds);
-        ds.start();
-        break;
-      case 'Barchart':
-        chart = new Barchart(this.data, this.conf);
-        chart.datasource(ds);
-        ds.start();
-        break;
-      case 'Scatterplot':
-        chart = new Scatterplot(this.data, this.conf);
-        chart.datasource(ds);
-        ds.start();
-        break;
-    }
-    **/
   }
 
 

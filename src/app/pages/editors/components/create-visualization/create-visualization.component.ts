@@ -1,3 +1,4 @@
+import { ChartService } from './../../../dashboard/proteic/chart.service';
 import { RealtimeChart } from './../../../../realtime-chart';
 import { Router } from '@angular/router';
 import { BatchChart } from './../../../../batch-chart';
@@ -9,7 +10,9 @@ import { DashboardService } from '../../../dashboard/dashboard.service';
 
 import *  as defaultLinechartOptions from '../../../../../../node_modules/proteic/src/utils/defaults/linechart';
 import *  as defaultBarchartOptions from '../../../../../../node_modules/proteic/src/utils/defaults/barchart';
-import { getAvailableVisualizations } from 'proteic';
+import *  as defaultHeatmapOptions from '../../../../../../node_modules/proteic/src/utils/defaults/heatmap';
+
+import { getAvailableVisualizations, Heatmap } from 'proteic';
 
 @Component({
     selector: 'create-visualization',
@@ -26,10 +29,12 @@ export class CreateVisualization implements OnInit, OnDestroy {
 
     private defaults: any;
 
+    private keyValues: string[] = new Array<string>();
+
 
     constructor(
         private _fb: FormBuilder,
-        private dashboardService: DashboardService,
+        private chartService: ChartService,
         private router: Router
     ) {
         //   console.log(getAvailableVisualizations());
@@ -40,33 +45,38 @@ export class CreateVisualization implements OnInit, OnDestroy {
     save(model: RealtimeChart, isValid: boolean) {
         this.submitted = true; // set form submit to true
         if (isValid) {
-            this.dashboardService.push(model);
+            this.chartService.push(model);
             this.router.navigateByUrl('dashboard');
         }
 
-        // check if model is valid
-        // if valid, call API to save customer
-        console.log(model, isValid, model.constructor.name);
+        console.log(isValid, model);
     }
 
     ngOnInit() {
-        this.form = this._fb.group({
-            title: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-            type: ['', [<any>Validators.required]],
-            conf: [{}, []],
-            websocketEndpoint: ['wss://proteicws.herokuapp.com/linechart', []] //TODO: Add validator starts with 'ws'
-        });
+        this._createForm();
 
-        this.form.valueChanges.subscribe( data => {            
-            this.changeDefaultProperties(data.type);
+        this.form.controls['type'].valueChanges.subscribe(type => {
+            this._changeDefaultProperties(type);
         });
     }
 
     ngOnDestroy() {
     }
 
+    private _createConfigurationByChartProperties(): FormGroup {
+        let form = {};
+        for (var property in this.defaults) {
+            if (this.defaults.hasOwnProperty(property)) {
+                //  form[property] = [this.defaults[property], [<any>Validators.required]]
+                form[property] = [this.defaults[property]]
 
-    private changeDefaultProperties(chartType: string) {
+            }
+        }
+        return this._fb.group(form);
+    }
+
+
+    private _changeDefaultProperties(chartType: string) {
         switch (chartType) {
             case 'Linechart':
                 this.defaults = defaultLinechartOptions.defaults;
@@ -74,9 +84,35 @@ export class CreateVisualization implements OnInit, OnDestroy {
             case 'Barchart':
                 this.defaults = defaultBarchartOptions.defaults;
                 break;
+            case 'Heatmap':
+                this.defaults = defaultHeatmapOptions.defaults;
+                break;
         }
+
+        this.form.setControl('configuration', this._createConfigurationByChartProperties());
+    }
+
+    private _createForm() {
+        this.form = this._fb.group({
+            title: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
+            type: ['', [<any>Validators.required]],
+            configuration: this._createConfigurationByChartProperties(),
+            websocketEndpoint: [null, [<any>Validators.required]] //TODO: Add validator starts with 'ws'
+        });
+
+    }
+
+    private isDynamicKey(key: string) {
+        return key == 'propertyX' ||
+            key == 'propertyY' ||
+            key == 'propertyKey' ||
+            key == 'propertyZ';
+
     }
 
 
+    private valueKeysChange(keys: string[]) {
+        this.keyValues = keys;
+    }
 
 }

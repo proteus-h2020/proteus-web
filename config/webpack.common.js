@@ -27,8 +27,8 @@ const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
   title: 'PROTEUS Dashboard',
-  description: 'Free Angular 2 and Bootstrap 4 Admin Template',
-  baseUrl: '/proteus',
+  description: 'A dashboard for the PROTEUS project',
+  baseUrl: 'proteus',
   isDevServer: helpers.isWebpackDevServer()
 };
 

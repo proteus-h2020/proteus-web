@@ -1,3 +1,6 @@
+import { DatasourceHintService } from './pages/dashboard/proteic/datasourceHint.service';
+import { DatasourceService } from './pages/dashboard/proteic/datasource.service';
+import { ChartService } from './pages/dashboard/proteic/chart.service';
 import { DashboardService } from './pages/dashboard/dashboard.service';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,7 +26,10 @@ import { PagesModule } from './pages/pages.module';
 const APP_PROVIDERS = [
   AppState,
   GlobalState,
-  DashboardService
+  DashboardService,
+  ChartService,
+  DatasourceService,
+  DatasourceHintService
 ];
 
 export type StoreType = {

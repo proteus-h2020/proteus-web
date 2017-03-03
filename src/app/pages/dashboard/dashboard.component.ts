@@ -1,7 +1,10 @@
+import { DatasourceService } from './proteic/datasource.service';
+import { ChartService } from './proteic/chart.service';
 import { SelectivePreloadingStrategy } from './../../../selective-preloading-strategy';
 import { Component } from '@angular/core';
 import { Chart } from '../../chart.interface';
 import { DashboardService } from './dashboard.service';
+import { RealtimeChart } from '../../realtime-chart';
 
 @Component({
   selector: 'dashboard',
@@ -10,20 +13,22 @@ import { DashboardService } from './dashboard.service';
 })
 export class Dashboard {
 
-  private charts: Array<Chart> = new Array<Chart>();
+  private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
 
-  constructor(private dashboardChartService: DashboardService) {
-    this.charts = this.dashboardChartService.getCharts();
-        console.log(this.charts, 'creando instancia ed dashboard);');
-
+  constructor(
+    private dashboardChartService: DashboardService,
+    private chartProteicService: ChartService,
+    private datasourceProteicService: DatasourceService
+  ) {
+    this.charts = this.chartProteicService.getCharts();
   }
 
   removeChart(chart: any) {
-    this.dashboardChartService.remove(chart);
+    this.chartProteicService.remove(chart);
   }
 
   editChart(chart: any) {
-    this.dashboardChartService.edit(chart);
+    this.chartProteicService.edit(chart);
   }
 
 }
