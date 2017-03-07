@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { SummaryService } from './summary.service';
 import 'style-loader!./summary.scss';
@@ -7,12 +8,28 @@ import 'style-loader!./summary.scss';
     selector: 'summary',
     templateUrl: './summary.html'
 })
-export class Summary {
+export class Summary implements OnInit, OnDestroy {
 
-    public charts: Array<Object>;
+    private messages: number = 0;
+
+    private messagesSubscription: Subscription;
     private _init = false;
 
     constructor(private summaryService: SummaryService) {
-        this.charts = this.summaryService.getData();
+
+    }
+
+    ngOnInit() {
+        this.messagesSubscription = this.summaryService.messagesSubscriptor().subscribe(
+            (messages: number) => this.messages = messages
+        );
+    }
+
+    ngOnDestroy() {
+        if (this.messagesSubscription) {
+            this.messagesSubscription.unsubscribe();
+        }
     }
 }
+
+

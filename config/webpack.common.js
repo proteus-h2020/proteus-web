@@ -28,7 +28,8 @@ const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
   title: 'PROTEUS Dashboard',
   description: 'A dashboard for the PROTEUS project',
-  baseUrl: 'proteus',
+  //baseUrl: 'proteus',
+  baseUrl: '',
   isDevServer: helpers.isWebpackDevServer()
 };
 

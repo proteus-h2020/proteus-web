@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { BaThemeConfigProvider, layoutPaths } from '../../../theme';
 
@@ -6,23 +7,20 @@ export class SummaryService {
 
   private messagesProcessed: number = 0;
 
+  private messagesNotifier: Subject<number> = new Subject();
+
   constructor(private _baConfig: BaThemeConfigProvider) {
+
+    setInterval(() => {
+      this.messagesProcessed++;
+      this.messagesNotifier.next(this.messagesProcessed)
+      this.messagesSubscriptor();
+    }, 500);
   }
-  
-  getData() {
-    let pieColor = this._baConfig.get().colors.custom.dashboardPieChart;
-    return [
-      {
-        color: pieColor,
-        description: 'Messages Processed',
-        stats: this.messagesProcessed,
-        icon: 'refresh',
-      }, {
-        color: pieColor,
-        description: 'Defective coils',
-        stats: '-',
-        icon: 'NO ICON',
-      }
-    ];
+
+  public messagesSubscriptor() {
+    return this.messagesNotifier;
+
   }
+
 }
