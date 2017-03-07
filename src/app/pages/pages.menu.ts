@@ -5,6 +5,7 @@ export const PAGES_MENU = [
       {
         path: 'dashboard',
         data: {
+        //  shouldDetach: true,
           menu: {
             title: 'Dashboard',
             icon: 'ion-android-home',
@@ -27,7 +28,7 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'create-visualization',
+            path: 'new',
             data: {
               menu: {
                 title: 'New Visualization',
@@ -35,21 +36,21 @@ export const PAGES_MENU = [
             }
           },
           {
-            path: 'edit-visualization',
+            path: 'edit',
             data: {
               menu: {
                 title: 'Edit Visualization',
               }
             }
           },
-         // {
-        //    path: 'ckeditor',
-        //    data: {
-         //     menu: {
-         //       title: 'CKEditor',
-        //      }
-        //    }
-       //   }
+          // {
+          //    path: 'ckeditor',
+          //    data: {
+          //     menu: {
+          //       title: 'CKEditor',
+          //      }
+          //    }
+          //   }
         ]
       },
       {
@@ -333,8 +334,8 @@ export const PAGES_MENU = [
         path: '',
         data: {
           menu: {
-            title: 'External Link',
-            url: 'http://akveo.com',
+            title: 'PROTEUS site',
+            url: 'http://proteus-bigdata.com',
             icon: 'ion-android-exit',
             order: 800,
             target: '_blank'

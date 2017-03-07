@@ -6,9 +6,10 @@ import { NgaModule } from '../../theme/nga.module';
 import {DashboardService} from '../dashboard/dashboard.service'
 import { routing }       from './editors.routing';
 import { Editors } from './editors.component';
-import { CreateVisualization } from './components/create-visualization/create-visualization.component';
-import { EditVisualization } from './components/edit-visualization/edit-visualization.component';
-import { Dataset } from './components/create-visualization/components/dataset/dataset.component';
+import { CreateVisualization } from './components/new';
+import { EditVisualization } from './components/edit';
+import { EditOneVisualization } from './components/edit/editOne.component';
+import { Dataset } from './components/dataset';
 import {KeysPipe} from './keys.pipe';
 
 @NgModule({
@@ -23,6 +24,7 @@ import {KeysPipe} from './keys.pipe';
     Editors,
     CreateVisualization,
     EditVisualization,
+    EditOneVisualization,
     Dataset
   ],
   providers: []

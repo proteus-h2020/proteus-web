@@ -1,11 +1,11 @@
+import { DatasourceHintService } from './../../../dashboard/proteic/datasourceHint.service';
+import { DatasourceService } from './../../../dashboard/proteic/datasource.service';
 import { Subscription } from 'rxjs/Rx';
-import { DatasourceHintService } from './../../../../../dashboard/proteic/datasourceHint.service';
-import { DatasourceService } from './../../../../../dashboard/proteic/datasource.service';
 import { FormGroup } from '@angular/forms';
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { DatasetMode } from './dataset-mode-enum';
 import { WebsocketDatasource } from 'proteic';
-import { extractKeysFromObject } from '../../../../../../utils/KeyExtractor';
+import { extractKeysFromObject } from '../../../../utils/KeyExtractor';
 import 'style-loader!./dataset.scss';
 
 @Component({
@@ -31,14 +31,11 @@ export class Dataset implements OnInit {
         this.dsService.get().subscribe(
             (datasources: WebsocketDatasource[]) => this.datasources = datasources
         );
-
-    console.log('kkkk', this.keyValuesEmitter);
     }
 
 
     ngOnInit() {
         this.parentGroup.controls['websocketEndpoint'].valueChanges.subscribe((ws: WebsocketDatasource) => this._collectDatasourceKeys(ws));
-
     }
 
     private _collectDatasourceKeys(ws: WebsocketDatasource) {

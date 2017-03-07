@@ -27,7 +27,7 @@ export class Proteic implements OnInit, AfterViewInit {
     this.chart.configuration.marginLeft = 50;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.height = 250;
-    this.chart.configuration.colorScale = Colors.category3();
+    //this.chart.configuration.colorScale = Colors.category3();
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
     // this.conf.propertyY = 'C0007';
     // this.conf.propertyX = 'positionX';

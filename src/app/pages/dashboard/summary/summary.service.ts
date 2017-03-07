@@ -11,16 +11,20 @@ export class SummaryService {
 
   constructor(private _baConfig: BaThemeConfigProvider) {
 
-    setInterval(() => {
-      this.messagesProcessed++;
-      this.messagesNotifier.next(this.messagesProcessed)
-      this.messagesSubscriptor();
-    }, 500);
+    //setInterval(() => {
+      //this.messagesProcessed++;
+      //this.messagesNotifier.next(this.messagesProcessed)
+      //this.messagesSubscriptor();
+    //}, 500);
   }
 
   public messagesSubscriptor() {
     return this.messagesNotifier;
+  }
 
+  public incrementMessages(){
+    this.messagesProcessed++;
+    this.messagesNotifier.next(this.messagesProcessed);
   }
 
 }

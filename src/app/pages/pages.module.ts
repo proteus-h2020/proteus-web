@@ -1,3 +1,5 @@
+import { CustomReuseStrategy } from './customReuseStrategyRoute';
+import { RouteReuseStrategy } from '@angular/router';
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 
@@ -8,7 +10,10 @@ import { Pages } from './pages.component';
 
 @NgModule({
   imports: [CommonModule, NgaModule, routing],
-  declarations: [Pages]
+  declarations: [Pages],
+  providers: [
+   // {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
+  ]
 })
 export class PagesModule {
 }
