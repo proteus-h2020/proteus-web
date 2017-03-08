@@ -3,10 +3,12 @@ import { OnInit, OnDestroy } from '@angular/core';
 import { RealtimeChart } from './../../realtime-chart';
 import { FormEditor } from './form-editor';
 import { FormGroup } from '@angular/forms';
+import {getAvailableVisualizations} from 'proteic';
 export abstract class VisualizationForm implements OnInit, OnDestroy {
     public form: FormGroup;
     public submitted: boolean;
     private cancellableSubscriptions: Subscription[];
+    public  visualizations = getAvailableVisualizations();
 
     constructor() {
 

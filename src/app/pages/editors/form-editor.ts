@@ -19,7 +19,7 @@ export class FormEditor {
         let currentConf = model ? model.configuration : null;
         return FormEditor.fb.group({
             title: [model ? model.title : '', [<any>Validators.required, <any>Validators.minLength(5)]],
-            type: [model ? model.type : '', [<any>Validators.required]],
+            type: [model ? model.type : '', [<any>Validators.required,  <any>Validators.minLength(3)]],
             configuration: FormEditor._createConfigurationByChartProperties(currentConf),
             websocketEndpoint: [model ? model.websocketEndpoint : null, [<any>Validators.required]]
         });

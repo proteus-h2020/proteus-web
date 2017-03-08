@@ -52,7 +52,7 @@ export const PAGES_MENU = [
           //    }
           //   }
         ]
-      },
+      }/** 
       {
         path: 'components',
         data: {
@@ -341,7 +341,7 @@ export const PAGES_MENU = [
             target: '_blank'
           }
         }
-      }
+      }**/
     ]
   }
 ];

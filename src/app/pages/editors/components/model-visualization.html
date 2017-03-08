@@ -1,43 +1,55 @@
 <form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
 
     <div class="row">
+        <!-- LEFT COLUMN -->
+
         <div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <div class="form-group row">
+            <!--  <div class="form-group row has-error">-->
+            <div [ngClass]="{'form-group': true, 'row': true, 'has-error': !(form.controls.title.valid || (form.controls.title.pristine && !submitted))}">
                 <label for="chartTitle">Chart Title:</label>
                 <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
                 <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
-                    class="help-block sub-little-text">The name should be at least 5 characters</span>
+                    class="help-block sub-little-text">The name should be at least 5 characters
+                    </span>
             </div>
-            <div class="form-group row">
+            <div [ngClass]="{'form-group': true, 'row': true, 'has-error': !(form.controls.type.valid || (form.controls.type.pristine && !submitted))}">
                 <label>Chart Type:</label>
                 <select formControlName="type" class="form-control">
-            <option value="Linechart">Linechart</option>
-            <option value="Barchart">Barchart</option>
-            <option>Scatterplot</option>
-            <option>Area</option>
-            <option>Heatmap</option>
-            <option>Streamgraph</option>
-            <option>Network</option>
-            <option>Sunburst</option>
-            <option>Swimlane</option>
-
-        </select>
+                    <option *ngFor="let v of visualizations" [value]="v">{{v}}</option>
+                </select>
                 <span [hidden]="form.controls.type.valid || (form.controls.type.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
                     class="help-block sub-little-text">Choose a valid chart type</span>
             </div>
-            <!-- Default fields for the selected chart-->
-            <!--<div *ngFor="let entry of defaults | keys" class="form-group row">
-                <label for="chartTitle">{{entry.key}}: </label>
-                <input  type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
-            </div>
-            -->
 
+            <div class="form-group row">
+                <dataset [parentGroup]="form" (keyValuesEmitter)="valueKeysChange($event)"></dataset>
+            </div>
         </div>
 
+
+        <!-- RIGHT COLUMN -->
         <div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <ba-card baCardClass="popular-app medium-card" title='Dataset' baCardClass="popular-app medium-card">
-                <dataset [parentGroup]="form" (keyValuesEmitter)="valueKeysChange($event)"></dataset>
-            </ba-card>
+            <div ngDefaultControl formGroupName="configuration">
+                <ba-card baCardClass="popular-app medium-card" title='Chart Options' baCardClass="xmedium-card feed-comply-panel with-scroll todo-panel">
+                    <!-- Default fields for the selected chart-->
+                    <div *ngFor="let entry of defaults() | keys" class="form-group row" style="max-width:100%; max-height:100%;">
+
+                        <div [ngSwitch]="isDynamicKey(entry.key)">
+                            <div *ngSwitchCase="true">
+                                <label for="chartTitle">{{entry.key}}: </label>
+                                <select [formControlName]="entry.key" class="form-control" name="chartTitle">
+                                <option *ngFor="let c of keyValues()" [value]="c">{{c}}</option>
+                            </select>
+                            </div>
+                            <div *ngSwitchDefault>
+                                <label for="chartTitle">{{entry.key}}: </label>
+                                <input [formControlName]="entry.key" type="text" class="form-control" name="chartTitle">
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+
+            </div>
         </div>
     </div>
 
@@ -47,42 +59,6 @@
             <div class="form-group">
                 <button [disabled]="!form.valid" type="submit" class="btn btn-info btn-with-icon"><i class="ion-android-checkmark-circle"></i>Confirm</button>
             </div>
-        </div>
-
-        <div ngDefaultControl formGroupName="configuration" style="height: 200px; overflow-y: scroll;" class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <ba-card baCardClass="popular-app medium-card" title='Opciones de gráfica' baCardClass="popular-app medium-card">
-                <!--  <div formGroupName="configuration">
-
-                    <label for="chartTitle">Property X: </label>
-                    <input formControlName="propertyX" type="text" class="form-control" name="chartTitle">
-
-                    <label for="chartTitle">Property Y:</label>
-                    <input formControlName="propertyY" type="text" class="form-control" name="propertyY">
-
-                </div>
-                -->
-
-                <!-- Default fields for the selected chart-->
-                <div *ngFor="let entry of defaults() | keys" class="form-group row">
-
-                    <div [ngSwitch]="isDynamicKey(entry.key)">
-                        <div *ngSwitchCase="true">
-                            <label for="chartTitle">{{entry.key}}: </label>
-                            <select [formControlName]="entry.key" class="form-control" name="chartTitle">
-                                <option *ngFor="let c of keyValues()" [value]="c">{{c}}</option>
-                            </select>
-                        </div>
-                        <div *ngSwitchDefault>
-                            <label for="chartTitle">{{entry.key}}: </label>
-                            <input [formControlName]="entry.key" type="text" class="form-control" name="chartTitle">
-                        </div>
-                    </div>
-
-
-                </div>
-
-            </ba-card>
-
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 import { RealtimeChart } from './../../../realtime-chart';
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 
-import { Colors, Linechart, Scatterplot, Barchart, Heatmap, WebsocketDatasource } from 'proteic';
+import { Colors, Linechart, Scatterplot, Barchart, Heatmap,Gauge, WebsocketDatasource } from 'proteic';
 
 @Component({
   selector: 'proteic',
@@ -51,6 +51,9 @@ export class Proteic implements OnInit, AfterViewInit {
         break;
       case 'Heatmap':
         c = new Heatmap([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        break;
+      case 'Gauge':
+        c = new Gauge([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
         break;
     }
 
