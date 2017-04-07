@@ -1,6 +1,7 @@
 package com.treelogic.framework.controller;
 
 import com.treelogic.framework.domain.Profile;
+import com.treelogic.framework.exception.ProfileNotFoundException;
 import com.treelogic.framework.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,6 @@ public class ProfileController {
         method = RequestMethod.GET
     )
     public Profile profile(@PathVariable String username) throws Exception {
-        return profileService.getProfile(username).orElseThrow(() -> new Exception("User not found: " + username));
+        return profileService.getProfile(username).orElseThrow(() -> new ProfileNotFoundException(username));
     }
 }
