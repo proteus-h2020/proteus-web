@@ -1,16 +1,17 @@
-#### PR description
+#### What's this PR do?
 
-#### Type of changes
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
+#### Where should the reviewer start?
 
-#### Related issues
-- #
+#### How should this be manually tested?
 
-#### Checklist
-- [ ] The feature is tested
+#### Any background context you want to provide?
 
-#### Aditional comments
+#### What are the relevant issues?
 
 #### Screenshots (if appropriate)
+
+---
+> Thank you! :heart:
+
+:rocket:
+
