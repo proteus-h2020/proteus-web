@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping(path = "/login")
 public class LoginController {
+	
+	public static final String PATH = "/login";
+
     private final LoginService loginService;
     private final JwtService jwtService;
 
