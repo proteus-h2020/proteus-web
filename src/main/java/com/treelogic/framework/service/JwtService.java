@@ -2,6 +2,8 @@ package com.treelogic.framework.service;
 
 import com.treelogic.framework.domain.Profile;
 import com.treelogic.framework.security.SecretKeyProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,18 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class JwtService {
     private static final String ISSUER = "com.treelogic.framework.jwt";
     private SecretKeyProvider secretKeyProvider;
+    private final ProfileService profileService;
 
     @Autowired
-    public JwtService(SecretKeyProvider secretKeyProvider) {
+    public JwtService(SecretKeyProvider secretKeyProvider, ProfileService profileService) {
         this.secretKeyProvider = secretKeyProvider;
+        this.profileService = profileService;
     }
 
     public String tokenFor(Profile profile) throws IOException, URISyntaxException {
@@ -32,5 +37,11 @@ public class JwtService {
                 .setIssuer(ISSUER)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
+    }
+
+    public Optional<Profile> verify(String token) throws IOException, URISyntaxException {
+        byte[] secretKey = secretKeyProvider.getKey();
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return profileService.getProfile(claims.getBody().getSubject().toString());
     }
 }
