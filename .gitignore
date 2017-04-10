@@ -26,3 +26,5 @@ buildNumber.properties
 .classpath
 .project
 .settings/
+
+src/main/resources/jwt.key
