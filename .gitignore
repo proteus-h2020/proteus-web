@@ -153,3 +153,5 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,linux,macos,maven,intellij,visualstudiocode
 
 \.idea/
+
+*.iml
