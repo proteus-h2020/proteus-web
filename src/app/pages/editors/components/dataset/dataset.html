@@ -1,0 +1,21 @@
+<div [formGroup]="parentGroup">
+
+
+    <div class="form-horizontal" [ngSwitch]="mode">
+        <div class="form-group">
+            <!--    <label for="input01">Websocket Endpoint:</label>
+                <input formControlName="websocketEndpoint" type="text" class="form-control">
+            -->
+            <label for="datasource">Datasource:</label>
+
+            <select formControlName="websocketEndpoint" name="datasource" class="form-control">
+                <option *ngFor="let ds of datasources" [ngValue]="ds">
+                    {{ds._url}}
+                </option>
+                </select>
+            <span [hidden]="parentGroup.controls.websocketEndpoint.valid || (parentGroup.controls.websocketEndpoint.pristine && !submitted)"
+                style="color: red!important; font-weight:bolt;" class="help-block sub-little-text">Please, select a valid datasource</span>
+                <a href="#"> or create a new one</a>
+        </div>
+    </div>
+</div>
