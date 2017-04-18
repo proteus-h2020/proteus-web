@@ -11,10 +11,9 @@
 	<description>Spring Boot Framework</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>com.treelogic</groupId>
+		<artifactId>proteus-spring</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>
