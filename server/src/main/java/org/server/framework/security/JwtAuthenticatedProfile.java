@@ -12,7 +12,11 @@ import java.util.Collections;
  * Created by jorge.yague on 7/04/17.
  */
 public class JwtAuthenticatedProfile implements Authentication {
-    private final Profile profile;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final Profile profile;
 
     public JwtAuthenticatedProfile(Profile profile) {
         this.profile = profile;

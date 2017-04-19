@@ -7,8 +7,6 @@ import javax.validation.Valid;
 import org.server.framework.domain.Asset;
 import org.server.framework.domain.Visualization;
 import org.server.framework.repository.VisualizationRepository;
-import org.server.framework.service.ErrorService;
-import org.server.framework.service.HistoryService;
 import org.server.framework.service.PredicateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,11 +32,6 @@ public class VisualizationController {
 	@Autowired
 	private PredicateService predicateService;
 
-	@Autowired
-	private HistoryService historyService;
-
-	@Autowired
-	private ErrorService errorService;
 
 	@RequestMapping(path = PATH, method = RequestMethod.GET)
 	public @ResponseBody Page<Visualization> get(Pageable pageable, @RequestParam(required = false) String where,

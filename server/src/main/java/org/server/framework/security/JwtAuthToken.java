@@ -6,7 +6,11 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 public class JwtAuthToken implements Authentication {
-    private final String token;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final String token;
 
     public JwtAuthToken(String token) {
         this.token = token;
