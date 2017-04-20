@@ -1,25 +1,33 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-
-
-	<name>proteus-spring-backend</name>
-	<description>Spring Boot Framework</description>
-	<packaging>war</packaging>
-	
 	<parent>
-		<groupId>com.treelogic</groupId>
-		<artifactId>proteus-spring</artifactId>
+		<groupId>com.treelogic.proteus</groupId>
+		<artifactId>proteus-web</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<packaging>war</packaging>
+
+	<artifactId>server</artifactId>
+	<name>server</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.7</java.version>
 	</properties>
-
 	<dependencies>
+	
+
+        <dependency>
+            <groupId>com.treelogic.proteus</groupId>
+            <artifactId>client</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+   
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -78,7 +86,6 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.7.0</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -87,6 +94,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
@@ -113,6 +121,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<artifactId>proteus-spring-backend</artifactId>
 </project>
