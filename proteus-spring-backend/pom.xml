@@ -6,7 +6,6 @@
 	<groupId>com.treelogic.framework</groupId>
 	<artifactId>proteus-spring-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<name>spring-boot-framework</name>
 	<description>Spring Boot Framework</description>

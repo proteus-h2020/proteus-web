@@ -4,8 +4,8 @@ import 'leaflet-map';
 
 @Component({
   selector: 'leaflet-maps',
-  styleUrls: ['./leafletMaps.scss'],
-  templateUrl: './leafletMaps.html'
+  templateUrl: './leafletMaps.html',
+  styleUrls: ['./leafletMaps.scss']
 })
 export class LeafletMaps {
 

@@ -5,9 +5,8 @@ export const PAGES_MENU = [
       {
         path: 'dashboard',
         data: {
-        //  shouldDetach: true,
           menu: {
-            title: 'Dashboard',
+            title: 'general.menu.dashboard',
             icon: 'ion-android-home',
             selected: false,
             expanded: false,
@@ -19,7 +18,7 @@ export const PAGES_MENU = [
         path: 'editors',
         data: {
           menu: {
-            title: 'Editor',
+            title: 'general.menu.editors',
             icon: 'ion-edit',
             selected: false,
             expanded: false,
@@ -28,36 +27,20 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'new',
+            path: 'ckeditor',
             data: {
               menu: {
-                title: 'New Visualization',
+                title: 'general.menu.ck_editor',
               }
             }
-          },
-          {
-            path: 'edit',
-            data: {
-              menu: {
-                title: 'Edit Visualization',
-              }
-            }
-          },
-          // {
-          //    path: 'ckeditor',
-          //    data: {
-          //     menu: {
-          //       title: 'CKEditor',
-          //      }
-          //    }
-          //   }
+          }
         ]
-      }/** 
+      },
       {
         path: 'components',
         data: {
           menu: {
-            title: 'Components',
+            title: 'general.menu.components',
             icon: 'ion-gear-a',
             selected: false,
             expanded: false,
@@ -69,7 +52,7 @@ export const PAGES_MENU = [
             path: 'treeview',
             data: {
               menu: {
-                title: 'Tree View',
+                title: 'general.menu.tree_view',
               }
             }
           }
@@ -79,7 +62,7 @@ export const PAGES_MENU = [
         path: 'charts',
         data: {
           menu: {
-            title: 'Charts',
+            title: 'general.menu.charts',
             icon: 'ion-stats-bars',
             selected: false,
             expanded: false,
@@ -91,7 +74,7 @@ export const PAGES_MENU = [
             path: 'chartist-js',
             data: {
               menu: {
-                title: 'Chartist.Js',
+                title: 'general.menu.chartist_js',
               }
             }
           }
@@ -101,7 +84,7 @@ export const PAGES_MENU = [
         path: 'ui',
         data: {
           menu: {
-            title: 'UI Features',
+            title: 'general.menu.ui_features',
             icon: 'ion-android-laptop',
             selected: false,
             expanded: false,
@@ -113,7 +96,7 @@ export const PAGES_MENU = [
             path: 'typography',
             data: {
               menu: {
-                title: 'Typography',
+                title: 'general.menu.typography',
               }
             }
           },
@@ -121,7 +104,7 @@ export const PAGES_MENU = [
             path: 'buttons',
             data: {
               menu: {
-                title: 'Buttons',
+                title: 'general.menu.buttons',
               }
             }
           },
@@ -129,7 +112,7 @@ export const PAGES_MENU = [
             path: 'icons',
             data: {
               menu: {
-                title: 'Icons',
+                title: 'general.menu.icons',
               }
             }
           },
@@ -137,7 +120,15 @@ export const PAGES_MENU = [
             path: 'modals',
             data: {
               menu: {
-                title: 'Modals',
+                title: 'general.menu.modals',
+              }
+            }
+          },
+          {
+            path: 'slim',
+            data: {
+              menu: {
+                title: 'Slim loading bar',
               }
             }
           },
@@ -145,7 +136,7 @@ export const PAGES_MENU = [
             path: 'grid',
             data: {
               menu: {
-                title: 'Grid',
+                title: 'general.menu.grid',
               }
             }
           },
@@ -155,7 +146,7 @@ export const PAGES_MENU = [
         path: 'forms',
         data: {
           menu: {
-            title: 'Form Elements',
+            title: 'general.menu.form_elements',
             icon: 'ion-compose',
             selected: false,
             expanded: false,
@@ -167,7 +158,7 @@ export const PAGES_MENU = [
             path: 'inputs',
             data: {
               menu: {
-                title: 'Form Inputs',
+                title: 'general.menu.form_inputs',
               }
             }
           },
@@ -175,7 +166,7 @@ export const PAGES_MENU = [
             path: 'layouts',
             data: {
               menu: {
-                title: 'Form Layouts',
+                title: 'general.menu.form_layouts',
               }
             }
           }
@@ -185,7 +176,7 @@ export const PAGES_MENU = [
         path: 'tables',
         data: {
           menu: {
-            title: 'Tables',
+            title: 'general.menu.tables',
             icon: 'ion-grid',
             selected: false,
             expanded: false,
@@ -197,7 +188,7 @@ export const PAGES_MENU = [
             path: 'basictables',
             data: {
               menu: {
-                title: 'Basic Tables',
+                title: 'general.menu.basic_tables',
               }
             }
           },
@@ -205,17 +196,33 @@ export const PAGES_MENU = [
             path: 'smarttables',
             data: {
               menu: {
-                title: 'Smart Tables',
+                title: 'general.menu.smart_tables',
               }
             }
-          }
+          },
+          {
+            path: 'datatables',
+            data: {
+              menu: {
+                title: 'Data Tables',
+              }
+            }
+          },
+           {
+             path: 'hottables',
+             data: {
+               menu: {
+                 title: 'Hot Tables',
+               }
+             }
+           }
         ]
       },
       {
         path: 'maps',
         data: {
           menu: {
-            title: 'Maps',
+            title: 'general.menu.maps',
             icon: 'ion-ios-location-outline',
             selected: false,
             expanded: false,
@@ -227,7 +234,7 @@ export const PAGES_MENU = [
             path: 'googlemaps',
             data: {
               menu: {
-                title: 'Google Maps',
+                title: 'general.menu.google_maps',
               }
             }
           },
@@ -235,7 +242,7 @@ export const PAGES_MENU = [
             path: 'leafletmaps',
             data: {
               menu: {
-                title: 'Leaflet Maps',
+                title: 'general.menu.leaflet_maps',
               }
             }
           },
@@ -243,7 +250,7 @@ export const PAGES_MENU = [
             path: 'bubblemaps',
             data: {
               menu: {
-                title: 'Bubble Maps',
+                title: 'general.menu.bubble_maps',
               }
             }
           },
@@ -251,7 +258,7 @@ export const PAGES_MENU = [
             path: 'linemaps',
             data: {
               menu: {
-                title: 'Line Maps',
+                title: 'general.menu.line_maps',
               }
             }
           }
@@ -261,7 +268,7 @@ export const PAGES_MENU = [
         path: '',
         data: {
           menu: {
-            title: 'Pages',
+            title: 'general.menu.pages',
             icon: 'ion-document',
             selected: false,
             expanded: false,
@@ -273,7 +280,7 @@ export const PAGES_MENU = [
             path: ['/login'],
             data: {
               menu: {
-                title: 'Login'
+                title: 'general.menu.login'
               }
             }
           },
@@ -281,7 +288,7 @@ export const PAGES_MENU = [
             path: ['/register'],
             data: {
               menu: {
-                title: 'Register'
+                title: 'general.menu.register'
               }
             }
           }
@@ -291,7 +298,7 @@ export const PAGES_MENU = [
         path: '',
         data: {
           menu: {
-            title: 'Menu Level 1',
+            title: 'general.menu.menu_level_1',
             icon: 'ion-ios-more',
             selected: false,
             expanded: false,
@@ -303,7 +310,7 @@ export const PAGES_MENU = [
             path: '',
             data: {
               menu: {
-                title: 'Menu Level 1.1',
+                title: 'general.menu.menu_level_1_1',
                 url: '#'
               }
             }
@@ -312,7 +319,7 @@ export const PAGES_MENU = [
             path: '',
             data: {
               menu: {
-                title: 'Menu Level 1.2',
+                title: 'general.menu.menu_level_1_2',
                 url: '#'
               }
             },
@@ -321,7 +328,7 @@ export const PAGES_MENU = [
                 path: '',
                 data: {
                   menu: {
-                    title: 'Menu Level 1.2.1',
+                    title: 'general.menu.menu_level_1_2_1',
                     url: '#'
                   }
                 }
@@ -334,14 +341,14 @@ export const PAGES_MENU = [
         path: '',
         data: {
           menu: {
-            title: 'PROTEUS site',
-            url: 'http://proteus-bigdata.com',
+            title: 'general.menu.external_link',
+            url: 'http://akveo.com',
             icon: 'ion-android-exit',
             order: 800,
             target: '_blank'
           }
         }
-      }**/
+      }
     ]
   }
 ];

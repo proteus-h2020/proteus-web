@@ -8,9 +8,6 @@ export const routes: Routes = [
   {
     path: '',
     component: Dashboard,
-    data: {
-      preload: true
-    },
     children: [
       //{ path: 'treeview', component: TreeViewComponent }
     ]

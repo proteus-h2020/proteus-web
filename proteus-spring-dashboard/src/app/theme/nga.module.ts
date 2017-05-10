@@ -3,6 +3,7 @@ import { CommonModule }  from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgUploaderModule } from 'ngx-uploader';
+import { AppTranslationModule } from '../app.translation.module';
 
 import {
   BaThemeConfig
@@ -16,7 +17,6 @@ import {
   BaAmChart,
   BaBackTop,
   BaCard,
-  BaCardProteic,
   BaChartistChart,
   BaCheckbox,
   BaContentTop,
@@ -27,7 +27,8 @@ import {
   BaMultiCheckbox,
   BaPageTop,
   BaPictureUploader,
-  BaSidebar
+  BaSidebar,
+  BaFileUploader
 } from './components';
 
 import { BaCardBlur } from './components/baCard/baCardBlur.directive';
@@ -60,7 +61,6 @@ const NGA_COMPONENTS = [
   BaAmChart,
   BaBackTop,
   BaCard,
-  BaCardProteic,
   BaChartistChart,
   BaCheckbox,
   BaContentTop,
@@ -71,7 +71,8 @@ const NGA_COMPONENTS = [
   BaMultiCheckbox,
   BaPageTop,
   BaPictureUploader,
-  BaSidebar
+  BaSidebar,
+  BaFileUploader
 ];
 
 const NGA_DIRECTIVES = [
@@ -110,7 +111,8 @@ const NGA_VALIDATORS = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    NgUploaderModule,
+    AppTranslationModule,
+    NgUploaderModule
   ],
   exports: [
     ...NGA_PIPES,

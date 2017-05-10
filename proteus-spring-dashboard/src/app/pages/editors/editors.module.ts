@@ -1,33 +1,26 @@
-import { DashboardModule } from './../dashboard/dashboard.module';
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from 'ng2-ckeditor';
 import { NgaModule } from '../../theme/nga.module';
-import {DashboardService} from '../dashboard/dashboard.service'
+
 import { routing }       from './editors.routing';
 import { Editors } from './editors.component';
-import { CreateVisualization } from './components/new';
-import { EditVisualization } from './components/edit';
-import { EditOneVisualization } from './components/edit/editOne.component';
-import { Dataset } from './components/dataset';
-import {KeysPipe} from './keys.pipe';
+import { Ckeditor } from './components/ckeditor/ckeditor.component';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    FormsModule,
     NgaModule,
+    CKEditorModule,
     routing
   ],
   declarations: [
-    KeysPipe,
     Editors,
-    CreateVisualization,
-    EditVisualization,
-    EditOneVisualization,
-    Dataset
-  ],
-  providers: []
+    Ckeditor
+  ]
 })
 export class EditorsModule {
 }

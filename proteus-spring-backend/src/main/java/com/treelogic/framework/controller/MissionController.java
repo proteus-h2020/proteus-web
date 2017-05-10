@@ -32,7 +32,7 @@ import com.treelogic.framework.service.PredicateService;
 @RestController
 public class MissionController {
 
-	public static final String PATH = "/missions";
+	public static final String PATH = "/api/missions";
 
 	@Autowired
 	private MissionRepository missionRepository;

@@ -30,7 +30,7 @@ import com.treelogic.framework.service.PredicateService;
 @RestController
 public class MobileController {
 
-	public static final String PATH = "/mobiles";
+	public static final String PATH = "/api/mobiles";
 
 	@Autowired
 	private MobileRepository mobileRepository;
