@@ -27,6 +27,22 @@ export const PAGES_MENU = [
         },
         children: [
           {
+            path: 'new',
+            data: {
+              menu: {
+                title: 'New visualization'
+              }
+            }
+          },
+          {
+            path: 'edit',
+            data: {
+              menu: {
+                title: 'Edit visualization'
+              }
+            }
+          },
+          {
             path: 'ckeditor',
             data: {
               menu: {

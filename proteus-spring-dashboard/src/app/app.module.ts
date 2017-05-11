@@ -16,12 +16,20 @@ import { AppState, InternalStateType } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
+import { DashboardService } from './pages/dashboard/dashboard.service';
+import {DatasourceHintService} from "./pages/dashboard/proteic/datasourceHint.service";
+import {DatasourceService} from "./pages/dashboard/proteic/datasource.service";
+import {ChartService} from "./pages/dashboard/proteic/chart.service";
 
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
-  GlobalState
+  GlobalState,
+  DashboardService,
+  ChartService,
+  DatasourceService,
+  DatasourceHintService
 ];
 
 export type StoreType = {
