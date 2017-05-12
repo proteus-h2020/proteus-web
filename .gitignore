@@ -160,3 +160,5 @@ buildNumber.properties
 
 .project
 node_modules/
+static/
+node/
