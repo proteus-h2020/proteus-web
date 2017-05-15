@@ -5,17 +5,23 @@
 </div>
 
 <div class="row">
-  <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-12"
-                     title="dashboard.acquisition_channels" baCardClass="traffic-panel medium-card">
-    <traffic-chart></traffic-chart>
-  </ba-card>
+  <ba-card-proteic (removeChart)="removeChart($event)" (editChart)="editChart($event)" *ngFor="let chart of charts" class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-xs-12"
+    [chart]="chart" baCardClass="traffic-panel medium-card">
+    <!-- <proteic [data]="chart.data" [conf]="chart.conf" [type]="chart.type"></proteic>-->
+    <proteic [chart]="chart"></proteic>
+    </ba-card-proteic>
+<!--
+    <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-xs-12" title="Acquisition Channels" baCardClass="traffic-panel medium-card">
+      <traffic-chart></traffic-chart>
+    </ba-card>
 
   <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-12"
            title="dashboard.users_by_country" baCardClass="medium-card">
     <users-map></users-map>
   </ba-card>
+  -->
 </div>
-
+<!--
 <div class="row">
   <div class="col-xlg-9 col-xl-6 col-lg-6  col-md-12 col-sm-12 col-12">
     <div class="row">
@@ -49,3 +55,4 @@
     <calendar></calendar>
   </ba-card>
 </div>
+-->

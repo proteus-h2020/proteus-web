@@ -5,6 +5,7 @@ export * from './baMenu/components/baMenuItem';
 export * from './baMenu';
 export * from './baContentTop';
 export * from './baCard';
+export * from './baCardProteic';
 export * from './baAmChart';
 export * from './baChartistChart';
 export * from './baBackTop';
