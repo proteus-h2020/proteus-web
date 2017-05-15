@@ -18,6 +18,8 @@
       "option1": "Option 1"
     },
     "menu": {
+      "proteus_website_link": "Proteus website",
+      "proteus_gh_link": "Proteus repository",
       "dashboard": "Dashboard",
       "editors": "Editors",
       "ck_editor": "CKEditor",
