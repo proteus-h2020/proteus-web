@@ -9,9 +9,12 @@ import { routing }       from './dashboard.routing';
 
 import { PopularApp } from './popularApp';
 import { PieChart } from './pieChart';
+import { Summary } from './summary';
 import { TrafficChart } from './trafficChart';
 import { UsersMap } from './usersMap';
 import { LineChart } from './lineChart';
+import { Proteic } from './proteic';
+
 import { Feed } from './feed';
 import { Todo } from './todo';
 import { Calendar } from './calendar';
@@ -22,6 +25,7 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
+import { SummaryService } from './summary/summary.service';
 
 @NgModule({
   imports: [
@@ -40,6 +44,8 @@ import { UsersMapService } from './usersMap/usersMap.service';
     Feed,
     Todo,
     Calendar,
+    Summary,
+    Proteic,
     Dashboard
   ],
   providers: [
@@ -49,7 +55,8 @@ import { UsersMapService } from './usersMap/usersMap.service';
     PieChartService,
     TodoService,
     TrafficChartService,
-    UsersMapService
+    UsersMapService,
+    SummaryService
   ]
 })
 export class DashboardModule {}
