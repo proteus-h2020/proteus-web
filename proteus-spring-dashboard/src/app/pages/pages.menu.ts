@@ -41,15 +41,15 @@ export const PAGES_MENU = [
                 title: 'Edit visualization'
               }
             }
-          },
-          {
-            path: 'ckeditor',
-            data: {
-              menu: {
-                title: 'general.menu.ck_editor',
-              }
-            }
           }
+          // {
+          //   path: 'ckeditor',
+          //   data: {
+          //     menu: {
+          //       title: 'general.menu.ck_editor',
+          //     }
+          //   }
+          // }
         ]
       },
       {
