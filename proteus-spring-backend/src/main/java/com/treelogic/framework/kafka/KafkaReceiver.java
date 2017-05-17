@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import com.treelogic.framework.domain.SensorMeasurement;
+
 public class KafkaReceiver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaReceiver.class);
@@ -22,8 +24,8 @@ public class KafkaReceiver {
 	}
 
 	@KafkaListener(topics = "${kafka.topicName}")
-	public void receive(String message) {
-		//LOGGER.info("received message='{}'", message);
+	public void receive(SensorMeasurement measure) {
+		LOGGER.info("received message='{}'", measure);
 		latch.countDown();
 	}
 }
