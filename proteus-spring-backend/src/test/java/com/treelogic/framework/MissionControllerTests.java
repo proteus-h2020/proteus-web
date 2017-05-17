@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.treelogic.framework.advice.ExcludeFieldsAdvice;
 import com.treelogic.framework.advice.HttpError;
-import com.treelogic.framework.controller.MissionController;
+import com.treelogic.framework.controller.rest.MissionController;
 import com.treelogic.framework.domain.Mission;
 import com.treelogic.framework.domain.Mission.MissionStatus;
 
