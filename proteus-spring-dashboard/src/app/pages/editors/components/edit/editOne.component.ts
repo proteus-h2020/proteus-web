@@ -12,7 +12,7 @@ import 'style-loader!./editOne.scss';
 
 @Component({
     selector: 'edit-one-visualization',
-    templateUrl: '../model-visualization.html',
+    templateUrl: '../visualization-form.html',
 })
 
 export class EditOneVisualization extends VisualizationForm {

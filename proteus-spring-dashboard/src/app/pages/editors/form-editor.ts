@@ -16,12 +16,13 @@ export class FormEditor {
     }
 
     public static createForm(model: RealtimeChart = null): FormGroup {
+        this.keyValues = ['positionX', 'positionY', 'key', 'value'];
         let currentConf = model ? model.configuration : null;
         return FormEditor.fb.group({
-            title: [model ? model.title : '', [<any>Validators.required, <any>Validators.minLength(5)]],
+            title: [model ? model.title : 'untitled'],
             type: [model ? model.type : '', [<any>Validators.required]],
             configuration: FormEditor._createConfigurationByChartProperties(currentConf),
-            websocketEndpoint: [model ? model.websocketEndpoint : null, [<any>Validators.required]]
+            // websocketEndpoint: [model ? model.websocketEndpoint : null, [<any>Validators.required]]
         });
     }
 
@@ -40,9 +41,9 @@ export class FormEditor {
     }
 
     public static isDynamicKey(key: string) {
-        return key == 'propertyX' ||
+        return key == 'propertyKey' ||
+            key == 'propertyX' ||
             key == 'propertyY' ||
-            key == 'propertyKey' ||
             key == 'propertyZ';
     }
 }

@@ -105,5 +105,10 @@
     "simple_pie": "Simple Pie",
     "pie_with_labels": "Pie with labels",
     "donut": "Donut"
+  },
+  "visualization": {
+    "type": "Visualization type",
+    "calculations": "Calculations",
+    "configuration": "Configuration"
   }
 }
