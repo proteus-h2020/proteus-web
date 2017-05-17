@@ -8,10 +8,15 @@ import org.springframework.kafka.annotation.KafkaListener;
 
 import com.treelogic.framework.domain.SensorMeasurement;
 
+import io.reactivex.subjects.PublishSubject;
+
+
 public class KafkaReceiver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaReceiver.class);
-
+	
+	private PublishSubject<SensorMeasurement> subject = PublishSubject.create();
+	
 	private CountDownLatch latch = new CountDownLatch(1);
 	
 	
@@ -23,9 +28,13 @@ public class KafkaReceiver {
 		return latch;
 	}
 
+	public PublishSubject<SensorMeasurement> listener(){
+		return this.subject;
+	}
+	
 	@KafkaListener(topics = "${kafka.topicName}")
 	public void receive(SensorMeasurement measure) {
-		LOGGER.info("received message='{}'", measure);
+		this.subject.onNext(measure);
 		latch.countDown();
 	}
 }
