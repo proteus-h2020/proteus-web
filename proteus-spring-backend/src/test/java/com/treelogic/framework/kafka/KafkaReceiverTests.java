@@ -15,6 +15,9 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.treelogic.framework.domain.SensorMeasurement1D;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -52,7 +55,7 @@ public class KafkaReceiverTests {
 
 	@Test
 	public void testReceive() throws Exception {
-		sender.send(TEST_TOPIC, "Hello Spring Kafka!");
+		sender.send(TEST_TOPIC, new SensorMeasurement1D(1, 12, 12, 121D));
 
 		receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
 		assertEquals(receiver.getLatch().getCount(), 0);
