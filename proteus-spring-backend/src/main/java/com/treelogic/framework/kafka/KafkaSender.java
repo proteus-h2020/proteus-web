@@ -8,24 +8,26 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import com.treelogic.framework.domain.SensorMeasurement;
+
 public class KafkaSender {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSender.class);
 
 	@Autowired
-	private KafkaTemplate<String, String> kafkaTemplate;
+	private KafkaTemplate<String, SensorMeasurement> kafkaTemplate;
 
-	public void send(String topic, final String message) {
+	public void send(String topic, final SensorMeasurement message) {
 		// the KafkaTemplate provides asynchronous send methods returning a
 		// Future
-		ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
+		ListenableFuture<SendResult<String, SensorMeasurement>> future = kafkaTemplate.send(topic, message);
 
 		// register a callback with the listener to receive the result of the
 		// send asynchronously
-		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+		future.addCallback(new ListenableFutureCallback<SendResult<String, SensorMeasurement>>() {
 
 			@Override
-			public void onSuccess(SendResult<String, String> result) {
+			public void onSuccess(SendResult<String, SensorMeasurement> result) {
 				LOGGER.info("sent message='{}' with offset={}", message, result.getRecordMetadata().offset());
 			}
 
