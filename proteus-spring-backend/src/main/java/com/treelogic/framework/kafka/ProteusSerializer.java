@@ -13,7 +13,6 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.Closeable;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ProteusSerializer
