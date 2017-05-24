@@ -7,7 +7,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'general.menu.dashboard',
-            icon: 'ion-android-home',
+            icon: 'ion-speedometer',
             selected: false,
             expanded: false,
             order: 0
@@ -15,11 +15,11 @@ export const PAGES_MENU = [
         }
       },
       {
-        path: 'editors',
+        path: 'visualizations',
         data: {
           menu: {
-            title: 'general.menu.editors',
-            icon: 'ion-edit',
+            title: 'general.menu.visualizations',
+            icon: 'ion-pie-graph',
             selected: false,
             expanded: false,
             order: 100,

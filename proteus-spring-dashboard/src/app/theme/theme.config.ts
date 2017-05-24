@@ -10,6 +10,7 @@ export class BaThemeConfig {
   }
 
   config() {
+    this._baConfig.changeTheme({ name: 'proteus' });
     // this._baConfig.changeTheme({ name: 'my-theme' });
     //
     // let colorScheme = {
