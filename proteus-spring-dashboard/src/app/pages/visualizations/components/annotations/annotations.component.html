@@ -21,7 +21,7 @@
     </select>
     </div>
   </div>
-  <fieldset class="form-group row">
+  <fieldset class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
     <legend class="col-form-legend col-2">Axis</legend>
     <div class="col-10">
       <div class="form-check">
