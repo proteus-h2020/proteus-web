@@ -1,38 +1,66 @@
-<button (click)="showCreateForm()" [hidden]="newAnnotation" class="btn btn-default">New annotation</button>
+<div class="form-group">
+  <button (click)="showCreateForm()" [hidden]="newAnnotation" class="btn btn-default">New annotation</button>
+</div>
 
 <div *ngIf="newAnnotation">
-  <h4>Create annotation</h4>
   <div class="form-group">
-    <label for="annotationText">Text</label>
-    <input id="annotationText" class="form-control" [(ngModel)]="newAnnotation.text">
+    <h4>Create annotation</h4>
   </div>
-  <div class="form-group">
-    <label for="annotationType">Type</label>
-    <select id="annotationType" class="formControl" [(ngModel)]="newAnnotation.type">
+  <div class="form-group row">
+    <label for="annotationText" class="col-2">Text</label>
+    <div class="col-10">
+      <input id="annotationText" class="form-control" [(ngModel)]="newAnnotation.text">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="annotationType" class="col-2">Type</label>
+    <div class="col-10">
+      <select id="annotationType" class="formControl" [(ngModel)]="newAnnotation.type">
       <option value="threshold">threshold</option>
       <option value="band">band</option>
     </select>
+    </div>
   </div>
-  <div class="form-group">
-    <p>Axis</p>
-    <label for="annotationAxis">X axis</label>
-    <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="x">
-    <label for="annotationAxis">Y axis</label>
-    <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="y">
+  <fieldset class="form-group row">
+    <legend class="col-form-legend col-2">Axis</legend>
+    <div class="col-10">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="x" class="form-check-input">    
+          X axis
+          </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="y" class="form-check-input">
+          Y axis
+        </label>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-group row" *ngIf="newAnnotation.type == 'threshold' && !newAnnotation.variable">
+    <label class="col-2" for="annotationValue">Value</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.value">
+    </div>
   </div>
-  <div class="form-group" *ngIf="newAnnotation.type == 'threshold' && !newAnnotation.variable">
-    <label for="annotationValue">Value</label>
-    <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.value">
+  <div class="form-group row" *ngIf="newAnnotation.type && !newAnnotation.value">
+    <label class="col-2" for="annotationValue">Variable</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.variable">
+    </div>
   </div>
-  <div class="form-group" *ngIf="newAnnotation.type && !newAnnotation.value">
-    <label for="annotationValue">Variable</label>
-    <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.variable">
+  <div class="form-group row" *ngIf="newAnnotation.type == 'band'">
+    <label class="col-2" for="annotationValue">Width</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.width">
+    </div>
   </div>
-  <div class="form-group" *ngIf="newAnnotation.type == 'band'">
-    <label for="annotationValue">Width</label>
-    <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.width">
+  <div class="form-group row">
+    <div class="col-2">
+      <button class="btn btn-general" (click)="add(newAnnotation)">Save</button>
+    </div>
   </div>
-  <button class="btn btn-general" (click)="add(newAnnotation)">Save</button>
 </div>
 
 <table class="table table-hover">
@@ -68,6 +96,7 @@
       <option value="band">band</option>
     </select>
   </div>
-  <button class="btn btn-general" (click)="save(annotation)">Save</button>
+  <div class="form-group">
+    <button class="btn btn-general" (click)="save(annotation)">Save</button>
+  </div>
 </div>
-
