@@ -45,7 +45,7 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
                 model.type, 
                 model.configuration, 
                 DatasourceService.getDefault(),
-                annotations,
+                annotations.slice(),
             );
             self.chartService.push(model);
             self.router.navigate(['pages/dashboard']);
