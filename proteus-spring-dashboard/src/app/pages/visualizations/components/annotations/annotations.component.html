@@ -1,5 +1,5 @@
 <div class="form-group">
-  <button (click)="showCreateForm()" [hidden]="newAnnotation" class="btn btn-default">New annotation</button>
+  <button (click)="showCreateForm(); false" [hidden]="newAnnotation" class="btn btn-default">New annotation</button>
 </div>
 
 <div *ngIf="newAnnotation">
@@ -89,6 +89,6 @@
     </select>
   </div>
   <div class="form-group">
-    <button class="btn btn-general" (click)="save(annotation)">Save</button>
+    <button class="btn btn-general" (click)="create(annotation)">Save</button>
   </div>
 </div>

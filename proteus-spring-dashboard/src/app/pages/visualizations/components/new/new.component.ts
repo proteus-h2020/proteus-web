@@ -52,18 +52,10 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
         }
 
         if (isValid) {
-            // console.log(this.type);
-
             this.annotationsService.getAnnotations()
                 .then((annotations) => createChart(annotations));
         }
     }
-
-    // public setType(model: RealtimeChart, type: string) {
-    //     this.type = type;
-    //     model.valid = true;
-    //     console.log(type);
-    // }
 
     public _createForm() {
         this.form = FormVisualization.createForm();
