@@ -37,7 +37,7 @@ export class AnnotationsComponent implements OnInit {
     this.selectedAnnotation = annotation;
   }
 
-  save(annotation: Annotation): void {
+  create(annotation: Annotation): void {
     this.selectedAnnotation = null;
   }
 

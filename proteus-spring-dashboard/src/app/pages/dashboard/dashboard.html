@@ -1,12 +1,8 @@
-<div class="row">
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <summary></summary>
-  </div>
-</div>
+<summary></summary>
 
-<div class="row">
-  <ba-card-proteic (removeChart)="removeChart($event)" (editChart)="editChart($event)" *ngFor="let chart of charts" class="col"
-    [chart]="chart" baCardClass="traffic-panel medium-card">
+<div class="row" *ngFor="let chart of charts">
+  <ba-card-proteic (removeChart)="removeChart($event)" (editChart)="editChart($event)" class="col"
+    [chart]="chart" baCardClass="medium-card">
     <!-- <proteic [data]="chart.data" [conf]="chart.conf" [type]="chart.type"></proteic>-->
     <proteic [chart]="chart"></proteic>
   </ba-card-proteic>
