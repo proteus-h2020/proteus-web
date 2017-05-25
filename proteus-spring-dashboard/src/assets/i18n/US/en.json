@@ -21,6 +21,7 @@
       "proteus_website_link": "Proteus website",
       "proteus_gh_link": "Proteus repository",
       "dashboard": "Dashboard",
+      "visualizations": "Visualizations",
       "editors": "Editors",
       "ck_editor": "CKEditor",
       "components": "Components",
@@ -109,6 +110,10 @@
   "visualization": {
     "type": "Visualization type",
     "calculations": "Calculations",
-    "configuration": "Configuration"
+    "configuration": "Configuration",
+    "annotations": {
+      "title": "Annotations"
+    },
+    "submit": "Confirm"
   }
 }

@@ -63,7 +63,7 @@ export class Dashboard implements OnInit, OnDestroy {
 
   editChart(chart: RealtimeChart) {
     let chartId = chart.id;
-    this.router.navigate([`pages/editors/edit/${chartId}`]);
+    this.router.navigate([`pages/visualizations/edit/${chartId}`]);
   }
 
 }

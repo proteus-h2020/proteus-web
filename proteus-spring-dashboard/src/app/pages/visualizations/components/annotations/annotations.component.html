@@ -1,0 +1,94 @@
+<div class="form-group">
+  <button (click)="showCreateForm()" [hidden]="newAnnotation" class="btn btn-default">New annotation</button>
+</div>
+
+<div *ngIf="newAnnotation">
+  <div class="form-group">
+    <h4>Create annotation</h4>
+  </div>
+  <div class="form-group row">
+    <label for="annotationText" class="col-2">Text</label>
+    <div class="col-10">
+      <input id="annotationText" class="form-control" [(ngModel)]="newAnnotation.text">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="annotationType" class="col-2">Type</label>
+    <div class="col-10">
+      <select id="annotationType" class="formControl" [(ngModel)]="newAnnotation.type">
+      <option value="threshold">threshold</option>
+      <option value="band">band</option>
+    </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
+    <label for="annotationAxis" class="col-2">Axis</label>
+    <div class="col-10">
+      <select id="annotationAxis" class="formControl" [(ngModel)]="newAnnotation.axis">
+        <option value="x">X</option>
+        <option value="y">Y</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newAnnotation.type == 'threshold' && !newAnnotation.variable">
+    <label class="col-2" for="annotationValue">Value</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.value">
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newAnnotation.type && !newAnnotation.value">
+    <label class="col-2" for="annotationValue">Variable</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.variable">
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newAnnotation.type == 'band'">
+    <label class="col-2" for="annotationValue">Width</label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="newAnnotation.width">
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-2">
+      <button class="btn btn-general" (click)="add(newAnnotation)">Save</button>
+    </div>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Text</th>
+      <th>Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let annotation of annotations">
+      <td>{{annotation.text}}</td>
+      <td>{{annotation.type}}</td>
+      <td>
+        <a href="#" (click)="edit(annotation); false">Edit</a>
+        <a href="#" (click)="delete(annotation); false">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="selectedAnnotation">
+  <h3>Edit annotation</h3>
+  <div class="form-group">
+    <label for="annotationText">Text</label>
+    <input id="annotationText" class="form-control" [(ngModel)]="selectedAnnotation.text">
+  </div>
+  <div class="form-group">
+    <label for="annotationType">Type</label>
+    <select id="annotationType" class="formControl" [(ngModel)]="selectedAnnotation.type">
+      <option value="threshold">threshold</option>
+      <option value="band">band</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-general" (click)="save(annotation)">Save</button>
+  </div>
+</div>
