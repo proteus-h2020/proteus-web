@@ -21,23 +21,15 @@
     </select>
     </div>
   </div>
-  <fieldset class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
-    <legend class="col-form-legend col-2">Axis</legend>
+  <div class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
+    <label for="annotationAxis" class="col-2">Axis</label>
     <div class="col-10">
-      <div class="form-check">
-        <label class="form-check-label">
-          <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="x" class="form-check-input">    
-          X axis
-          </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input id="annotationAxis" [(ngModel)]="newAnnotation.axis" type="radio" value="y" class="form-check-input">
-          Y axis
-        </label>
-      </div>
+      <select id="annotationAxis" class="formControl" [(ngModel)]="newAnnotation.axis">
+        <option value="x">X</option>
+        <option value="y">Y</option>
+      </select>
     </div>
-  </fieldset>
+  </div>
   <div class="form-group row" *ngIf="newAnnotation.type == 'threshold' && !newAnnotation.variable">
     <label class="col-2" for="annotationValue">Value</label>
     <div class="col-10">
