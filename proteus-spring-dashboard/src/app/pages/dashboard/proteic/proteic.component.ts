@@ -1,7 +1,19 @@
 import { RealtimeChart } from './../../../realtime-chart';
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 
-import { Colors, Linechart, Scatterplot, Barchart, Heatmap, WebsocketDatasource } from 'proteic';
+import { 
+  Barchart, 
+  Gauge,
+  Heatmap, 
+  Linechart, 
+  Scatterplot, 
+  StackedArea,
+  Streamgraph,
+  Sunburst,
+  Swimlane,
+  Colors, 
+  WebsocketDatasource, 
+} from 'proteic';
 
 @Component({
   selector: 'proteic',
@@ -42,23 +54,46 @@ export class Proteic implements OnInit, AfterViewInit {
     let c = null;
 
     switch (this.chart.type) {
+      case 'Barchart':
+        c = new Barchart([], this.chart.configuration)
+        .datasource(this.chart.websocketEndpoint)
+        .unpivot(['mean', 'variance']);
+        break;
+      case 'Gauge':
+        c = new Gauge([], this.chart.configuration)
+        .datasource(this.chart.websocketEndpoint)
+        .unpivot(['mean', 'variance']);
+      break;
+      case 'Heatmap':
+        c = new Heatmap([], this.chart.configuration)
+        .datasource(this.chart.websocketEndpoint)
+        .unpivot(['mean', 'variance']);
+        break;
       case 'Linechart':
         c = new Linechart([], this.chart.configuration)
           .annotations(this.chart.annotations)
           .datasource(this.chart.websocketEndpoint)
           .unpivot(['mean', 'variance']);
         break;
-      case 'Barchart':
-        c = new Barchart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
-        break;
+      case 'Network':
+      break;
       case 'Scatterplot':
         c = new Scatterplot([], this.chart.configuration)
         .datasource(this.chart.websocketEndpoint)
         .unpivot(['mean', 'variance']);
         break;
-      case 'Heatmap':
-        c = new Heatmap([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
-        break;
+      case 'StackedArea':
+        c = new StackedArea([], this.chart.configuration)
+        .datasource(this.chart.websocketEndpoint);
+      break;
+      case 'Streamgraph':
+      break;
+      case 'Sunburst':
+      break;
+      case 'Swimlane':
+      break;
+      default:
+      break;
     }
 
     this.chart.websocketEndpoint.start();
