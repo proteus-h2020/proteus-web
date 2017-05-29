@@ -43,6 +43,7 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
                 model.type, 
                 model.configuration, 
                 DatasourceService.getDefault(),
+                []
             );
             this.chartService.push(model);
             this.router.navigate(['pages/dashboard']);

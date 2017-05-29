@@ -23,25 +23,33 @@ export class Proteic implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 30;
-    this.chart.configuration.marginLeft = 50;
+    this.chart.configuration.marginRight = 200;
+    this.chart.configuration.marginLeft = 100;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.height = 250;
     //this.chart.configuration.colorScale = Colors.category3();
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
     // this.conf.propertyY = 'C0007';
-    // this.conf.propertyX = 'positionX';
+    this.chart.configuration.propertyX = 'positionX';
+    this.chart.configuration.propertyY = 'value';
+    this.chart.configuration.propertyKey = 'key';
     // this.conf.xAxisLabel = 'X Axis Title';
     // this.conf.yAxisLabel = 'Y Axis Title';
+    this.chart.configuration.maxNumberOfElements = 1000;
   }
 
   ngAfterViewInit(): void {
     let c = null;
 
-    console.log('configuration', this.chart.configuration);
     switch (this.chart.type) {
       case 'Linechart':
-        c = new Linechart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        c = new Linechart([], this.chart.configuration)
+          .annotations(this.chart.annotations)
+            // { type: 'threshold', axis: 'y', value: 35000, text: 'Mean warning' },
+            // { type: 'threshold', axis: 'y', variable: 'mean', text: 'Mean' },
+            // { type: 'band', variable: 'mean', width: 'variance', text: 'Variance band' },
+          .datasource(this.chart.websocketEndpoint)
+          .unpivot(['mean', 'variance']);
         break;
       case 'Barchart':
         c = new Barchart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);

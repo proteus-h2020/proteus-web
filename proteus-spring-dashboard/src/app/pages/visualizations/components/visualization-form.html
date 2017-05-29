@@ -1,0 +1,83 @@
+<form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
+
+  <div class="row">
+    <ba-card class="col" title="visualization.type">
+      <input type="radio" formControlName="type" value="Scatterplot"> Scatterplot
+      <input type="radio" formControlName="type" value="Linechart"> Linechart
+      <!--<div class="card-deck">
+        <div class="card btn" (click)="setType('Scatterplot')">
+          <img src="..." alt="" class="card-img-top">
+          <div class="card-block">
+            <h4 class="card-title">Scatterplot</h4>
+            <p class="card-text">Description</p>
+          </div>
+        </div>
+        <div class="card btn" (click)="setType('Linechart')">
+          <img src="..." alt="" class="card-img-top">
+          <div class="card-block">
+            <h4 class="card-title">Linechart</h4>
+            <p class="card-text">Description</p>
+          </div>
+        </div>
+      </div>-->
+    </ba-card>
+  </div>
+
+  <div class="row">
+    <ba-card class="col" title="visualization.configuration">
+      <div class="form-group">
+        <label for="chartTitle">Visualization title:</label>
+        <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
+        <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
+          class="help-block sub-little-text">The name should be at least 5 characters</span>
+      </div>
+
+      <div class="form-group" formGroupName="configuration" ngDefaultControl>
+        <!-- Default fields for the selected chart-->
+        <div *ngFor="let entry of defaults() | keys" class="form-group">
+          <div [ngSwitch]="isDynamicKey(entry.key)">
+            <div *ngSwitchCase="true">
+              <label for="chartTitle">{{entry.key}}: </label>
+              <select [formControlName]="entry.key" class="form-control" name="chartTitle">
+                <option *ngFor="let c of keyValues()" [value]="c">{{c}}</option>
+              </select>
+            </div>
+            <div *ngSwitchDefault>
+              <label for="chartTitle">{{entry.key}}: </label>
+              <input [formControlName]="entry.key" type="text" class="form-control" name="chartTitle">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ba-card>
+    <ba-card class="smart-table-container col" title="visualization.annotations.title">
+      <app-annotations></app-annotations>
+    </ba-card>
+  </div>
+
+
+  <!--Default fields for the selected chart-->
+  <!--<div *ngFor="let entry of defaults | keys" class="form-group row">
+    <label for="chartTitle">{{entry.key}}: </label>
+    <input type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
+  </div>-->
+
+
+
+  <!--<div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <ba-card baCardClass="popular-app medium-card" title='Dataset' baCardClass="popular-app medium-card">
+      <dataset [parentGroup]="form" (keyValuesEmitter)="valueKeysChange($event)"></dataset>
+    </ba-card>
+  </div>-->
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-success btn-with-icon btn-lg"><i class="ion-android-checkmark-circle"></i>Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+</form>
