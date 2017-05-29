@@ -16,16 +16,9 @@ public class KafkaReceiver {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaReceiver.class);
 	
 	private PublishSubject<SensorMeasurement> subject = PublishSubject.create();
-	
-	private CountDownLatch latch = new CountDownLatch(1);
-	
-	
+		
 	public KafkaReceiver(){
 		LOGGER.info("Initializing KafkaReceiver");
-	}
-
-	public CountDownLatch getLatch() {
-		return latch;
 	}
 
 	public PublishSubject<SensorMeasurement> listener(){
@@ -34,7 +27,7 @@ public class KafkaReceiver {
 	
 	@KafkaListener(topics = "${kafka.topicName}")
 	public void receive(SensorMeasurement measure) {
+		LOGGER.info("measure: "  + measure);
 		this.subject.onNext(measure);
-		latch.countDown();
 	}
 }

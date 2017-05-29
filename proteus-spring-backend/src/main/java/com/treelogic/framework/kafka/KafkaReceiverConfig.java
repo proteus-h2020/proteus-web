@@ -29,7 +29,7 @@ public class KafkaReceiverConfig {
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ProteusSerializer.class);
     
     // allows a pool of processes to divide the work of consuming and processing records
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, "test");
+    props.put(ConsumerConfig.GROUP_ID_CONFIG, "SpringConsumer");
 
     return props;
   }
