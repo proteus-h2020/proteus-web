@@ -45,9 +45,6 @@ export class Proteic implements OnInit, AfterViewInit {
       case 'Linechart':
         c = new Linechart([], this.chart.configuration)
           .annotations(this.chart.annotations)
-            // { type: 'threshold', axis: 'y', value: 35000, text: 'Mean warning' },
-            // { type: 'threshold', axis: 'y', variable: 'mean', text: 'Mean' },
-            // { type: 'band', variable: 'mean', width: 'variance', text: 'Variance band' },
           .datasource(this.chart.websocketEndpoint)
           .unpivot(['mean', 'variance']);
         break;
@@ -55,7 +52,9 @@ export class Proteic implements OnInit, AfterViewInit {
         c = new Barchart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
         break;
       case 'Scatterplot':
-        c = new Scatterplot([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        c = new Scatterplot([], this.chart.configuration)
+        .datasource(this.chart.websocketEndpoint)
+        .unpivot(['mean', 'variance']);
         break;
       case 'Heatmap':
         c = new Heatmap([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
