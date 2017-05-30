@@ -2,8 +2,16 @@
 
   <div class="row">
     <ba-card class="col" title="visualization.type">
-      <input type="radio" formControlName="type" value="Scatterplot"> Scatterplot
+      <input type="radio" formControlName="type" value="Barchart"> Barchart
+      <input type="radio" formControlName="type" value="Gauge"> Gauge
+      <input type="radio" formControlName="type" value="Heatmap"> Heatmap
       <input type="radio" formControlName="type" value="Linechart"> Linechart
+      <input type="radio" formControlName="type" value="Network"> Network chart
+      <input type="radio" formControlName="type" value="Scatterplot"> Scatterplot
+      <input type="radio" formControlName="type" value="StackedArea"> Stacked Area chart
+      <input type="radio" formControlName="type" value="Streamgraph"> Streamgraph
+      <input type="radio" formControlName="type" value="Sunburst"> Sunburst
+      <input type="radio" formControlName="type" value="Swimlane"> Swimlane
       <!--<div class="card-deck">
         <div class="card btn" (click)="setType('Scatterplot')">
           <img src="..." alt="" class="card-img-top">
@@ -20,6 +28,27 @@
           </div>
         </div>
       </div>-->
+    </ba-card>
+  </div>
+
+  <div class="row">
+    <ba-card class="col" title="Raw data">
+      <div class="form-group row">
+        <label for="" class="col-3">Variable</label>
+        <div class="col-3">
+          <select id="" class="formControl" formControlName="variable" name="variable">
+              <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+            </select>
+        </div>
+      </div>
+    </ba-card>
+    <ba-card class="col" title="Calculations">
+      <div class="form-check" *ngFor="let c of calculations">
+        <label for="" class="form-check-label">
+          <input type="checkbox" class="form-check-input" [value]="c" (change)="calculationsCbChange($event)">
+          {{c}}
+        </label>
+      </div>
     </ba-card>
   </div>
 
