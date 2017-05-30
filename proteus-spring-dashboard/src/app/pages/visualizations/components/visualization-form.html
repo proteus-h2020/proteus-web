@@ -32,6 +32,27 @@
   </div>
 
   <div class="row">
+    <ba-card class="col" title="Raw data">
+      <div class="form-group row">
+        <label for="" class="col-3">Variable</label>
+        <div class="col-3">
+          <select id="" class="formControl" formControlName="variable" name="variable">
+              <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+            </select>
+        </div>
+      </div>
+    </ba-card>
+    <ba-card class="col" title="Calculations">
+      <div class="form-check" *ngFor="let c of calculations">
+        <label for="" class="form-check-label">
+          <input type="checkbox" class="form-check-input" [value]="c" (change)="calculationsCbChange($event)">
+          {{c}}
+        </label>
+      </div>
+    </ba-card>
+  </div>
+
+  <div class="row">
     <ba-card class="col" title="visualization.configuration">
       <div class="form-group">
         <label for="chartTitle">Visualization title:</label>
