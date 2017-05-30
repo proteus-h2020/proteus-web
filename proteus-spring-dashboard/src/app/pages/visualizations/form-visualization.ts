@@ -8,11 +8,18 @@ export class FormVisualization {
     //public static defaults = getDefaultOptions('linechart');
     public static defaults = {};
     private static fb: FormBuilder = new FormBuilder();
-    public  static keyValues: string[] = [];
+    public static keyValues: string[] = [];
+    public static selectedCalculations: Set<string> = new Set(); 
 
 
     public static valueKeysChange(keys: string[]) {
         this.keyValues = keys;
+    }
+
+    public static calculationsCbChange(event: any) {
+        event.target.checked ? 
+            this.selectedCalculations.add(event.target.value) : 
+            this.selectedCalculations.delete(event.target.value);
     }
 
     public static createForm(model: RealtimeChart = null): FormGroup {
@@ -22,6 +29,8 @@ export class FormVisualization {
             title: [model ? model.title : 'untitled'],
             type: [model ? model.type : '', [<any>Validators.required]],
             configuration: FormVisualization._createConfigurationByChartProperties(currentConf),
+            variable: [model ? model.variable : null],
+            calculations: this.selectedCalculations,
             // websocketEndpoint: [model ? model.websocketEndpoint : null, [<any>Validators.required]]
         });
     }
