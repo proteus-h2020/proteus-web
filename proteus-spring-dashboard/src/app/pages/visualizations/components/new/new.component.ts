@@ -39,6 +39,15 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
         let self = this;
         this.submitted = true;
 
+        let websocketEndpoint = () => {
+            if(!model.calculations) { return 'C0001'; }
+            if (model.calculations.size === 0) {
+                return '/topic/realtime/var/' + model.variable;
+            } else {
+                return '/topic/flink/var/' + model.variable;
+            }
+        };
+
         function createChart(annotations: Annotation[]) {
             model = new RealtimeChart(
                 model.title, 
@@ -48,6 +57,7 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
                 annotations.slice(),
                 model.variable,
                 model.calculations,
+                websocketEndpoint(),
             );
             self.chartService.push(model);
             self.router.navigate(['pages/dashboard']);

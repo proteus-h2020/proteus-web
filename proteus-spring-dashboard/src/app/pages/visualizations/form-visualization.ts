@@ -25,6 +25,7 @@ export class FormVisualization {
     public static createForm(model: RealtimeChart = null): FormGroup {
         this.keyValues = ['positionX', 'positionY', 'key', 'value'];
         let currentConf = model ? model.configuration : null;
+
         return FormVisualization.fb.group({
             title: [model ? model.title : 'untitled'],
             type: [model ? model.type : '', [<any>Validators.required]],

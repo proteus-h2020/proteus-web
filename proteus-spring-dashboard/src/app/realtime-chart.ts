@@ -13,7 +13,8 @@ export class RealtimeChart {
         public websocketEndpoint: WebsocketDatasource,  
         public annotations: Annotation[],  
         public variable: string,
-        public calculations: string[], 
+        public calculations: Set<string>, 
+        public endpoint: string,
     ) { 
         this.id = RealtimeChart.N++;
     }
