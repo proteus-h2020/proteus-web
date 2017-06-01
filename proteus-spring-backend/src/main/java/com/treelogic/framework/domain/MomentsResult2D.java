@@ -14,6 +14,10 @@ public class MomentsResult2D extends MomentsResult{
 		this.x = x;
 		this.y = y;
 	}
+	
+	public MomentsResult2D() {
+
+	}
 
 	@Override
 	public int hashCode() {
@@ -49,6 +53,24 @@ public class MomentsResult2D extends MomentsResult{
 	public String toString() {
 		return "MomentsResult2D [x=" + x + ", y=" + y + "]";
 	}
+
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	
 	
 	
 }
