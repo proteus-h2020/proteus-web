@@ -53,8 +53,6 @@ export class Proteic implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     let c = null;
 
-    console.log(this.chart.calculations);
-
     switch (this.chart.type) {
       case 'Barchart':
         c = new Barchart([], this.chart.configuration)

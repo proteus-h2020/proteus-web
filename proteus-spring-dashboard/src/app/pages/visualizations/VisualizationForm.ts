@@ -3,7 +3,6 @@ import { OnInit, OnDestroy } from '@angular/core';
 import { RealtimeChart } from './../../realtime-chart';
 import { FormVisualization } from './form-visualization';
 import { FormGroup } from '@angular/forms';
-import _ from 'underscore';
 
 export class Calculation {
     value; 
@@ -59,7 +58,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
             FormVisualization.changeDefaultProperties(type, this.form);
         });
 
-        this.variables = _.range(1, 57).map((v) => v.toString()); // "1" to "56"
+        this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
         this.calculations = [
             new Calculation('mean', 'Mean'),
             new Calculation('variance', 'Variance'),
