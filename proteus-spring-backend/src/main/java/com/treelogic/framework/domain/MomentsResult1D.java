@@ -12,6 +12,10 @@ public class MomentsResult1D extends MomentsResult {
 		this.counter = counter;
 		this.x = x;
 	}
+	
+	public MomentsResult1D() {
+
+	}
 
 
 	@Override
@@ -38,6 +42,18 @@ public class MomentsResult1D extends MomentsResult {
 			return false;
 		return true;
 	}
+
+
+	public double getX() {
+		return x;
+	}
+
+
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	
 	
 	
 	
