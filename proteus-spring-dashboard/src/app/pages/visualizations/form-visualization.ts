@@ -1,7 +1,7 @@
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
-
 import { getDefaultOptions } from 'proteic';
+import { Calculation } from 'app/pages/visualizations/VisualizationForm';
 
 export class FormVisualization {
 
@@ -9,7 +9,7 @@ export class FormVisualization {
     public static defaults = {};
     private static fb: FormBuilder = new FormBuilder();
     public static keyValues: string[] = [];
-    public static selectedCalculations: Set<string> = new Set(); 
+    public static selectedCalculations: Set<Calculation> = new Set(); 
 
 
     public static valueKeysChange(keys: string[]) {
