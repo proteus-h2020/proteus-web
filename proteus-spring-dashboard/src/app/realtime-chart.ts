@@ -1,5 +1,6 @@
 import { WebsocketDatasource } from 'proteic';
 import { Annotation } from './pages/visualizations/components/annotations/annotation';
+import { Calculation } from './pages/visualizations/VisualizationForm';
 
 // export class RealtimeChart implements Chart {
 export class RealtimeChart {
@@ -13,7 +14,7 @@ export class RealtimeChart {
         public websocketEndpoint: WebsocketDatasource,  
         public annotations: Annotation[],  
         public variable: string,
-        public calculations: Set<string>, 
+        public calculations: Set<Calculation>, 
         public endpoint: string,
     ) { 
         this.id = RealtimeChart.N++;

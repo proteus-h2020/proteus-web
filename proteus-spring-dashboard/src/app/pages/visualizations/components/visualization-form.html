@@ -32,24 +32,42 @@
   </div>
 
   <div class="row">
-    <ba-card class="col" title="Raw data">
-      <div class="form-group row">
-        <label for="" class="col-3">Variable</label>
-        <div class="col-3">
-          <select id="" class="formControl" formControlName="variable" name="variable">
+    <ba-card class="col" title="Real-time data">
+      <div class="row">
+
+        <div class="form-group col">
+          <div class="form-group">
+            <p>Raw data</p>
+          </div>
+          <div class="row">
+            <label for="" class="col-3">Variable</label>
+            <div class="col-3">
+              <select id="" class="formControl" formControlName="variable" name="variable">
               <option *ngFor="let v of variables" [value]="v">{{v}}</option>
             </select>
+            </div>
+          </div>
         </div>
-      </div>
-    </ba-card>
-    <ba-card class="col" title="Calculations">
-      <div class="form-check" *ngFor="let c of calculations">
-        <label for="" class="form-check-label">
-          <input type="checkbox" class="form-check-input" [value]="c" (change)="calculationsCbChange($event)">
-          {{c}}
+
+        <div class="form-group col">
+          <div class="form-group">
+            <p>Processed data</p>
+          </div>
+          <div class="form-check" *ngFor="let c of calculations">
+            <label for="" class="form-check-label">
+          <input type="checkbox" class="form-check-input" [value]="c.value" (change)="calculationsCbChange($event)">
+          {{c.label}}
         </label>
+          </div>
+        </div>
+
       </div>
     </ba-card>
+
+    <ba-card class="col" title="Historical data">
+
+    </ba-card>
+
   </div>
 
   <div class="row">
