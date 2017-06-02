@@ -43,7 +43,6 @@ export class EditOneVisualization extends VisualizationForm {
         //update model
         this.chart.configuration = model.configuration;
         this.chart.type = model.type;
-        this.chart.websocketEndpoint = model.websocketEndpoint;
         this.chart.title = model.title;
 
         if (isValid) {

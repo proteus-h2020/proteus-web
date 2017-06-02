@@ -1,9 +1,7 @@
 import { SummaryService } from './summary/summary.service';
 import { Subscription } from 'rxjs/Rx';
 import { RealtimeChart } from '../../realtime-chart';
-import { DatasourceService } from './proteic/datasource.service';
 import { ChartService } from './proteic/chart.service';
-// import { SelectivePreloadingStrategy } from './../../../selective-preloading-strategy';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -24,7 +22,6 @@ export class Dashboard implements OnInit, OnDestroy {
   constructor(
     private dashboardChartService: DashboardService,
     private chartProteicService: ChartService,
-    private datasourceProteicService: DatasourceService,
     private summaryService: SummaryService,
     private router: Router
   ) {
@@ -42,28 +39,28 @@ export class Dashboard implements OnInit, OnDestroy {
   private _onChartSubscription(charts: RealtimeChart[]) {
     this.charts = charts;
     for (let c of charts) {
-      let subscription: Subscription = c.websocketEndpoint.on('message', () => this.summaryService.incrementMessages());
-      this.messagesSubscriptions[c['title']] = subscription; //TODO : Replace title key
+      // let subscription: Subscription = c.websocketEndpoint.on('message', () => this.summaryService.incrementMessages());
+      //this.messagesSubscriptions[c['title']] = subscription; //TODO : Replace title key
     }
 
   }
 
   ngOnDestroy() {
-    if (this.chartsSubscription) {
-      this.chartsSubscription.unsubscribe();
-    }
+    // if (this.chartsSubscription) {
+    //  this.chartsSubscription.unsubscribe();
+    // }
 
   }
 
   removeChart(chart: RealtimeChart) {
-    let subscription = this.messagesSubscriptions[chart.title];
-    subscription.unsubscribe();
-    this.chartProteicService.remove(chart);
+    //let subscription = this.messagesSubscriptions[chart.title];
+   // subscription.unsubscribe();
+   // this.chartProteicService.remove(chart);
   }
 
   editChart(chart: RealtimeChart) {
-    let chartId = chart.id;
-    this.router.navigate([`pages/visualizations/edit/${chartId}`]);
+   // let chartId = chart.id;
+  //  this.router.navigate([`pages/visualizations/edit/${chartId}`]);
   }
 
 }

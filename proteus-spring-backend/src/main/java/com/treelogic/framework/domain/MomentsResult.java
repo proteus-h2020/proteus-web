@@ -1,13 +1,13 @@
 package com.treelogic.framework.domain;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "y")
-@JsonSubTypes({ @Type(value = MomentsResult1D.class, name = "a"), @Type(value = MomentsResult2D.class, name = "b") })
 public abstract class MomentsResult {
 	protected int coilId;
 	protected int varId;
@@ -104,6 +104,15 @@ public abstract class MomentsResult {
 	public String toJson(){
 		try {
 			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String toJson(List<MomentsResult> moments){
+		try {
+			return mapper.writeValueAsString(moments);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

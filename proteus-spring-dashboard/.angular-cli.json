@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "../proteus-spring-backend/src/main/resources/static2/",
+      "outDir": "../proteus-spring-backend/src/main/resources/static/",
       "assets": [
         "assets",
         "favicon.ico"
@@ -39,7 +39,11 @@
         "../node_modules/tether/dist/js/tether.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
         "../node_modules/handsontable/dist/handsontable.full.js",
-        "../node_modules/chroma-js/chroma.js"
+        "../node_modules/chroma-js/chroma.js",
+        "../node_modules/sockjs-client/dist/sockjs.min.js",
+        "../node_modules/stompjs/lib/stomp.min.js"
+
+
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
