@@ -1,4 +1,3 @@
-import { DatasourceService } from './datasource.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Chart } from './../../../chart.interface';

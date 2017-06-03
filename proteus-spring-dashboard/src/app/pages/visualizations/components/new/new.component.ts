@@ -8,8 +8,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
-import { DashboardService } from '../../../dashboard/dashboard.service';
-import { DatasourceService } from '../../../dashboard/proteic/datasource.service';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
 
@@ -24,7 +22,6 @@ import { getAvailableVisualizations, Heatmap } from 'proteic';
 export class CreateVisualization extends VisualizationForm implements OnInit, OnDestroy {
 
     private events: any[] = [];
-    // private type: string;
 
     constructor(
         private chartService: ChartService,
@@ -53,13 +50,13 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
                 model.title, 
                 model.type, 
                 model.configuration, 
-                DatasourceService.getDefault(),
                 annotations.slice(),
                 model.variable,
                 model.calculations,
                 websocketEndpoint(),
             );
             self.chartService.push(model);
+            console.debug('Chart model: ', model);
             self.router.navigate(['pages/dashboard']);
         }
 

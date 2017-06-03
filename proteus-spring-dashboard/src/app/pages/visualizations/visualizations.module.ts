@@ -10,7 +10,6 @@ import { Visualizations } from './visualizations.component';
 import { CreateVisualization } from './components/new';
 import { EditVisualization } from './components/edit';
 import { EditOneVisualization } from './components/edit/editOne.component';
-import { Dataset } from './components/dataset';
 import { KeysPipe } from './keys.pipe';
 import { AnnotationsComponent } from './components/annotations/annotations.component';
 import { AnnotationsService } from './components/annotations/annotations.service';
@@ -30,7 +29,6 @@ import { AnnotationsService } from './components/annotations/annotations.service
     CreateVisualization,
     EditVisualization,
     EditOneVisualization,
-    Dataset,
     AnnotationsComponent,
   ],
   providers: [AnnotationsService],
