@@ -4,12 +4,10 @@ import { getDefaultOptions } from 'proteic';
 import { Calculation } from 'app/pages/visualizations/VisualizationForm';
 
 export class FormVisualization {
-
-    //public static defaults = getDefaultOptions('linechart');
     public static defaults = {};
     private static fb: FormBuilder = new FormBuilder();
     public static keyValues: string[] = [];
-    public static selectedCalculations: Set<Calculation> = new Set(); 
+    public static selectedCalculations: Calculation[] = new Array<Calculation>(); 
 
 
     public static valueKeysChange(keys: string[]) {
@@ -17,9 +15,16 @@ export class FormVisualization {
     }
 
     public static calculationsCbChange(event: any) {
-        event.target.checked ? 
-            this.selectedCalculations.add(event.target.value) : 
-            this.selectedCalculations.delete(event.target.value);
+
+        if(event.target.checked){
+            this.selectedCalculations.push(event.target.value);
+        }
+        else{
+            let index = this.selectedCalculations.indexOf(event.target.value);
+            if(index > -1){
+                this.selectedCalculations.splice(index, 1);
+            }
+        }
     }
 
     public static createForm(model: RealtimeChart = null): FormGroup {

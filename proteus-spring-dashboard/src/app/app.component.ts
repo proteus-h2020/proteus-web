@@ -1,3 +1,4 @@
+import { WebsocketService } from './websocket.service';
 import { Component, ViewContainerRef } from '@angular/core';
 import * as $ from 'jquery';
 
@@ -25,11 +26,13 @@ export class App {
   isMenuCollapsed: boolean = false;
 
   constructor(private _state: GlobalState,
-              private _imageLoader: BaImageLoaderService,
-              private _spinner: BaThemeSpinner,
-              private viewContainerRef: ViewContainerRef,
-              private themeConfig: BaThemeConfig) {
-
+    private _imageLoader: BaImageLoaderService,
+    private _spinner: BaThemeSpinner,
+    private viewContainerRef: ViewContainerRef,
+    private themeConfig: BaThemeConfig,
+    private wsService: WebsocketService,
+  ) {
+    wsService.initialize();
     themeConfig.config();
 
     this._loadImages();

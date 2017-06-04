@@ -26,7 +26,6 @@ export class Dashboard implements OnInit, OnDestroy {
     private router: Router
   ) {
     console.log('new dashboard');
-
   }
 
   ngOnInit() {

@@ -42,7 +42,7 @@ export type StoreType = {
 @NgModule({
   bootstrap: [App],
   declarations: [
-    App
+    App,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -62,7 +62,6 @@ export type StoreType = {
 
 export class AppModule {
 
-  constructor(public appState: AppState, wsService: WebsocketService) {
-    wsService.initialize();
+  constructor(public appState: AppState) {
   }
 }

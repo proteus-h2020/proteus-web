@@ -17,8 +17,8 @@ export class WebsocketService {
         console.debug('Initializing socksjs and stom connection to the server');
     }
 
+
     public subscribe(url: string): Subject<any> {
-        console.log('subscibing to', url);
         const subject = new Subject();
         this.stomp.subscribe(url, (msg) => {
             const body = msg.body;
@@ -30,11 +30,13 @@ export class WebsocketService {
 
     private onConnect() {
         console.debug('Connected to the PROTEUS websocket');
+        //subscribe to the PROTEUS app notifications
         this.connected = true;
     }
 
     private onError(error: string) {
         console.error('Error with the PROTEUS websocket', error);
+        window.alert('Cannot connect to the PROTEUS server: ' + error.toString());
         this.connected = false;
     }
 

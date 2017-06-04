@@ -1,10 +1,10 @@
+import { Annotation } from './../../visualizations/components/annotations/annotation';
+import { Calculation } from './../../visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Chart } from './../../../chart.interface';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from '../../../realtime-chart';
-
-// import { Observable } from "RxJs/Rx";
 
 @Injectable()
 export class ChartService {
@@ -12,7 +12,48 @@ export class ChartService {
     private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
     private notifier: BehaviorSubject<RealtimeChart[]> = new BehaviorSubject(this.charts);
     private id: number = 1;
+
     constructor() {
+        let calculations = new Array<Calculation>();
+        //calculations.add(new Calculation('moments', 'Moments'));
+        calculations.push(new Calculation('raw', 'Raw'));
+        let annotations = new Array<Annotation>();
+        let endpoints = new Array<string>();
+        //endpoints.push('/topic/flink/var/3');
+        endpoints.push('/topic/realtime/var/3');
+
+        let chart = new RealtimeChart(
+            'C003 - Raw Data',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "3",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('moments', 'Moments'));
+        calculations.push(new Calculation('raw', 'Raw'));
+        annotations = new Array<Annotation>();
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/var/3');
+       // endpoints.push('/topic/realtime/var/3');
+
+        chart = new RealtimeChart(
+            'C003 - Mean & Average',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "3",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
     }
 
     getChart(id: number): RealtimeChart {

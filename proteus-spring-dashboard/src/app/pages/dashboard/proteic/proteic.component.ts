@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Rx';
 import { WebsocketService } from './../../../websocket.service';
 import { RealtimeChart } from './../../../realtime-chart';
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import {
   Barchart,
@@ -18,12 +19,13 @@ import {
 @Component({
   selector: 'proteic',
   styleUrls: ['./proteic.scss'],
-  templateUrl: './proteic.html'
+  templateUrl: './proteic.html',
 })
-export class Proteic implements OnInit, AfterViewInit {
+export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   private id: string;
   private element: any;
+  private dataSubscriptions: Subscription[] = new Array<Subscription>();
 
 
   @Input() private chart: RealtimeChart;
@@ -31,23 +33,20 @@ export class Proteic implements OnInit, AfterViewInit {
   constructor(private websocketService: WebsocketService) { }
 
   ngOnInit() {
-    console.log('chart in proteic', this.chart.calculations);
-
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 200;
-    this.chart.configuration.marginLeft = 100;
+    this.chart.configuration.marginRight = 0;
+    this.chart.configuration.marginLeft = 70;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.height = 250;
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
     this.chart.configuration.propertyX = 'x';
     this.chart.configuration.propertyY = 'value';
     this.chart.configuration.propertyKey = 'key';
-    this.chart.configuration.maxNumberOfElements = 1000;
+    this.chart.configuration.maxNumberOfElements = 300;
   }
 
   ngAfterViewInit(): void {
     let c = null;
-
     switch (this.chart.type) {
       case 'Barchart':
         c = new Barchart([], this.chart.configuration).unpivot(['mean', 'variance']);
@@ -59,7 +58,8 @@ export class Proteic implements OnInit, AfterViewInit {
         c = new Heatmap([], this.chart.configuration).unpivot(['mean', 'variance']);
         break;
       case 'Linechart':
-        c = new Linechart([], this.chart.configuration).annotations(this.chart.annotations).unpivot(['mean', 'variance']);
+        c = new Linechart([], this.chart.configuration).annotations(this.chart.annotations)
+          .unpivot(['mean', 'variance']);
         break;
       case 'Network':
         break;
@@ -68,7 +68,6 @@ export class Proteic implements OnInit, AfterViewInit {
         break;
       case 'StackedArea':
         c = new StackedArea([], this.chart.configuration).unpivot(['mean', 'variance']);
-
         break;
       case 'Streamgraph':
         break;
@@ -80,24 +79,25 @@ export class Proteic implements OnInit, AfterViewInit {
         break;
     }
 
-    let websocketEndpoint = this.chart.endpoint;
+    setTimeout(() => {
+      for (const websocketEndpoint of this.chart.endpoints) {
+        console.debug('Subscribing to: ', websocketEndpoint);
+        const subs = this.websocketService.subscribe(websocketEndpoint);
+        let subscription = subs.subscribe((data: any) => {
+          let json = JSON.parse(data);
+          console.log(json);
+          c.keepDrawing(json);
+        });
 
+        this.dataSubscriptions.push(subscription);
+      }
+    }, 400);
+  }
 
-   // console.log('la grafica creada es:', c);
-
-    let subs = this.websocketService.subscribe(websocketEndpoint);
-    subs.subscribe((data: any) => {
-      let json = JSON.parse(data);
-      //console.log('chart ', c);
-      //for (let i = 0; i < json.length; i++) {
-
-     // console.log('keep drawing, ', json, 'en', c);
-      c.keepDrawing(json);
-      // }
-    });
-
-
-
+  ngOnDestroy() {
+    for (let s of this.dataSubscriptions) {
+      s.unsubscribe();
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
+import { Calculation } from 'app/pages/visualizations/VisualizationForm';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
@@ -35,16 +36,18 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
     public save(model: RealtimeChart, isValid: boolean) {
         let self = this;
         this.submitted = true;
+        let endpoints = new Array<string>();
 
-        let websocketEndpoint = () => {
-            if(!model.calculations) { return 'C0001'; }
-            if (model.calculations.size === 0) {
-                return '/topic/realtime/var/' + model.variable;
-            } else {
-                return '/topic/flink/var/' + model.variable;
+         console.log('chart', model);
+         if(model.calculations){
+        for(const calc of model.calculations){
+            if(calc.value === 'raw'){
+                endpoints.push('/topic/realtime/var/' + model.variable);
+            }else if (calc.value == 'moments'){
+                endpoints.push('/topic/flink/var/' + model.variable);
             }
-        };
-
+        }
+    }
         function createChart(annotations: Annotation[]) {
             model = new RealtimeChart(
                 model.title, 
@@ -53,10 +56,9 @@ export class CreateVisualization extends VisualizationForm implements OnInit, On
                 annotations.slice(),
                 model.variable,
                 model.calculations,
-                websocketEndpoint(),
+                endpoints,
             );
             self.chartService.push(model);
-            console.debug('Chart model: ', model);
             self.router.navigate(['pages/dashboard']);
         }
 

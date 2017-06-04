@@ -11,8 +11,8 @@ export class RealtimeChart {
         public configuration: any,
         public annotations: Annotation[],  
         public variable: string,
-        public calculations: Set<Calculation>, 
-        public endpoint: string,
+        public calculations: Calculation[], 
+        public endpoints: string[],
     ) { 
         this.id = RealtimeChart.N++;
     }
