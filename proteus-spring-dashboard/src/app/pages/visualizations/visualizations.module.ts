@@ -7,9 +7,9 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { DashboardService } from '../dashboard/dashboard.service'
 import { routing }       from './visualizations.routing';
 import { Visualizations } from './visualizations.component';
-import { CreateVisualization } from './components/new';
-import { EditVisualization } from './components/edit';
-import { EditOneVisualization } from './components/edit/editOne.component';
+import { CreateVisualizationComponent } from './components/new';
+import { EditVisualizationComponent } from './components/edit';
+import { EditOneVisualizationComponent } from './components/edit/editOne.component';
 import { KeysPipe } from './keys.pipe';
 import { AnnotationsComponent } from './components/annotations/annotations.component';
 import { AnnotationsService } from './components/annotations/annotations.service';
@@ -26,9 +26,9 @@ import { AnnotationsService } from './components/annotations/annotations.service
   declarations: [
     KeysPipe,
     Visualizations,
-    CreateVisualization,
-    EditVisualization,
-    EditOneVisualization,
+    CreateVisualizationComponent,
+    EditVisualizationComponent,
+    EditOneVisualizationComponent,
     AnnotationsComponent,
   ],
   providers: [AnnotationsService],

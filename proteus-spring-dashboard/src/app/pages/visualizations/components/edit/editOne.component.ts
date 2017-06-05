@@ -15,7 +15,7 @@ import 'style-loader!./editOne.scss';
     templateUrl: '../visualization-form.html',
 })
 
-export class EditOneVisualization extends VisualizationForm {
+export class EditOneVisualizationComponent extends VisualizationForm {
 
     private chart: RealtimeChart;
     private paramsSubscription: Subscription;

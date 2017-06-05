@@ -20,7 +20,7 @@ import { getAvailableVisualizations, Heatmap } from 'proteic';
     providers: []
 })
 
-export class CreateVisualization extends VisualizationForm implements OnInit, OnDestroy {
+export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
 
     private events: any[] = [];
 
