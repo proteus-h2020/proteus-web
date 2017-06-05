@@ -34,14 +34,17 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 0;
+    this.chart.configuration.marginRight = 100;
+    this.chart.configuration.marginBottom = 50;
     this.chart.configuration.marginLeft = 70;
+    this.chart.configuration.marginTop = 35;
     this.chart.configuration.selector = '#' + this.id;
-    this.chart.configuration.height = 250;
+    //this.chart.configuration.height = 250;
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
     this.chart.configuration.propertyX = 'x';
     this.chart.configuration.propertyY = 'value';
     this.chart.configuration.propertyKey = 'key';
+    this.chart.configuration.legendPosition= 'top';
     this.chart.configuration.maxNumberOfElements = 300;
   }
 
