@@ -25,7 +25,7 @@ export class ChartService {
         endpoints.push('/topic/flink/var/3');
 
         let chart = new RealtimeChart(
-            'C003 - Raw Data',
+            'C003 - Raw / Mean',
             'Linechart',
             {}, //config
             annotations, // annotations
@@ -36,25 +36,89 @@ export class ChartService {
 
         this.push(chart);
 
-/*
+
         calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
         annotations = new Array<Annotation>();
         endpoints = new Array<string>();
-        endpoints.push('/topic/flink/var/3');
+        endpoints.push('/topic/realtime/var/44');
+        endpoints.push('/topic/flink/var/44');
 
         chart = new RealtimeChart(
-            'C003 - Mean & Average',
+            'C044- Mean & Average',
             'Linechart',
             {}, //config
             annotations, // annotations
-            "3",
+            "44",
             calculations,
             endpoints,
         );
 
         this.push(chart);
-        */
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+        annotations = new Array<Annotation>();
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/34');
+        endpoints.push('/topic/flink/var/34');
+
+        chart = new RealtimeChart(
+            'C0034- Mean & Average',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "34",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+        annotations = new Array<Annotation>();
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/26');
+        endpoints.push('/topic/flink/var/26');
+
+        chart = new RealtimeChart(
+            'C0026- Mean & Average',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "26",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
+
+                calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+        annotations = new Array<Annotation>();
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/2');
+        endpoints.push('/topic/flink/var/2');
+
+        chart = new RealtimeChart(
+            'C0002- Mean & Average',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "2",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
     }
 
     getChart(id: number): RealtimeChart {
