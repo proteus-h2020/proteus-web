@@ -62,6 +62,8 @@ public class WebsocketController {
 
 	private void sendRealtimeMeasure(SensorMeasurement measure) {
 		String topic = String.format(TOPIC_REALTIME_TEMPLATE, measure.getVarName());
+		//LOGGER.info("Sending {} to  {}", measure.toJson(), topic);
+
 		this.simpMessagingTemplate.convertAndSend(topic, measure);
 	}
 
