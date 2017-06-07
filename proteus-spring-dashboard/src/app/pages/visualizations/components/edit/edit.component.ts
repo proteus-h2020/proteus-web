@@ -10,7 +10,7 @@ import 'style-loader!./edit.scss';
     templateUrl: './edit.html',
 })
 
-export class EditVisualization implements OnInit, OnDestroy {
+export class EditVisualizationComponent implements OnInit, OnDestroy {
 
     private charts: RealtimeChart[];
     private chartsSubscription: Subscription;

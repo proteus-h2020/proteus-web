@@ -17,10 +17,12 @@ export class ChartService {
         let calculations = new Array<Calculation>();
         //calculations.add(new Calculation('moments', 'Moments'));
         calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
         let annotations = new Array<Annotation>();
         let endpoints = new Array<string>();
-        //endpoints.push('/topic/flink/var/3');
         endpoints.push('/topic/realtime/var/3');
+        endpoints.push('/topic/flink/var/3');
 
         let chart = new RealtimeChart(
             'C003 - Raw Data',
@@ -34,14 +36,12 @@ export class ChartService {
 
         this.push(chart);
 
-
+/*
         calculations = new Array<Calculation>();
-        calculations.push(new Calculation('moments', 'Moments'));
-        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
         annotations = new Array<Annotation>();
         endpoints = new Array<string>();
         endpoints.push('/topic/flink/var/3');
-       // endpoints.push('/topic/realtime/var/3');
 
         chart = new RealtimeChart(
             'C003 - Mean & Average',
@@ -54,6 +54,7 @@ export class ChartService {
         );
 
         this.push(chart);
+        */
     }
 
     getChart(id: number): RealtimeChart {

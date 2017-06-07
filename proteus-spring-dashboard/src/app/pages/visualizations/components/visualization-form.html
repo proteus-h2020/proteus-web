@@ -37,7 +37,7 @@
 
         <div class="form-group col">
           <div class="form-group">
-            <p>Raw data</p>
+            <p>Choose your variable:</p>
           </div>
           <div class="row">
             <label for="" class="col-3">Variable</label>
@@ -51,14 +51,20 @@
 
         <div class="form-group col">
           <div class="form-group">
-            <p>Processed data</p>
+            <p>Calculations:</p>
           </div>
+
+          <select formControlName="calculations" multiple>
+            <option *ngFor="let c of calculations" [value]="c">{{c.label}}</option>
+          </select>
+          <!--
           <div class="form-check" *ngFor="let c of calculations">
             <label for="" class="form-check-label">
-          <input type="checkbox" class="form-check-input" [value]="c.value" (change)="calculationsCbChange($event)">
+          <input type="checkbox" class="form-check-input" [value]="c">
           {{c.label}}
         </label>
           </div>
+          -->
         </div>
 
       </div>
