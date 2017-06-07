@@ -61,10 +61,8 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
         this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
         this.calculations = [
             new Calculation('raw', 'Raw'),
-            new Calculation('moments', 'Moments'),
-
-            //new Calculation('mean', 'Mean'),
-            //new Calculation('variance', 'Variance'),
+            new Calculation('mean', 'Mean'),
+            new Calculation('variance', 'Variance'),
             new Calculation('sax_vsm', 'SAX/VSM'),
         ];
     }

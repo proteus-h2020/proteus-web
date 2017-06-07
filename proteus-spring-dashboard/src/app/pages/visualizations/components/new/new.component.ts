@@ -14,6 +14,8 @@ import { Calculation } from 'app/pages/visualizations/VisualizationForm';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
+import { onlyUnique } from '../../../../utils/Array';
+
 @Component({
     selector: 'create-visualization',
     templateUrl: '../visualization-form.html',
@@ -27,7 +29,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     constructor(
         private chartService: ChartService,
         private router: Router,
-        private annotationsService: AnnotationsService
+        private annotationsService: AnnotationsService,
     ) {
         super();
     }
@@ -38,21 +40,23 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
         this.submitted = true;
         let endpoints = new Array<string>();
 
-         console.log('chart', model);
-         if(model.calculations){
-        for(const calc of model.calculations){
-            if(calc.value === 'raw'){
-                endpoints.push('/topic/realtime/var/' + model.variable);
-            }else if (calc.value == 'moments'){
-                endpoints.push('/topic/flink/var/' + model.variable);
+        if (model.calculations) {
+            for (const calc of model.calculations) {
+                if (calc.value === 'raw') {
+                    endpoints.push('/topic/realtime/var/' + model.variable);
+                } else if (calc.value == 'mean' || calc.value == 'variance') {
+                    endpoints.push('/topic/flink/var/' + model.variable);
+                }
             }
         }
-    }
+
+        endpoints = endpoints.filter(onlyUnique);
+
         function createChart(annotations: Annotation[]) {
             model = new RealtimeChart(
-                model.title, 
-                model.type, 
-                model.configuration, 
+                model.title,
+                model.type,
+                model.configuration,
                 annotations.slice(),
                 model.variable,
                 model.calculations,

@@ -33,6 +33,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   constructor(private websocketService: WebsocketService) { }
 
   ngOnInit() {
+    //console.log('Chart in proteic', this.chart);
+
     this.id = 'proteic' + Date.now().toString();
     this.chart.configuration.marginRight = 100;
     this.chart.configuration.marginBottom = 50;
@@ -44,33 +46,38 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     this.chart.configuration.propertyX = 'x';
     this.chart.configuration.propertyY = 'value';
     this.chart.configuration.propertyKey = 'key';
-    this.chart.configuration.legendPosition= 'top';
+    this.chart.configuration.legendPosition = 'top';
     this.chart.configuration.maxNumberOfElements = 300;
   }
 
   ngAfterViewInit(): void {
     let c = null;
+
+    let unpivot = this._calculateUnpivotArray(this.chart);
+
+    console.log('generated unpivot', unpivot);
+
     switch (this.chart.type) {
       case 'Barchart':
-        c = new Barchart([], this.chart.configuration).unpivot(['mean', 'variance']);
+        c = new Barchart([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Gauge':
-        c = new Gauge([], this.chart.configuration).unpivot(['mean', 'variance']);
+        c = new Gauge([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Heatmap':
-        c = new Heatmap([], this.chart.configuration).unpivot(['mean', 'variance']);
+        c = new Heatmap([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Linechart':
         c = new Linechart([], this.chart.configuration).annotations(this.chart.annotations)
-          .unpivot(['mean', 'variance']);
+          .unpivot(unpivot);
         break;
       case 'Network':
         break;
       case 'Scatterplot':
-        c = new Scatterplot([], this.chart.configuration).unpivot(['mean', 'variance']);
+        c = new Scatterplot([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'StackedArea':
-        c = new StackedArea([], this.chart.configuration).unpivot(['mean', 'variance']);
+        c = new StackedArea([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Streamgraph':
         break;
@@ -88,7 +95,12 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         const subs = this.websocketService.subscribe(websocketEndpoint);
         let subscription = subs.subscribe((data: any) => {
           let json = JSON.parse(data);
-          console.log(json);
+          //console.log(json);
+          if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
+            json.key = 'VAR' + json.varName;
+          }
+
+          console.log('datum', json);
           c.keepDrawing(json);
         });
 
@@ -101,6 +113,17 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     for (let s of this.dataSubscriptions) {
       s.unsubscribe();
     }
+  }
+
+
+  private _calculateUnpivotArray(chart: RealtimeChart): string[] {
+    let unpivot = new Array<string>();
+    for (const c of this.chart.calculations) {
+      if (c.value !== 'raw') {
+        unpivot.push(c.value);
+      }
+    }
+    return unpivot;
   }
 }
 
