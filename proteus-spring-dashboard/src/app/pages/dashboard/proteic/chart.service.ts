@@ -14,12 +14,25 @@ export class ChartService {
     private id: number = 1;
 
     constructor() {
+
+                let a = <any>{};
+
+        a.type='band';
+        a.axis='y';
+        a.variable='mean';
+        a.width='stdDeviation';
+        a.text='+/- STD';
+
+
+
         let calculations = new Array<Calculation>();
         //calculations.add(new Calculation('moments', 'Moments'));
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
         let annotations = new Array<Annotation>();
+                annotations.push(a);
+
         let endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
         endpoints.push('/topic/flink/var/3');
@@ -40,7 +53,6 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-        annotations = new Array<Annotation>();
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/44');
         endpoints.push('/topic/flink/var/44');
@@ -60,7 +72,6 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-        annotations = new Array<Annotation>();
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/34');
         endpoints.push('/topic/flink/var/34');
@@ -81,7 +92,6 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-        annotations = new Array<Annotation>();
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/26');
         endpoints.push('/topic/flink/var/26');
@@ -101,7 +111,6 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-        annotations = new Array<Annotation>();
 /**
  * 
  *     id: number;
@@ -118,15 +127,7 @@ export class ChartService {
         endpoints.push('/topic/realtime/var/2');
         endpoints.push('/topic/flink/var/2');
 
-        let a = <any>{};
 
-        a.type='band';
-        a.axis='y';
-        a.variable='mean';
-        a.width='stdDeviation';
-        a.text='+/- STD';
-
-        annotations.push(a);
 
         chart = new RealtimeChart(
             'C0002 - Raw / Mean',

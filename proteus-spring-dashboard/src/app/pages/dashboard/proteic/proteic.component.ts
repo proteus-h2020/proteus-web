@@ -55,8 +55,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
     let unpivot = this._calculateUnpivotArray(this.chart);
 
-    console.log('generated unpivot', unpivot);
-
     switch (this.chart.type) {
       case 'Barchart':
         c = new Barchart([], this.chart.configuration).unpivot(unpivot);
@@ -91,7 +89,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       for (const websocketEndpoint of this.chart.endpoints) {
-        console.debug('Subscribing to: ', websocketEndpoint);
         const subs = this.websocketService.subscribe(websocketEndpoint);
         let subscription = subs.subscribe((data: any) => {
           let json = JSON.parse(data);

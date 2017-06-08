@@ -1,6 +1,5 @@
 package com.treelogic.framework.controller.websocket;
 
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -11,19 +10,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.treelogic.framework.domain.MomentsGrouper;
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.SensorMeasurement;
 import com.treelogic.framework.kafka.KafkaReceiver;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.observables.GroupedObservable;
 
 @Controller
 @Configuration
-public class WebsocketController {
+public class DataController {
 
 	@Value("${websocket.topic.realtime}")
 	private String TOPIC_REALTIME_TEMPLATE;
@@ -34,7 +29,7 @@ public class WebsocketController {
 	@Value("${websocket.buffer.interval.ms}")
 	private int BUFFER_INTERVAL;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataController.class);
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -42,7 +37,7 @@ public class WebsocketController {
 	@Autowired
 	private KafkaReceiver realtimeReceiver;
 
-	public WebsocketController() {
+	public DataController() {
 	}
 
 	@PostConstruct
@@ -94,19 +89,6 @@ public class WebsocketController {
 		}
 	}
 
-	/**
-	 * private class MomentsConsumer implements
-	 * Consumer<List<GroupedObservable<Integer,MomentsResult>>>{
-	 * 
-	 * @Override public void
-	 *           accept(List<GroupedObservable<Integer,MomentsResult>> values)
-	 *           throws Exception { // TODO Auto-generated method stub
-	 * 
-	 *           LOGGER.info(values.toString());
-	 * 
-	 *           } }
-	 * 
-	 */
 
 	private class KafkaRealtimeObserver implements Observer<SensorMeasurement> {
 

@@ -2,15 +2,21 @@ package com.treelogic.framework.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.SensorMeasurement;
+import com.treelogic.framework.service.ProteusAppService;
 
 import io.reactivex.subjects.PublishSubject;
 
 public class KafkaReceiver {
 
+	
+	@Autowired
+	private ProteusAppService app;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaReceiver.class);
 
 	private PublishSubject<SensorMeasurement> subjectRealtime = PublishSubject.create();
@@ -30,11 +36,13 @@ public class KafkaReceiver {
 
 	@KafkaListener(topics = "${kafka.topicName}")
 	public void receive(SensorMeasurement measure) {
+		app.update(measure);
 		this.subjectRealtime.onNext(measure);
 	}
 
 	@KafkaListener(topics = "${kafka.topicNameMoments}")
 	public void receiveMoments(MomentsResult moment) {
+		app.update(moment);
 		moment.setStdDeviation(Math.sqrt(moment.getVariance())); //TODO: remove trick
 		this.subjectMoments.onNext(moment);
 	}

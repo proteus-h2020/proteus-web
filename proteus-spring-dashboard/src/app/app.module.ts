@@ -1,3 +1,4 @@
+import { AppSubscriptionsService } from './appSubscriptions.service';
 import { WebsocketService } from './websocket.service';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -28,6 +29,7 @@ const APP_PROVIDERS = [
   DashboardService,
   ChartService,
   WebsocketService,
+  AppSubscriptionsService,
 ];
 
 export type StoreType = {

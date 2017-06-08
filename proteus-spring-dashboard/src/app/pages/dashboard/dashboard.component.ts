@@ -1,4 +1,4 @@
-import { SummaryService } from './summary/summary.service';
+import { AppSubscriptionsService } from './../../appSubscriptions.service';
 import { Subscription } from 'rxjs/Rx';
 import { RealtimeChart } from '../../realtime-chart';
 import { ChartService } from './proteic/chart.service';
@@ -16,22 +16,39 @@ import { DashboardService } from './dashboard.service';
 export class Dashboard implements OnInit, OnDestroy {
 
   private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
-  private chartsSubscription: Subscription;
   private messagesSubscriptions: { [key: string]: Subscription } = {};
+  private subscriptions : Subscription[] = new Array<Subscription>();
+
+  //Model
+  private coilId : number = 0;
+
+
 
   constructor(
     private dashboardChartService: DashboardService,
     private chartProteicService: ChartService,
-    private summaryService: SummaryService,
-    private router: Router
+    private appSubscriptionService : AppSubscriptionsService,
+    private router: Router,
   ) {
     console.log('new dashboard');
   }
 
   ngOnInit() {
-    this.chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
+    // Charts subscription 
+    const chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
       (charts: RealtimeChart[]) => this._onChartSubscription(charts)
     );
+    this.subscriptions.push(chartsSubscription)
+
+    // Coil subscription 
+    //const coilSubscription = this.appSubscriptionService.subscribeToCoilChange().subscribe(
+    //  (data : any) => this.coilId = data.coilId
+    //);
+    //this.subscriptions.push(coilSubscription);
+
+
+  
+
   }
 
 
@@ -45,10 +62,9 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.chartsSubscription) {
-    //  this.chartsSubscription.unsubscribe();
-    // }
-
+    for(let s of this.subscriptions){
+      s.unsubscribe();
+    }
   }
 
   removeChart(chart: RealtimeChart) {

@@ -1,4 +1,17 @@
-<summary></summary>
+<div class="row">
+  <ba-card class="col-6" title="">
+    <p class="lead text-center">{{messages}} messages processed</p>
+  </ba-card>
+
+  <ba-card class="col-6">
+    <p class="lead text-center">- defective coils</p>
+  </ba-card>
+</div>
+<div class="row">
+  <ba-card class="col-6" title="">
+    <p class="lead text-center">Current coil id: {{messages}}</p>
+  </ba-card>
+</div>
 
 <div class="row">
   <ba-card-proteic *ngFor="let chart of charts" (removeChart)="removeChart($event)" (editChart)="editChart($event)" class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"

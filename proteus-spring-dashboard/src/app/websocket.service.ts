@@ -1,4 +1,6 @@
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 
@@ -13,6 +15,8 @@ export class WebsocketService {
     private stomp: any;
     private connected: boolean = false;
 
+    private subject : Subject<any>;
+    private observable : Observable<any>;
 
     constructor() {
         console.debug('Initializing socksjs and stom connection to the server');
@@ -20,17 +24,17 @@ export class WebsocketService {
 
 
     public subscribe(url: string): Subject<any> {
+
         const subject = new Subject();
         this.stomp.subscribe(url, (msg) => {
             const body = msg.body;
             subject.next(body);
         });
         return subject;
-
     }
 
     private onConnect() {
-        console.debug('Connected to the PROTEUS websocket');
+        console.log('Connected to the PROTEUS websocket', this);
         //subscribe to the PROTEUS app notifications
         this.connected = true;
     }
@@ -47,7 +51,13 @@ export class WebsocketService {
         this.stomp.heartbeat.outgoing = 10000;
         this.stomp.heartbeat.incoming = 10000;
         this.stomp.debug = false;
-        this.stomp.connect({}, this.onConnect, this.onError);
+        this.stomp.connect({},
+        () => {
+            this.onConnect();
+        },
+        () => {
+            this.onError('Error connecting to the ws');
+        });
     }
 
 }
