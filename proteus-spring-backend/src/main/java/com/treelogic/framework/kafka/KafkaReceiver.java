@@ -35,6 +35,7 @@ public class KafkaReceiver {
 
 	@KafkaListener(topics = "${kafka.topicNameMoments}")
 	public void receiveMoments(MomentsResult moment) {
+		moment.setStdDeviation(Math.sqrt(moment.getVariance())); //TODO: remove trick
 		this.subjectMoments.onNext(moment);
 	}
 }

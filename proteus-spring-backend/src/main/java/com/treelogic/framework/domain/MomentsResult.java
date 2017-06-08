@@ -14,8 +14,13 @@ public abstract class MomentsResult {
 	protected double mean;
 	protected double variance;
 	protected double counter;
+	protected double stdDeviation;
+	
 	private static ObjectMapper mapper = new ObjectMapper();
 
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -25,6 +30,8 @@ public abstract class MomentsResult {
 		temp = Double.doubleToLongBits(counter);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(mean);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(stdDeviation);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + varId;
 		temp = Double.doubleToLongBits(variance);
@@ -47,17 +54,23 @@ public abstract class MomentsResult {
 			return false;
 		if (Double.doubleToLongBits(mean) != Double.doubleToLongBits(other.mean))
 			return false;
+		if (Double.doubleToLongBits(stdDeviation) != Double.doubleToLongBits(other.stdDeviation))
+			return false;
 		if (varId != other.varId)
 			return false;
 		if (Double.doubleToLongBits(variance) != Double.doubleToLongBits(other.variance))
 			return false;
 		return true;
 	}
+	
+	
 
-	@Override
-	public String toString() {
-		return "MomentsResult [coilId=" + coilId + ", varId=" + varId + ", mean=" + mean + ", variance=" + variance
-				+ ", counter=" + counter + "]";
+	public double getStdDeviation() {
+		return stdDeviation;
+	}
+
+	public void setStdDeviation(double stdDeviation) {
+		this.stdDeviation = stdDeviation;
 	}
 
 	public int getCoilId() {
