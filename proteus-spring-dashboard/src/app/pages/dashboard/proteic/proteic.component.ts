@@ -100,7 +100,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
             json.key = 'VAR' + json.varName;
           }
 
-          console.log('datum', json);
+          //console.log('datum', json);
           c.keepDrawing(json);
         });
 
