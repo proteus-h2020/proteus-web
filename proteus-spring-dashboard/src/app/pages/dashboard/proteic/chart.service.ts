@@ -1,4 +1,4 @@
-import { Annotation } from './../../visualizations/components/annotations/annotation';
+import { Annotation,AnnotationTypes } from './../../visualizations/components/annotations/annotation';
 import { Calculation } from './../../visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -46,7 +46,7 @@ export class ChartService {
         endpoints.push('/topic/flink/var/44');
 
         chart = new RealtimeChart(
-            'C044- Mean & Average',
+            'C044 - Raw / Mean',
             'Linechart',
             {}, //config
             annotations, // annotations
@@ -66,7 +66,7 @@ export class ChartService {
         endpoints.push('/topic/flink/var/34');
 
         chart = new RealtimeChart(
-            'C0034- Mean & Average',
+            'C0034 - Raw / Mean',
             'Linechart',
             {}, //config
             annotations, // annotations
@@ -87,7 +87,7 @@ export class ChartService {
         endpoints.push('/topic/flink/var/26');
 
         chart = new RealtimeChart(
-            'C0026- Mean & Average',
+            'C0026 - Raw / Mean',
             'Linechart',
             {}, //config
             annotations, // annotations
@@ -98,17 +98,38 @@ export class ChartService {
 
         this.push(chart);
 
-
-                calculations = new Array<Calculation>();
+        calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
         annotations = new Array<Annotation>();
+/**
+ * 
+ *     id: number;
+    text: string;
+    type: AnnotationTypes;
+    settings: any;
+    axis: string;
+    value: number;
+    variable: number;
+    width: string;
+ */
+
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/2');
         endpoints.push('/topic/flink/var/2');
 
+        let a = <any>{};
+
+        a.type='band';
+        a.axis='y';
+        a.variable='mean';
+        a.width='stdDeviation';
+        a.text='+/- STD';
+
+        annotations.push(a);
+
         chart = new RealtimeChart(
-            'C0002- Mean & Average',
+            'C0002 - Raw / Mean',
             'Linechart',
             {}, //config
             annotations, // annotations
