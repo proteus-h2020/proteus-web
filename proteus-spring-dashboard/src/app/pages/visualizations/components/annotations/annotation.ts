@@ -7,6 +7,6 @@ export class Annotation {
     settings: any;
     axis: string;
     value: number;
-    variable: number;
+    variable: string;
     width: string;
 }
