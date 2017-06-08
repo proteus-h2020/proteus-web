@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 
 declare var SockJS: any;
 declare var Stomp: any;
@@ -41,7 +42,7 @@ export class WebsocketService {
     }
 
     initialize() {
-        this.socket = new SockJS('http://localhost:8080/wsEndpoint');
+        this.socket = new SockJS(environment.wsEndpoint);
         this.stomp = Stomp.over(this.socket);
         this.stomp.heartbeat.outgoing = 10000;
         this.stomp.heartbeat.incoming = 10000;
