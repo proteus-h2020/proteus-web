@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Rx';
 import { RealtimeChart } from './../../../../realtime-chart';
-import { ChartService } from './../../../dashboard/proteic/chart.service';
+import { ChartService } from './../../../../chart.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import 'style-loader!./edit.scss';

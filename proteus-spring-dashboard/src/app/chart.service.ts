@@ -1,10 +1,9 @@
-import { Annotation,AnnotationTypes } from './../../visualizations/components/annotations/annotation';
-import { Calculation } from './../../visualizations/VisualizationForm';
+import { Annotation,AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
+import { Calculation } from './pages/visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { Chart } from './../../../chart.interface';
 import { Injectable } from '@angular/core';
-import { RealtimeChart } from '../../../realtime-chart';
+import { RealtimeChart } from './realtime-chart';
 
 @Injectable()
 export class ChartService {
@@ -135,6 +134,40 @@ export class ChartService {
             {}, //config
             annotations, // annotations
             "2",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
+
+                calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+/**
+ * 
+ *     id: number;
+    text: string;
+    type: AnnotationTypes;
+    settings: any;
+    axis: string;
+    value: number;
+    variable: number;
+    width: string;
+ */
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/32');
+        endpoints.push('/topic/flink/var/32');
+
+
+
+        chart = new RealtimeChart(
+            'C0032 - Raw / Mean',
+            'Linechart',
+            {}, //config
+            annotations, // annotations
+            "32",
             calculations,
             endpoints,
         );

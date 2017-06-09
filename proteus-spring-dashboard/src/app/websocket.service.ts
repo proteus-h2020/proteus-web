@@ -15,8 +15,8 @@ export class WebsocketService {
     private stomp: any;
     private connected: boolean = false;
 
-    private subject : Subject<any>;
-    private observable : Observable<any>;
+    private subject: Subject<any>;
+    private observable: Observable<any>;
 
     constructor() {
         console.debug('Initializing socksjs and stom connection to the server');
@@ -24,12 +24,15 @@ export class WebsocketService {
 
 
     public subscribe(url: string): Subject<any> {
-
         const subject = new Subject();
-        this.stomp.subscribe(url, (msg) => {
-            const body = msg.body;
-            subject.next(body);
-        });
+
+        setTimeout(() => {
+            this.stomp.subscribe(url, (msg) => {
+                const body = msg.body;
+                subject.next(body);
+            });
+
+        }, 1200); //TODO improve it
         return subject;
     }
 
@@ -52,12 +55,11 @@ export class WebsocketService {
         this.stomp.heartbeat.incoming = 10000;
         this.stomp.debug = false;
         this.stomp.connect({},
-        () => {
-            this.onConnect();
-        },
-        () => {
-            this.onError('Error connecting to the ws');
-        });
+            () => {
+                this.onConnect();
+            },
+            () => {
+                this.onError('Error connecting to the ws');
+            });
     }
-
 }

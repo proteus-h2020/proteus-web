@@ -19,7 +19,7 @@ import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
 import { DashboardService } from './pages/dashboard/dashboard.service';
-import { ChartService } from "./pages/dashboard/proteic/chart.service";
+import { ChartService } from "./chart.service";
 
 
 // Application wide providers

@@ -1,6 +1,6 @@
 import { VisualizationForm } from './../../VisualizationForm';
 import { FormVisualization } from './../../form-visualization';
-import { ChartService } from './../../../dashboard/proteic/chart.service';
+import { ChartService } from './../../../../chart.service';
 import { RealtimeChart } from './../../../../realtime-chart';
 import { Router } from '@angular/router';
 // import { BatchChart } from './../../../../batch-chart';

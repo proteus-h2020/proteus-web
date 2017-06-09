@@ -1,5 +1,5 @@
 import { WebsocketService } from './websocket.service';
-import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 
@@ -13,8 +13,10 @@ export class AppSubscriptionsService {
     constructor(private websocketService: WebsocketService) { }
 
 
-    public subscribeToCoilChange(): Subject<any> {
-        return this.websocketService.subscribe(environment.websocketTopics.coilNotification);
+    public coilChange(): Observable<any> {
+        return this.websocketService
+            .subscribe(environment.websocketTopics.coilNotification)
+            .map((data : any) => JSON.parse(data));
     }
 
 
