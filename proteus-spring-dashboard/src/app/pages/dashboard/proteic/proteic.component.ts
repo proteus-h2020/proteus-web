@@ -59,6 +59,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
     const unpivot = this._calculateUnpivotArray(this.chart);
 
+    console.log(unpivot);
+
     switch (this.chart.type) {
       case 'Barchart':
         this.proteicChart = new Barchart([], this.chart.configuration).unpivot(unpivot);
@@ -71,7 +73,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'Linechart':
         this.proteicChart = new Linechart([], this.chart.configuration).annotations(this.chart.annotations)
-          .unpivot(unpivot);
+          .unpivot(unpivot).alert('2', (value, events) => {
+                return  value < events.get('mean') - events.get('stdDeviation') || 
+                        value > events.get('mean') + events.get('stdDeviation');
+            });
         break;
       case 'Network':
         break;
@@ -98,6 +103,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
           if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
             json.key = 'VAR' + json.varName;
           }
+          //console.log(json);
           this.proteicChart.keepDrawing(json);
         });
         this.subscriptions.push(subscription);

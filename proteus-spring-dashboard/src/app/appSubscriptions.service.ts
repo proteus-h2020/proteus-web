@@ -18,6 +18,13 @@ export class AppSubscriptionsService {
             .subscribe(environment.websocketTopics.coilNotification)
             .map((data : any) => JSON.parse(data));
     }
+    public messageCounter(): Observable<any> {
+        return this.websocketService
+            .subscribe(environment.websocketTopics.messageCounter)
+            .map((data : any) => JSON.parse(data));
+    }
+
+
 
 
 

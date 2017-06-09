@@ -8,6 +8,7 @@ export const environment = {
   wsEndpoint: 'http://192.168.4.58:8080/wsEndpoint',
   websocketTopics:{
     coilNotification: '/topic/coil',
+    messageCounter: '/topic/messageCounter',
   },
 };
 

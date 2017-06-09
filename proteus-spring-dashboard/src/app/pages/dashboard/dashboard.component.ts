@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
   private subscriptions: Subscription[] = new Array<Subscription>();
   private coilId: number = 0;
+  private messageCounter : number = 0;
 
   constructor(
     private dashboardChartService: DashboardService,
@@ -61,6 +62,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const coilSubscription = this.appSubscriptionService.coilChange().subscribe(
       (data: any) => this.coilId = data.value,
+    );
+
+    const messageCounterSubscription = this.appSubscriptionService.messageCounter().subscribe(
+      (data: any) => this.messageCounter = data.value,
     );
 
     this.subscriptions.push(

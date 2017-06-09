@@ -5,10 +5,9 @@ package com.treelogic.framework.domain;
 public class ProteusAppData {
 	
 	private int coilId;
-	
-	
 	private int momentsCounter;
 	private double currentX;
+	private long counter;
 	
 
 	public int getCoilId() {
@@ -34,6 +33,15 @@ public class ProteusAppData {
 	public void setCurrentX(double currentX) {
 		this.currentX = currentX;
 	}
+
+	public long getCounter() {
+		return counter;
+	}
+
+	public void setCounter(long counter) {
+		this.counter = counter;
+	}
+	
 	
 	
 
