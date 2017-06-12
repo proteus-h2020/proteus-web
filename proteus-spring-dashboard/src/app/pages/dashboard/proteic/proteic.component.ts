@@ -1,3 +1,4 @@
+import { NotificationsService } from './../../../notifications.service';
 import { Subscription } from 'rxjs/Rx';
 import { WebsocketService } from './../../../websocket.service';
 import { AppSubscriptionsService } from './../../../appSubscriptions.service';
@@ -35,7 +36,11 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   private proteicChart: Chart;
 
-  constructor(private websocketService: WebsocketService, private appSubscriptionService: AppSubscriptionsService) { }
+  constructor(
+    private websocketService: WebsocketService,
+    private appSubscriptionService: AppSubscriptionsService,
+    private notificationService: NotificationsService,
+  ) { }
 
   ngOnInit() {
 
@@ -51,6 +56,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     this.chart.configuration.propertyKey = 'key';
     this.chart.configuration.legendPosition = 'top';
     this.chart.configuration.maxNumberOfElements = 800;
+
   }
 
   ngAfterViewInit(): void {
@@ -59,7 +65,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
     const unpivot = this._calculateUnpivotArray(this.chart);
 
-    console.log(unpivot);
+    const alertCallback: Function = (data: any) => {
+      this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range : ' });
+    };
+
 
     switch (this.chart.type) {
       case 'Barchart':
@@ -73,10 +82,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'Linechart':
         this.proteicChart = new Linechart([], this.chart.configuration).annotations(this.chart.annotations)
-          .unpivot(unpivot).alert('2', (value, events) => {
-                return  value < events.get('mean') - events.get('stdDeviation') || 
-                        value > events.get('mean') + events.get('stdDeviation');
-            });
+          .unpivot(unpivot).alert(this.chart.variable, (value, events) => {
+            return value < events.get('mean') - events.get('stdDeviation') ||
+              value > events.get('mean') + events.get('stdDeviation');
+          }, alertCallback);
         break;
       case 'Network':
         break;
@@ -96,18 +105,19 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         break;
     }
 
-      for (const websocketEndpoint of this.chart.endpoints) {
-        const subs = this.websocketService.subscribe(websocketEndpoint);
-        const subscription = subs.subscribe((data: any) => {
-          let json = JSON.parse(data);
-          if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
-            json.key = 'VAR' + json.varName;
-          }
-          //console.log(json);
-          this.proteicChart.keepDrawing(json);
-        });
-        this.subscriptions.push(subscription);
-      }
+    for (const websocketEndpoint of this.chart.endpoints) {
+      const subs = this.websocketService.subscribe(websocketEndpoint);
+      const subscription = subs.subscribe((data: any) => {
+        let json = JSON.parse(data);
+        if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
+          //json.key = 'VAR' + json.varName;
+          json.key = ""+json.varName;
+        }
+        //console.log(json);
+        this.proteicChart.keepDrawing(json);
+      });
+      this.subscriptions.push(subscription);
+    }
   }
 
   ngOnDestroy() {
@@ -129,7 +139,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   private _subscribeToCoilChange() {
     const coilSubscription = this.appSubscriptionService.coilChange().subscribe(
-      (data: any) => this.proteicChart.clear(),
+      (data: any) => {
+        this.proteicChart.clear();
+        this.notificationService.clear();
+      },
     );
     this.subscriptions.push(coilSubscription);
   }

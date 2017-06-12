@@ -1,3 +1,4 @@
+import { NotificationsService } from './notifications.service';
 import { AppSubscriptionsService } from './appSubscriptions.service';
 import { WebsocketService } from './websocket.service';
 import { NgModule, ApplicationRef } from '@angular/core';
@@ -30,6 +31,7 @@ const APP_PROVIDERS = [
   ChartService,
   WebsocketService,
   AppSubscriptionsService,
+  NotificationsService,
 ];
 
 export type StoreType = {

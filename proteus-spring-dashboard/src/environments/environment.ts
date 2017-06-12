@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  wsEndpoint: 'http://192.168.4.58:8080/wsEndpoint',
+  wsEndpoint: 'http://localhost:8080/wsEndpoint',
   websocketTopics:{
     coilNotification: '/topic/coil',
     messageCounter: '/topic/messageCounter',

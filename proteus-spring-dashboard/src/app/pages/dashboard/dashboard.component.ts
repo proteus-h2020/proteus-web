@@ -1,3 +1,4 @@
+import { NotificationsService } from './../../notifications.service';
 import { AppSubscriptionsService } from './../../appSubscriptions.service';
 import { Subscription } from 'rxjs/Rx';
 import { RealtimeChart } from '../../realtime-chart';
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = new Array<Subscription>();
   private coilId: number = 0;
   private messageCounter : number = 0;
+
 
   constructor(
     private dashboardChartService: DashboardService,
@@ -66,7 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const messageCounterSubscription = this.appSubscriptionService.messageCounter().subscribe(
       (data: any) => this.messageCounter = data.value,
-    );
+    ); 
 
     this.subscriptions.push(
       chartsSubscription,
