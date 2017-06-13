@@ -20,6 +20,10 @@ import {
   Colors
 } from 'proteic';
 
+import {
+  timeout
+} from 'd3';
+
 @Component({
   selector: 'proteic',
   styleUrls: ['./proteic.scss'],
@@ -123,7 +127,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
           json.key = "" + json.varName;
         }
         //console.log(json);
-        this.proteicChart.keepDrawing(json);
+        timeout(() => this.proteicChart.keepDrawing(json), 0);
       });
       this.subscriptions.push(subscription);
     }
