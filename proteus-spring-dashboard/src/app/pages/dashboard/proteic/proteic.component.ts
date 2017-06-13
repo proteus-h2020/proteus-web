@@ -66,7 +66,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     const unpivot = this._calculateUnpivotArray(this.chart);
 
     const alertCallback: Function = (data: any) => {
-      this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range : ' });
+      this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
 
 
@@ -81,11 +81,20 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Heatmap([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Linechart':
-        this.proteicChart = new Linechart([], this.chart.configuration).annotations(this.chart.annotations)
-          .unpivot(unpivot).alert(this.chart.variable, (value, events) => {
-            return value < events.get('mean') - events.get('stdDeviation') ||
-              value > events.get('mean') + events.get('stdDeviation');
-          }, alertCallback);
+        if (this.chart.alarms) {
+          this.proteicChart = new Linechart([], this.chart.configuration)
+            .annotations(this.chart.annotations)
+            .unpivot(unpivot)
+            .alert(this.chart.variable, (value, events) => {
+              return value < events.get('mean') - events.get('stdDeviation') ||
+                value > events.get('mean') + events.get('stdDeviation');
+            }, alertCallback);
+        }
+        else {
+          this.proteicChart = new Linechart([], this.chart.configuration)
+            .annotations(this.chart.annotations)
+            .unpivot(unpivot);
+        }
         break;
       case 'Network':
         break;
@@ -111,7 +120,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
           //json.key = 'VAR' + json.varName;
-          json.key = ""+json.varName;
+          json.key = "" + json.varName;
         }
         //console.log(json);
         this.proteicChart.keepDrawing(json);
@@ -147,4 +156,3 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(coilSubscription);
   }
 }
-

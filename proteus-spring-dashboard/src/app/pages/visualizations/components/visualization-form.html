@@ -12,29 +12,12 @@
       <input type="radio" formControlName="type" value="Streamgraph"> Streamgraph
       <input type="radio" formControlName="type" value="Sunburst"> Sunburst
       <input type="radio" formControlName="type" value="Swimlane"> Swimlane
-      <!--<div class="card-deck">
-        <div class="card btn" (click)="setType('Scatterplot')">
-          <img src="..." alt="" class="card-img-top">
-          <div class="card-block">
-            <h4 class="card-title">Scatterplot</h4>
-            <p class="card-text">Description</p>
-          </div>
-        </div>
-        <div class="card btn" (click)="setType('Linechart')">
-          <img src="..." alt="" class="card-img-top">
-          <div class="card-block">
-            <h4 class="card-title">Linechart</h4>
-            <p class="card-text">Description</p>
-          </div>
-        </div>
-      </div>-->
     </ba-card>
   </div>
 
   <div class="row">
     <ba-card class="col" title="Real-time data">
       <div class="row">
-
         <div class="form-group col">
           <div class="form-group">
             <p>Choose your variable:</p>
@@ -57,16 +40,7 @@
           <select formControlName="calculations" multiple>
             <option *ngFor="let c of calculations" [value]="c">{{c.label}}</option>
           </select>
-          <!--
-          <div class="form-check" *ngFor="let c of calculations">
-            <label for="" class="form-check-label">
-          <input type="checkbox" class="form-check-input" [value]="c">
-          {{c.label}}
-        </label>
-          </div>
-          -->
         </div>
-
       </div>
     </ba-card>
 
@@ -78,6 +52,12 @@
 
   <div class="row">
     <ba-card class="col" title="visualization.configuration">
+
+      <div *ngIf="form.controls.type.value=='Linechart'" class="form-group">
+        <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
+        <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms">
+      </div>
+
       <div class="form-group">
         <label for="chartTitle">Visualization title:</label>
         <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
