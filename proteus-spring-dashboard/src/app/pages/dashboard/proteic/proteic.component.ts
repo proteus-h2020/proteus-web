@@ -93,7 +93,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
               return value < events.get('mean') - events.get('stdDeviation') ||
                 value > events.get('mean') + events.get('stdDeviation');
             }, alertCallback, {
-              click : (data : any) => window.alert('Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x),
+              click : (data : any) => window.alert('Variable = ' + data.key  +', value = ' + data.value + ', position(x) = ' + data.x),
             });
         }
         else {
