@@ -92,7 +92,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
             .alert(this.chart.variable, (value, events) => {
               return value < events.get('mean') - events.get('stdDeviation') ||
                 value > events.get('mean') + events.get('stdDeviation');
-            }, alertCallback);
+            }, alertCallback, {
+              click : (data : any) => window.alert('Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x),
+            });
         }
         else {
           this.proteicChart = new Linechart([], this.chart.configuration)
