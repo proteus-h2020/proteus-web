@@ -81,7 +81,7 @@
     "ng2-tree": "2.0.0-alpha.5",
     "ngx-uploader": "2.2.5",
     "normalize.css": "6.0.0",
-    "proteic": "file:/home/local/TREELOGIC/ignacio.g.fernandez/Github/proteic",
+    "proteic": "git://github.com/proteus-h2020/proteic.git#development",
     "roboto-fontface": "0.7.0",
     "rxjs": "5.1.1",
     "sockjs-client": "^1.1.4",
