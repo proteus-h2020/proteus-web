@@ -20,10 +20,6 @@ import {
   Colors
 } from 'proteic';
 
-import {
-  timeout
-} from 'd3';
-
 @Component({
   selector: 'proteic',
   styleUrls: ['./proteic.scss'],
@@ -35,6 +31,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   private element: any;
   private subscriptions: Subscription[] = new Array<Subscription>();
 
+  private lastCoilReceived: number = -1;
+
 
   @Input() private chart: RealtimeChart;
 
@@ -42,7 +40,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private websocketService: WebsocketService,
-    private appSubscriptionService: AppSubscriptionsService,
+    //private appSubscriptionService: AppSubscriptionsService,
     private notificationService: NotificationsService,
   ) { }
 
@@ -72,6 +70,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     const alertCallback: Function = (data: any) => {
       this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
+
+    console.log('annotations from proteuic0', this.chart.annotations);
 
 
     switch (this.chart.type) {
@@ -123,11 +123,16 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       const subscription = subs.subscribe((data: any) => {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
-          //json.key = 'VAR' + json.varName;
           json.key = "" + json.varName;
         }
-        //console.log(json);
-        timeout(() => this.proteicChart.keepDrawing(json), 0);
+        if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
+          this.proteicChart.clear();
+          this.notificationService.clear();
+        } else {
+          this.proteicChart.keepDrawing(json);
+        }
+
+        this.lastCoilReceived = json.coilId;
       });
       this.subscriptions.push(subscription);
     }
@@ -137,6 +142,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
+    this.proteicChart.erase();
   }
 
 
@@ -151,12 +157,13 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private _subscribeToCoilChange() {
+    /*
     const coilSubscription = this.appSubscriptionService.coilChange().subscribe(
       (data: any) => {
-        this.proteicChart.clear();
         this.notificationService.clear();
       },
     );
     this.subscriptions.push(coilSubscription);
+    */
   }
 }
