@@ -45,6 +45,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 
@@ -65,6 +66,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 
@@ -84,6 +86,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 
@@ -104,6 +107,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 
@@ -137,6 +141,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 
@@ -171,6 +176,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
+        chart.alarms = true;
 
         this.push(chart);
 

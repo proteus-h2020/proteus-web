@@ -45,6 +45,10 @@ private notifications: Array<any> = new Array<any>();
 
     this.subscriptions.push(
       notificationsSubs,
-    )
+    );
+  }
+
+  public markAllAsRead(){
+    this.notificationService.clear();
   }
 }

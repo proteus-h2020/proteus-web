@@ -37,6 +37,7 @@ export class FormVisualization {
             configuration: FormVisualization._createConfigurationByChartProperties(currentConf),
             variable: [model ? model.variable : null],
             calculations: [model ? model.calculations : null, [<any>Validators.required]],
+            alarms: [model ? model.alarms : null]
         });
     }
 

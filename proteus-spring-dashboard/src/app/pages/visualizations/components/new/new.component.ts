@@ -1,4 +1,4 @@
-import { VisualizationForm } from './../../VisualizationForm';
+
 import { FormVisualization } from './../../form-visualization';
 import { ChartService } from './../../../../chart.service';
 import { RealtimeChart } from './../../../../realtime-chart';
@@ -10,7 +10,7 @@ import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
-import { Calculation } from 'app/pages/visualizations/VisualizationForm';
+import { Calculation,VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
@@ -38,6 +38,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     public save(model: RealtimeChart, isValid: boolean) {
         let self = this;
         this.submitted = true;
+        let alarms = model.alarms;
         let endpoints = new Array<string>();
 
         if (model.calculations) {
@@ -62,6 +63,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
                 model.calculations,
                 endpoints,
             );
+            model.alarms = alarms;
             self.chartService.push(model);
             self.router.navigate(['pages/dashboard']);
         }
