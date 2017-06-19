@@ -28,6 +28,14 @@
 
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-couchbase -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-couchbase</artifactId>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
 		<dependency>
 			<groupId>io.reactivex.rxjava2</groupId>
@@ -103,7 +111,7 @@
 	</dependencies>
 
 	<build>
-	<finalName>proteus</finalName>
+		<finalName>proteus</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
