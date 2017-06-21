@@ -1,4 +1,4 @@
-import { Annotation,AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
+import { Annotation, AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
 import { Calculation } from './pages/visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -14,13 +14,13 @@ export class ChartService {
 
     constructor() {
 
-                let a = <any>{};
+        let a = <any>{};
 
-        a.type='band';
-        a.axis='y';
-        a.variable='mean';
-        a.width='stdDeviation';
-        a.text='+/- STD';
+        a.type = 'band';
+        a.axis = 'y';
+        a.variable = 'mean';
+        a.width = 'stdDeviation';
+        a.text = '+/- STD';
 
 
 
@@ -30,7 +30,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         let annotations = new Array<Annotation>();
-                annotations.push(a);
+        annotations.push(a);
 
         let endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
@@ -39,7 +39,12 @@ export class ChartService {
         let chart = new RealtimeChart(
             'C003 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
             annotations, // annotations
             "3",
             calculations,
@@ -48,6 +53,62 @@ export class ChartService {
         chart.alarms = true;
 
         this.push(chart);
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/25');
+
+        chart = new RealtimeChart(
+            'C025 - Raw (2D)',
+            'Heatmap',
+            {
+                propertyX: 'x',
+                propertyY: 'y',
+                propertyZ: 'value',
+                xAxisType: 'categorical',
+                yAxisType: 'linear',
+                maxNumberOfElements: 50
+
+            }, //config
+            annotations, // annotations
+            "25",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+
+
+calculations = new Array<Calculation>();
+        //calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/var/25');
+
+        chart = new RealtimeChart(
+            'C025 - Mean (2D)',
+            'Heatmap',
+            {
+                propertyX: 'x',
+                propertyY: 'y',
+                propertyZ: 'value',
+                xAxisType: 'categorical',
+                yAxisType: 'linear',
+                maxNumberOfElements: 50
+
+            }, //config
+            [], // annotations
+            "25",
+            calculations,
+            endpoints,
+        );
+
+        this.push(chart);
+
 
 
         calculations = new Array<Calculation>();
@@ -60,7 +121,13 @@ export class ChartService {
         chart = new RealtimeChart(
             'C044 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500
+
+            }, //config
             annotations, // annotations
             "44",
             calculations,
@@ -80,7 +147,13 @@ export class ChartService {
         chart = new RealtimeChart(
             'C0034 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500
+
+            }, //config
             annotations, // annotations
             "34",
             calculations,
@@ -101,7 +174,12 @@ export class ChartService {
         chart = new RealtimeChart(
             'C0026 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500
+            }, //config
             annotations, // annotations
             "26",
             calculations,
@@ -114,17 +192,17 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-/**
- * 
- *     id: number;
-    text: string;
-    type: AnnotationTypes;
-    settings: any;
-    axis: string;
-    value: number;
-    variable: number;
-    width: string;
- */
+        /**
+         * 
+         *     id: number;
+            text: string;
+            type: AnnotationTypes;
+            settings: any;
+            axis: string;
+            value: number;
+            variable: number;
+            width: string;
+         */
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/2');
@@ -135,7 +213,13 @@ export class ChartService {
         chart = new RealtimeChart(
             'C0002 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500
+
+            }, //config
             annotations, // annotations
             "2",
             calculations,
@@ -146,20 +230,20 @@ export class ChartService {
         this.push(chart);
 
 
-                calculations = new Array<Calculation>();
+        calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-/**
- * 
- *     id: number;
-    text: string;
-    type: AnnotationTypes;
-    settings: any;
-    axis: string;
-    value: number;
-    variable: number;
-    width: string;
- */
+        /**
+         * 
+         *     id: number;
+            text: string;
+            type: AnnotationTypes;
+            settings: any;
+            axis: string;
+            value: number;
+            variable: number;
+            width: string;
+         */
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/32');
@@ -170,7 +254,12 @@ export class ChartService {
         chart = new RealtimeChart(
             'C0032 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500
+            }, //config
             annotations, // annotations
             "32",
             calculations,

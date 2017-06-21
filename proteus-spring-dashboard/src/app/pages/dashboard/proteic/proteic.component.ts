@@ -40,7 +40,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private websocketService: WebsocketService,
-    //private appSubscriptionService: AppSubscriptionsService,
     private notificationService: NotificationsService,
   ) { }
 
@@ -49,16 +48,11 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     this.id = 'proteic' + Date.now().toString();
     this.chart.configuration.marginRight = 100;
     this.chart.configuration.marginBottom = 50;
-    this.chart.configuration.marginLeft = 70;
+    //this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
-    this.chart.configuration.propertyX = 'x';
-    this.chart.configuration.propertyY = 'value';
-    this.chart.configuration.propertyKey = 'key';
     this.chart.configuration.legendPosition = 'top';
-    this.chart.configuration.maxNumberOfElements = 800;
-
   }
 
   ngAfterViewInit(): void {
@@ -71,7 +65,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
 
-    console.log('annotations from proteuic0', this.chart.annotations);
+    console.log('Chart configuration', this.chart.configuration);
 
 
     switch (this.chart.type) {
@@ -82,6 +76,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Gauge([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Heatmap':
+        this.chart.configuration.legendCells = 5;
         this.proteicChart = new Heatmap([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Linechart':
@@ -127,10 +122,13 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
           json.key = "" + json.varName;
         }
+        
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();
           this.notificationService.clear();
         } else {
+                    if(json.key == "25")
+          console.log(json);
           this.proteicChart.keepDrawing(json);
         }
 
