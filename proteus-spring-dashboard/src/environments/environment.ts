@@ -10,6 +10,11 @@ export const environment = {
   websocketTopics:{
     coilNotification: '/topic/coil',
     messageCounter: '/topic/messageCounter',
+    getters:{
+      coil: '/app/get/coil',
+      messages: '/app/get/messages',
+
+    }
   },
 };
 

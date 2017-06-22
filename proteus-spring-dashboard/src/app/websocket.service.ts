@@ -21,6 +21,11 @@ export class WebsocketService {
         console.debug('Initializing socksjs and stom connection to the server');
     }
 
+    public send(endpoint: string, message?: string){
+        this.connectionPromise.then(() => {
+            this.stomp.send(endpoint, {}, {});
+        });
+    }
 
     public subscribe(url: string): Subject<any> {
         const subject = new Subject();
