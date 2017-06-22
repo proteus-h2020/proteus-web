@@ -65,9 +65,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
 
-    console.log('Chart configuration', this.chart.configuration);
-
-
     switch (this.chart.type) {
       case 'Barchart':
         this.proteicChart = new Barchart([], this.chart.configuration).unpivot(unpivot);
@@ -76,8 +73,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Gauge([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Heatmap':
-        this.chart.configuration.legendCells = 5;
-        this.proteicChart = new Heatmap([], this.chart.configuration).unpivot(unpivot);
+        this.proteicChart = new Heatmap([], this.chart.configuration);
         break;
       case 'Linechart':
         if (this.chart.alarms) {
@@ -127,8 +123,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
           this.proteicChart.clear();
           this.notificationService.clear();
         } else {
-                    if(json.key == "25")
-          console.log(json);
           this.proteicChart.keepDrawing(json);
         }
 

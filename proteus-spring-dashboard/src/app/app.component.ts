@@ -32,10 +32,9 @@ export class App {
     private themeConfig: BaThemeConfig,
     private wsService: WebsocketService,
   ) {
-    wsService.initialize();
     themeConfig.config();
 
-    this._loadImages();
+    this._registerLoaders();
 
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
@@ -49,9 +48,9 @@ export class App {
     });
   }
 
-  private _loadImages(): void {
-    // register some loaders
+  private _registerLoaders(): void {
     BaThemePreloader.registerLoader(this._imageLoader.load('/assets/img/sky-bg.jpg'));
+    BaThemePreloader.registerLoader(this.wsService.initialize());
   }
 
 }
