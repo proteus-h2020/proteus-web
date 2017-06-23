@@ -1,6 +1,6 @@
 package com.treelogic.framework.domain;
 
-public class Pair<T,K> {
+public class Pair<T,K> extends ProteusJsonizableRecord{
 	
 	
 	private T key;

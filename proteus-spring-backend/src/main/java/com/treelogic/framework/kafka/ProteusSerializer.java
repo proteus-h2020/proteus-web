@@ -8,14 +8,13 @@ import com.esotericsoftware.kryo.io.Output;
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.MomentsResult1D;
 import com.treelogic.framework.domain.MomentsResult2D;
+import com.treelogic.framework.domain.SAXResult;
 import com.treelogic.framework.domain.SensorMeasurement;
 import com.treelogic.framework.domain.SensorMeasurement1D;
 import com.treelogic.framework.domain.SensorMeasurement2D;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.util.Map;
@@ -27,16 +26,17 @@ public class ProteusSerializer
 	 * Thread-safe kryo instance that handles, serializes and deserializes
 	 * PROTEUS POJOS.
 	 */
-	
-	//private static final Logger LOGGER = LoggerFactory.getLogger(ProteusSerializer.class);
 
-	
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(ProteusSerializer.class);
+
 	private ThreadLocal<Kryo> kryos = new ThreadLocal<Kryo>() {
 		protected Kryo initialValue() {
 			Kryo kryo = new Kryo();
 			SensorMeasurementInternalSerializer sensorInternal = new SensorMeasurementInternalSerializer();
 			MomentsInternalSerializer momentsInternal = new MomentsInternalSerializer();
-
+			SAXInternalSerializer saxInternal = new SAXInternalSerializer();
+			
 			kryo.addDefaultSerializer(SensorMeasurement.class, sensorInternal);
 			kryo.addDefaultSerializer(SensorMeasurement1D.class, sensorInternal);
 			kryo.addDefaultSerializer(SensorMeasurement2D.class, sensorInternal);
@@ -45,6 +45,8 @@ public class ProteusSerializer
 			kryo.addDefaultSerializer(MomentsResult1D.class, momentsInternal);
 			kryo.addDefaultSerializer(MomentsResult2D.class, momentsInternal);
 
+			kryo.addDefaultSerializer(SAXResult.class, saxInternal);
+			
 			return kryo;
 		};
 	};
@@ -60,7 +62,7 @@ public class ProteusSerializer
 
 	@Override
 	public byte[] serialize(String topic, SensorMeasurement record) {
-		int byteBufferLength = 50;
+		int byteBufferLength = topic.equals("sax-results") ? 500 : 50;
 		ByteBufferOutput output = new ByteBufferOutput(byteBufferLength);
 		kryos.get().writeObject(output, record);
 		return output.toBytes();
@@ -72,7 +74,10 @@ public class ProteusSerializer
 			return kryos.get().readObject(new ByteBufferInput(bytes), SensorMeasurement.class);
 		} else if (topic.equals("simple-moments")) {
 			return kryos.get().readObject(new ByteBufferInput(bytes), MomentsResult.class);
-		} else {
+		} else if (topic.equals("sax-results")) {
+			return kryos.get().readObject(new ByteBufferInput(bytes), SAXResult.class);
+		}
+		else {
 			throw new IllegalArgumentException("Invalid topic name: " + topic);
 		}
 	}
@@ -92,7 +97,7 @@ public class ProteusSerializer
 				output.writeByte(row.getType());
 				output.writeInt(cast.getCoilId());
 				output.writeDouble(cast.getX());
-				output.writeInt(cast.getVarName());
+				output.writeInt(cast.getVarId());
 				output.writeDouble(cast.getValue());
 			} else {
 				SensorMeasurement2D cast = (SensorMeasurement2D) row;
@@ -101,7 +106,7 @@ public class ProteusSerializer
 				output.writeInt(cast.getCoilId());
 				output.writeDouble(cast.getX());
 				output.writeDouble(cast.getY());
-				output.writeInt(cast.getVarName());
+				output.writeInt(cast.getVarId());
 				output.writeDouble(cast.getValue());
 			}
 		}
@@ -127,8 +132,7 @@ public class ProteusSerializer
 		}
 	}
 
-	private static class MomentsInternalSerializer
-			extends com.esotericsoftware.kryo.Serializer<MomentsResult> {
+	private static class MomentsInternalSerializer extends com.esotericsoftware.kryo.Serializer<MomentsResult> {
 		@Override
 		public void write(Kryo kryo, Output output, MomentsResult row) {
 		}
@@ -141,22 +145,42 @@ public class ProteusSerializer
 			int coil = input.readInt();
 			int var = input.readInt();
 			byte type = input.readByte();
-			
-			if(type == 0x0){
+
+			if (type == 0x0) {
 				double x = input.readDouble();
 				double mean = input.readDouble();
 				double variance = input.readDouble();
 				double counter = input.readDouble();
-				return new MomentsResult1D(coil,var, mean, variance, counter, x);
-			}
-			else{
+				return new MomentsResult1D(coil, var, mean, variance, counter, x);
+			} else {
 				double x = input.readDouble();
 				double y = input.readDouble();
 				double mean = input.readDouble();
 				double variance = input.readDouble();
 				double counter = input.readDouble();
-				return new MomentsResult2D(coil,var, mean, variance, counter, x,y);
+				return new MomentsResult2D(coil, var, mean, variance, counter, x, y);
 			}
+		}
+	}
+
+	private static class SAXInternalSerializer extends com.esotericsoftware.kryo.Serializer<SAXResult> {
+		@Override
+		public void write(Kryo kryo, Output output, SAXResult row) {
+		}
+
+		@Override
+		public SAXResult read(Kryo kryo, Input input, Class<SAXResult> clazz) {
+			int magicNumber = input.readInt();
+			assert (magicNumber == MAGIC_NUMBER);
+
+			int coil = input.readInt();
+			String var = input.readString();
+			double x1 = input.readLong();
+			double x2 = input.readLong();
+			String classId = input.readString();
+			double sim = input.readDouble();
+			
+			return new SAXResult(coil, var, classId, sim, x1, x2);			
 		}
 	}
 

@@ -8,7 +8,7 @@ public class SensorMeasurement1D extends SensorMeasurement {
         super();
         this.coilId = coilId;
         this.x = x;
-        this.varName = variableIdentifier;
+        this.varId = variableIdentifier;
         this.value = value;
     }
    

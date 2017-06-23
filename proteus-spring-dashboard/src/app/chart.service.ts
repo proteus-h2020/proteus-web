@@ -49,6 +49,44 @@ export class ChartService {
         );
         chart.alarms = true;
 
+        this.charts.push(chart);
+
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/sax');
+
+        chart = new RealtimeChart(
+            'C0002 - SAX',
+            'Swimlane',
+            {
+                xAxisType: 'linear',
+                xAxisFormat: '',
+                propertyStart: 'x1',
+                propertyEnd: 'x2',
+                propertyY: 'classId',
+                propertyKey: 'classId',
+                maxNumberOfElements: 1500,
+                xTicksTextRotation: -65,
+            },
+            annotations, // annotations
+            "2",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+
+
+
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
@@ -283,6 +321,7 @@ export class ChartService {
         this.push(chart);
 
 
+        
         /** 
                 calculations = new Array<Calculation>();
                 calculations.push(new Calculation('raw', 'Raw'));
