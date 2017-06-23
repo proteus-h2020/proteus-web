@@ -72,6 +72,7 @@ export class ChartService {
                 propertyEnd: 'x2',
                 propertyY: 'classId',
                 propertyKey: 'classId',
+                propertyZ: 'similarity',
                 maxNumberOfElements: 1500,
                 xTicksTextRotation: -65,
             },

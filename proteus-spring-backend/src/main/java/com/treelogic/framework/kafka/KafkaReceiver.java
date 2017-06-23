@@ -2,9 +2,10 @@ package com.treelogic.framework.kafka;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,23 +78,25 @@ public class KafkaReceiver {
 		return this.subjectSAX;
 	}
 
-	@KafkaListener(topics = "${kafka.topicName}")
-	public void receive(SensorMeasurement measure) {
+	@KafkaListener(topics = "${kafka.topicName}", id = "topicRealtimeName")
+	public void receive(ConsumerRecord<String, SensorMeasurement> record) {
+		SensorMeasurement  measure = record.value();
 		realTimeMessageCounter++;
 		this.lastSensorMeasurement = measure;
 		this.subjectRealtime.onNext(measure);
 	}
 
-	@KafkaListener(topics = "${kafka.topicNameSAX}")
-	public void receiveSAX(SAXResult saxPrediction) {
+	@KafkaListener(topics = "${kafka.topicNameSAX}", id = "topicNameSAX")
+	public void receiveSAX(ConsumerRecord<String, SAXResult> record) {
+		SAXResult saxPrediction = record.value();
 		saxMessageCounter++;
 		this.lastSAXResult = saxPrediction;
 		this.subjectSAX.onNext(saxPrediction);
-
 	}
-
-	@KafkaListener(topics = "${kafka.topicNameMoments}")
-	public void receiveMoments(MomentsResult moment) {
+	
+	@KafkaListener(topics = "${kafka.topicNameMoments}" )
+	public void receiveMoments(ConsumerRecord<String, MomentsResult> record) {
+		MomentsResult moment = record.value();
 		momentsMessageCounter++;
 		this.lastMomentResult = moment;
 		moment.setStdDeviation(Math.sqrt(moment.getVariance())); // TODO: remove
