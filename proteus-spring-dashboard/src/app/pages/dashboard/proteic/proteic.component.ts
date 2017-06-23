@@ -46,7 +46,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
 
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 100;
+    this.chart.configuration.marginRight = 105;
     this.chart.configuration.marginBottom = 50;
     //this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
@@ -81,8 +81,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
             .annotations(this.chart.annotations)
             .unpivot(unpivot)
             .alert(this.chart.variable, (value, events) => {
-              return value < events.get('mean') - events.get('stdDeviation') ||
-                value > events.get('mean') + events.get('stdDeviation');
+              return value < events.get('mean') - events.get('stdDeviationFactorized') ||
+                value > events.get('mean') + events.get('stdDeviationFactorized');
             }, alertCallback, {
               click : (data : any) => window.alert('Variable = ' + data.key  +', value = ' + data.value + ', position(x) = ' + data.x),
             });
@@ -117,6 +117,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
           json.key = "" + json.varName;
+        }
+        else{
+          json.stdDeviationFactorized = json.stdDeviation * this.chart.alarmsFactor; //TODO : Improve it
         }
         
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {

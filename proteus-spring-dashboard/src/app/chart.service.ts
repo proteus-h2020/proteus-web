@@ -19,8 +19,10 @@ export class ChartService {
         a.type = 'band';
         a.axis = 'y';
         a.variable = 'mean';
-        a.width = 'stdDeviation';
-        a.text = '+/- STD';
+        a.width = 'stdDeviationFactorized';
+        
+      
+        a.text = '+/- STD * 1.5';
 
         let calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
@@ -48,7 +50,11 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1.5;
 
+        this.push(chart);
+
+        a.text = '+/- STD Dev.';
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
@@ -76,6 +82,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -105,6 +112,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -134,6 +142,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -163,6 +172,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -192,6 +202,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -221,6 +232,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -250,6 +262,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 
@@ -279,6 +292,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.alarmsFactor = 1;
 
         this.push(chart);
 

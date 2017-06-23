@@ -47,15 +47,20 @@
     <ba-card class="col" title="Historical data">
 
     </ba-card>
-
   </div>
 
   <div class="row">
     <ba-card class="col" title="visualization.configuration">
 
       <div *ngIf="form.controls.type.value=='Linechart'" class="form-group">
-        <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
-        <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms">
+        <div class="form-group">
+          <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
+          <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms">
+        </div>
+        <div [hidden]="!form.controls.alarms.value" class="form-group">
+          <label for="alarmsFactor">STD Deviation Factor:</label>
+          <input class="form-control" formControlName="alarmsFactor" type="number" name="alarmsFactor">
+        </div>
       </div>
 
       <div class="form-group">
