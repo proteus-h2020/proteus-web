@@ -6,6 +6,7 @@ export class RealtimeChart {
     public static N: number = 1;
     public id: number = 0;
     public alarms : boolean = false;
+    public alarmsFactor : number = 1;
 
     constructor(
         public title: string,

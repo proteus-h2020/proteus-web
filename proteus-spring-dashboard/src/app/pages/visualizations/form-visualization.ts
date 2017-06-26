@@ -37,7 +37,8 @@ export class FormVisualization {
             configuration: FormVisualization._createConfigurationByChartProperties(currentConf),
             variable: [model ? model.variable : null],
             calculations: [model ? model.calculations : null, [<any>Validators.required]],
-            alarms: [model ? model.alarms : null]
+            alarms: [model ? model.alarms : null],
+            alarmsFactor: [model ? model.alarmsFactor : 1],
         });
     }
 
@@ -55,10 +56,4 @@ export class FormVisualization {
         form.setControl('configuration', this._createConfigurationByChartProperties(null));
     }
 
-    public static isDynamicKey(key: string) {
-        return key == 'propertyKey' ||
-            key == 'propertyX' ||
-            key == 'propertyY' ||
-            key == 'propertyZ';
-    }
 }

@@ -34,11 +34,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
 
-    protected isDynamicKey(key: string) {
-        return FormVisualization.isDynamicKey(key);
-
-    }
-
     protected defaults() {
         return FormVisualization.defaults;
     }

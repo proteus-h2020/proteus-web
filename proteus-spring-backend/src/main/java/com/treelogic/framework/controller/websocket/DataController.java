@@ -75,6 +75,9 @@ public class DataController {
 	private void sendMoment(MomentsResult moment) {
 		String topic = String.format(TOPIC_MOMENTS_REALTIME, moment.getVarId());
 		String json = moment.toJson();
+		if(moment.getVarId() == 25){
+			LOGGER.info(json);
+		}
 		//LOGGER.info("Sending {} to  {}", json, topic);
 		this.simpMessagingTemplate.convertAndSend(topic, json);
 	}
