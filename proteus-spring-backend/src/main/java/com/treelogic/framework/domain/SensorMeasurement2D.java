@@ -12,7 +12,7 @@ public class SensorMeasurement2D extends SensorMeasurement {
 		this.coilId = coilId;
 		this.x = x;
 		this.y = y;
-		this.varName = variableIdentifier;
+		this.varId = variableIdentifier;
 		this.value = value;
 	}
 	

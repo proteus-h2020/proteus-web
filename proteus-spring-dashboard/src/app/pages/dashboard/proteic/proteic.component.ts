@@ -106,6 +106,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'Sunburst':
         break;
       case 'Swimlane':
+      this.proteicChart = new Swimlane([], this.chart.configuration);
         break;
       default:
         break;
@@ -116,9 +117,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       const subscription = subs.subscribe((data: any) => {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
-          json.key = "" + json.varName;
+          json.key = '' + json.varId;
         }
-        
+       
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();
           this.notificationService.clear();
