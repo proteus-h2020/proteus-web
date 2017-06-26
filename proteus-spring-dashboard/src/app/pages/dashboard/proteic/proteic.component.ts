@@ -119,10 +119,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
           json.key = '' + json.varId;
         }
-       
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();
           this.notificationService.clear();
+          this.proteicChart.keepDrawing(json);
         } else {
           this.proteicChart.keepDrawing(json);
         }

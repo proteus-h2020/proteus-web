@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from './realtime-chart';
+import {Colors} from 'proteic';
 
 @Injectable()
 export class ChartService {
@@ -50,6 +51,44 @@ export class ChartService {
         chart.alarms = true;
 
         this.charts.push(chart);
+
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/sax');
+
+        chart = new RealtimeChart(
+            'C0002 - SAX',
+            'Swimlane',
+            {
+            xAxisType: 'linear',
+            xAxisFormat: '',
+            propertyStart: 'x1',
+            propertyEnd: 'x2',
+            propertyKey: 'classId',
+            propertyY: 'classId',
+            propertyZ: 'similarity',
+            colorScaleType: 'sequential',
+            colorScale: Colors.sequentialVioletCbInterpolated(),
+            legendCells: 6,
+            legendTitle: 'Similarity'
+            },
+            annotations, // annotations
+            "2",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+
+
+
         
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));

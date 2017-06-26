@@ -50,7 +50,7 @@ public class SAXResult extends ProteusJsonizableRecord{
 
 	@Override
 	public String toString() {
-		return "SAXResult [coilId=" + coilId + ", varName=" + this.varId + ", classId=" + classId + ", similarity="
+		return "SAXResult [coilId=" + coilId + ", varId=" + this.varId + ", classId=" + classId + ", similarity="
 				+ similarity + ", x1=" + x1 + ", x2=" + x2 + "]";
 	}
 
