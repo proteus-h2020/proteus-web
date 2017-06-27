@@ -80,7 +80,7 @@ public class KafkaReceiver {
 
 	@KafkaListener(topics = "${kafka.topicName}", id = "topicRealtimeName")
 	public void receive(ConsumerRecord<String, SensorMeasurement> record) {
-		SensorMeasurement  measure = record.value();
+		SensorMeasurement measure = record.value();
 		realTimeMessageCounter++;
 		this.lastSensorMeasurement = measure;
 		this.subjectRealtime.onNext(measure);
@@ -93,8 +93,9 @@ public class KafkaReceiver {
 		this.lastSAXResult = saxPrediction;
 		this.subjectSAX.onNext(saxPrediction);
 	}
+
+	@KafkaListener(topics = "${kafka.topicNameMoments}", id="topicMoments" )
 	
-	@KafkaListener(topics = "${kafka.topicNameMoments}" )
 	public void receiveMoments(ConsumerRecord<String, MomentsResult> record) {
 		MomentsResult moment = record.value();
 		momentsMessageCounter++;

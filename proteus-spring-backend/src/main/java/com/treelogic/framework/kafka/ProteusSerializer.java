@@ -27,9 +27,6 @@ public class ProteusSerializer
 	 * PROTEUS POJOS.
 	 */
 
-	// private static final Logger LOGGER =
-	// LoggerFactory.getLogger(ProteusSerializer.class);
-
 	private ThreadLocal<Kryo> kryos = new ThreadLocal<Kryo>() {
 		protected Kryo initialValue() {
 			Kryo kryo = new Kryo();
