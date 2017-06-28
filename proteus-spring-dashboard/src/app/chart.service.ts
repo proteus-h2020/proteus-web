@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from './realtime-chart';
 import {Colors} from 'proteic';
+import {scaleQuantize} from 'd3';
 
 @Injectable()
 export class ChartService {
@@ -42,6 +43,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                marginRight: 100,
             },
             annotations, // annotations
             "2",
@@ -49,6 +51,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.layout = '12';
 
         this.charts.push(chart);
 
@@ -65,25 +68,43 @@ export class ChartService {
             'C0002 - SAX',
             'Swimlane',
             {
+            marginRight: 160,
+            marginLeft: 40,
             xAxisType: 'linear',
             xAxisFormat: '',
+            xTicksTextRotation: -65,
             propertyStart: 'x1',
             propertyEnd: 'x2',
             propertyKey: 'classId',
             propertyY: 'classId',
             propertyZ: 'similarity',
             colorScaleType: 'sequential',
-            colorScale: Colors.sequentialVioletCbInterpolated(),
+            colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
             legendCells: 6,
-            legendTitle: 'Similarity'
+            legendTitle: 'Similarity',
+            displayValues: true,
+            valuesFormat: '.4f',
             },
             annotations, // annotations
             "2",
             calculations,
             endpoints,
         );
-        chart.alarms = true;
-
+        chart.layout = '12';
         this.push(chart);
 
 
@@ -105,6 +126,7 @@ export class ChartService {
             'C0003 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -134,6 +156,7 @@ export class ChartService {
             'C0005 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -159,12 +182,33 @@ export class ChartService {
             'C0008 - Raw (2D)',
             'Heatmap',
             {
+                marginRight: 160,
+                marginLeft: 40,
                 propertyX: 'x',
                 propertyY: 'y',
                 propertyZ: 'value',
-                xAxisType: 'categorical',
+                xAxisType: 'linear',
                 yAxisType: 'linear',
-                maxNumberOfElements: 20,
+                xStep: 100,
+               // maxNumberOfElements: 20,
+                colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
+            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+
+            
             }, //config
             annotations, // annotations
             "8",
@@ -192,6 +236,7 @@ export class ChartService {
             'C0010 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -221,6 +266,7 @@ export class ChartService {
             'C0015 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -250,6 +296,7 @@ export class ChartService {
             'C0021 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -279,6 +326,7 @@ export class ChartService {
             'C0024 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
@@ -302,13 +350,33 @@ calculations = new Array<Calculation>();
             'C0025 - Raw (2D)',
             'Heatmap',
             {
+                marginRight: 160,
+                marginLeft: 40,
                 propertyX: 'x',
                 propertyY: 'y',
                 propertyZ: 'value',
-                xAxisType: 'categorical',
+                xAxisType: 'linear',
                 yAxisType: 'linear',
                 maxNumberOfElements: 20,
-                xAxisTicksRotation: -90
+                xAxisTicksRotation: -90,
+                xStep: 100,
+                 colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
+            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+
             }, //config
             annotations, // annotations
             "25",
@@ -335,6 +403,7 @@ calculations = new Array<Calculation>();
             'C0026 - Raw / Mean',
             'Linechart',
             {
+                marginRight: 100,
                 propertyX: 'x',
                 propertyY: 'value',
                 propertyKey: 'key',
