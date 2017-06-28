@@ -55,8 +55,14 @@
 
       <div *ngIf="form.controls.type.value=='Linechart'" class="form-group">
         <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
-        <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms">
+        <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms" id="chartAlarms">
       </div>
+      <!--
+      <div *ngIf="form.controls.alarms.value" class="form-group">
+        <label for="chartAlarmsFactor">Factor for +/- STD Deviation:</label>
+        <input class="form-control col-xs-2 col-md-2 col-lg-2 col-xl-2" formControlName="alarmFactor" type="number" name="chartAlarmsFactor" id="chartAlarmsFactor">
+      </div>
+      -->
 
       <div class="form-group">
         <label for="chartTitle">Visualization title:</label>

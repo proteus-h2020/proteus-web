@@ -46,7 +46,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
 
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 100;
+    //this.chart.configuration.marginRight = 150;
     this.chart.configuration.marginBottom = 50;
     //this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
@@ -76,6 +76,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Heatmap([], this.chart.configuration);
         break;
       case 'Linechart':
+      console.log(this.chart);
         if (this.chart.alarms) {
           this.proteicChart = new Linechart([], this.chart.configuration)
             .annotations(this.chart.annotations)
@@ -118,6 +119,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
           json.key = '' + json.varId;
+        }
+        if(typeof json.mean !== 'undefined'){
+          //TODO: add alarm factor
         }
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();
