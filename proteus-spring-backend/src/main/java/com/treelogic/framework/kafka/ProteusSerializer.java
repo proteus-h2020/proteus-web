@@ -59,7 +59,7 @@ public class ProteusSerializer
 
 	@Override
 	public byte[] serialize(String topic, SensorMeasurement record) {
-		int byteBufferLength = topic.equals("sax-results") ? 500 : 50;
+		int byteBufferLength = topic.equals("sax-results") ? 33 : 50; //TODO improve it
 		ByteBufferOutput output = new ByteBufferOutput(byteBufferLength);
 		kryos.get().writeObject(output, record);
 		return output.toBytes();
@@ -171,9 +171,9 @@ public class ProteusSerializer
 			assert (magicNumber == MAGIC_NUMBER);
 
 			int coil = input.readInt();
-			String var = input.readString();
-			double x1 = input.readLong();
-			double x2 = input.readLong();
+			int var = input.readInt();
+			double x1 = input.readDouble();
+			double x2 = input.readDouble();
 			String classId = input.readString();
 			double sim = input.readDouble();
 			

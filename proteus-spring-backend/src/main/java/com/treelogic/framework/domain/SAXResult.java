@@ -7,9 +7,9 @@ public class SAXResult extends ProteusJsonizableRecord{
 	private double x1;
 	private double x2;
 
-	public SAXResult(int coil, String var, String classId, double similirity, double x1, double x2) {
+	public SAXResult(int coil, int var, String classId, double similirity, double x1, double x2) {
 		this.coilId = coil;
-		this.varId = 2; //TODO Change this
+		this.varId = var;
 		this.classId = classId;
 		this.similarity = similirity;
 		this.x1 = x1;
