@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -67,10 +66,10 @@ public class CoilController {
 		});
 	}
 
-	@MessageMapping("/hello")
-	@SendTo("/topic/greetings")
-	public String coilInfo() throws Exception {
-		return "";
+	@MessageMapping("/get/coil")
+	public void coilInfo() throws Exception {
+		int coil = this.app.getData().getCoilId();
+		this.sendCoilChangeNotification(new Pair<String, Integer>("coilId", coil));
 	}
 
 }

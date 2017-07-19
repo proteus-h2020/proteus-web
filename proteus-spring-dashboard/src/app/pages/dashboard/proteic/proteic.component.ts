@@ -40,25 +40,19 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private websocketService: WebsocketService,
-    //private appSubscriptionService: AppSubscriptionsService,
     private notificationService: NotificationsService,
   ) { }
 
   ngOnInit() {
 
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 100;
+    //this.chart.configuration.marginRight = 150;
     this.chart.configuration.marginBottom = 50;
-    this.chart.configuration.marginLeft = 70;
+    //this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
-    this.chart.configuration.propertyX = 'x';
-    this.chart.configuration.propertyY = 'value';
-    this.chart.configuration.propertyKey = 'key';
     this.chart.configuration.legendPosition = 'top';
-    this.chart.configuration.maxNumberOfElements = 800;
-
   }
 
   ngAfterViewInit(): void {
@@ -71,9 +65,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
 
-    console.log('annotations from proteuic0', this.chart.annotations);
-
-
     switch (this.chart.type) {
       case 'Barchart':
         this.proteicChart = new Barchart([], this.chart.configuration).unpivot(unpivot);
@@ -82,9 +73,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Gauge([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Heatmap':
-        this.proteicChart = new Heatmap([], this.chart.configuration).unpivot(unpivot);
+        this.proteicChart = new Heatmap([], this.chart.configuration);
         break;
       case 'Linechart':
+      console.log(this.chart);
         if (this.chart.alarms) {
           this.proteicChart = new Linechart([], this.chart.configuration)
             .annotations(this.chart.annotations)
@@ -115,6 +107,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'Sunburst':
         break;
       case 'Swimlane':
+      this.proteicChart = new Swimlane([], this.chart.configuration);
         break;
       default:
         break;
@@ -125,11 +118,15 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       const subscription = subs.subscribe((data: any) => {
         let json = JSON.parse(data);
         if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
-          json.key = "" + json.varName;
+          json.key = '' + json.varId;
+        }
+        if(typeof json.mean !== 'undefined'){
+          //TODO: add alarm factor
         }
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();
           this.notificationService.clear();
+          this.proteicChart.keepDrawing(json);
         } else {
           this.proteicChart.keepDrawing(json);
         }

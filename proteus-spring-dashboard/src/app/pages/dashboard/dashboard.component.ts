@@ -5,6 +5,7 @@ import { RealtimeChart } from '../../realtime-chart';
 import { ChartService } from './../../chart.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 import { DashboardService } from './dashboard.service';
 
@@ -69,6 +70,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const messageCounterSubscription = this.appSubscriptionService.messageCounter().subscribe(
       (data: any) => this.messageCounter = data.value,
     ); 
+
+    //Get initial values
+    this.appSubscriptionService.getCoil();
+    this.appSubscriptionService.getMessages();
 
     this.subscriptions.push(
       chartsSubscription,

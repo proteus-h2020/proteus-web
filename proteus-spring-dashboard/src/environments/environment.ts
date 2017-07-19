@@ -6,9 +6,15 @@
 export const environment = {
   production: false,
   wsEndpoint: 'http://localhost:8080/wsEndpoint',
+  wsReconnectionTime:10000,
   websocketTopics:{
     coilNotification: '/topic/coil',
     messageCounter: '/topic/messageCounter',
+    getters:{
+      coil: '/app/get/coil',
+      messages: '/app/get/messages',
+
+    }
   },
 };
 

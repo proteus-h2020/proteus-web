@@ -10,29 +10,32 @@ declare var Stomp: any;
 @Injectable()
 export class WebsocketService {
 
-
     private socket: any;
     private stomp: any;
     private connected: boolean = false;
-
     private subject: Subject<any>;
     private observable: Observable<any>;
+    private connectionPromise: Promise<any>;
 
     constructor() {
         console.debug('Initializing socksjs and stom connection to the server');
     }
 
+    public send(endpoint: string, message?: string){
+        this.connectionPromise.then(() => {
+            this.stomp.send(endpoint, {}, {});
+        });
+    }
 
     public subscribe(url: string): Subject<any> {
         const subject = new Subject();
 
-        setTimeout(() => {
+        this.connectionPromise.then(() => {
             this.stomp.subscribe(url, (msg) => {
                 const body = msg.body;
                 subject.next(body);
             });
-
-        }, 1200); //TODO improve it
+        });
         return subject;
     }
 
@@ -44,22 +47,32 @@ export class WebsocketService {
 
     private onError(error: string) {
         console.error('Error with the PROTEUS websocket', error);
-        window.alert('Cannot connect to the PROTEUS server: ' + error.toString());
         this.connected = false;
+        setTimeout(() => this.initialize(), environment.wsReconnectionTime);
+        console.log('STOMP: Reconecting in 10 seconds');
     }
 
-    initialize() {
-        this.socket = new SockJS(environment.wsEndpoint);
-        this.stomp = Stomp.over(this.socket);
-        this.stomp.heartbeat.outgoing = 10000;
-        this.stomp.heartbeat.incoming = 10000;
-        this.stomp.debug = false;
-        this.stomp.connect({},
-            () => {
-                this.onConnect();
-            },
-            () => {
-                this.onError('Error connecting to the ws');
+    initialize(): Promise<any> {
+        if (!this.connected) {
+            return this.connectionPromise = new Promise((resolve, reject) => {
+                this.socket = new SockJS(environment.wsEndpoint);
+                this.stomp = Stomp.over(this.socket);
+                this.stomp.heartbeat.outgoing = 10000;
+                this.stomp.heartbeat.incoming = 10000;
+                this.stomp.debug = false;
+                this.stomp.connect({},
+                    () => {
+                        this.onConnect();
+                        resolve('Connection  to ' + this.socket + ' has been successful');
+                    },
+                    () => {
+                        this.onError('Error connecting to the ws');
+                        reject('Error connecting to ' + environment.wsEndpoint);
+                    });
             });
+        }
+        else {
+            return null;
+        }
     }
 }

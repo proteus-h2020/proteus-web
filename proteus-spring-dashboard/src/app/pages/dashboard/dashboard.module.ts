@@ -19,7 +19,7 @@ import { Proteic } from './proteic';
   ],
   declarations: [
     Proteic,
-    DashboardComponent
+    DashboardComponent,
   ],
   providers: [
   ]

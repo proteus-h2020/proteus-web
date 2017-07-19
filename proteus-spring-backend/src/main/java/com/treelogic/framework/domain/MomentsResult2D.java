@@ -48,12 +48,6 @@ public class MomentsResult2D extends MomentsResult{
 		return true;
 	}
 
-
-	@Override
-	public String toString() {
-		return "MomentsResult2D [x=" + x + ", y=" + y + "]";
-	}
-
 	public double getX() {
 		return x;
 	}

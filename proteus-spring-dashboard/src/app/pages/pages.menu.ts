@@ -52,6 +52,18 @@ export const PAGES_MENU = [
           // }
         ]
       },
+       {
+        path: 'historical',
+        data: {
+          menu: {
+            title: 'general.menu.historical',
+            icon: 'ion-arrow-graph-up-left',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
       {
         path: '',
         data: {

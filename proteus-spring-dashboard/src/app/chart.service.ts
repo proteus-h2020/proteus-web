@@ -1,9 +1,11 @@
-import { Annotation,AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
+import { Annotation, AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
 import { Calculation } from './pages/visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from './realtime-chart';
+import {Colors} from 'proteic';
+import {scaleQuantize} from 'd3';
 
 @Injectable()
 export class ChartService {
@@ -14,32 +16,122 @@ export class ChartService {
 
     constructor() {
 
-                let a = <any>{};
+        let a = <any>{};
 
-        a.type='band';
-        a.axis='y';
-        a.variable='mean';
-        a.width='stdDeviation';
-        a.text='+/- STD';
-
-
+        a.type = 'band';
+        a.axis = 'y';
+        a.variable = 'mean';
+        a.width = 'stdDeviation';
+        a.text = '+/- STD';
 
         let calculations = new Array<Calculation>();
-        //calculations.add(new Calculation('moments', 'Moments'));
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
         let annotations = new Array<Annotation>();
-                annotations.push(a);
+        annotations.push(a);
 
         let endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/2');
+        endpoints.push('/topic/flink/var/2');
+
+        let chart = new RealtimeChart(
+            'C0002 - Raw / Mean',
+            'Linechart',
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+                marginRight: 100,
+            },
+            annotations, // annotations
+            "2",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+        chart.layout = '12';
+
+        this.charts.push(chart);
+
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/sax');
+
+        chart = new RealtimeChart(
+            'C0002 - SAX',
+            'Swimlane',
+            {
+            marginRight: 160,
+            marginLeft: 40,
+            xAxisType: 'linear',
+            xAxisFormat: '',
+            xTicksTextRotation: -65,
+            propertyStart: 'x1',
+            propertyEnd: 'x2',
+            propertyKey: 'classId',
+            propertyY: 'classId',
+            propertyZ: 'similarity',
+            colorScaleType: 'sequential',
+            colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
+            legendCells: 6,
+            legendTitle: 'Similarity',
+            displayValues: true,
+            valuesFormat: '.4f',
+            },
+            annotations, // annotations
+            "2",
+            calculations,
+            endpoints,
+        );
+        chart.layout = '12';
+        this.push(chart);
+
+
+
+
+        
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
         endpoints.push('/topic/flink/var/3');
 
-        let chart = new RealtimeChart(
-            'C003 - Raw / Mean',
+        chart = new RealtimeChart(
+            'C0003 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
             annotations, // annotations
             "3",
             calculations,
@@ -49,20 +141,109 @@ export class ChartService {
 
         this.push(chart);
 
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/5');
+        endpoints.push('/topic/flink/var/5');
+
+        chart = new RealtimeChart(
+            'C0005 - Raw / Mean',
+            'Linechart',
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
+            annotations, // annotations
+            "5",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+
+
+ calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/8');
+
+        chart = new RealtimeChart(
+            'C0008 - Raw (2D)',
+            'Heatmap',
+            {
+                marginRight: 160,
+                marginLeft: 40,
+                propertyX: 'x',
+                propertyY: 'y',
+                propertyZ: 'value',
+                xAxisType: 'linear',
+                yAxisType: 'linear',
+                xStep: 100,
+               // maxNumberOfElements: 20,
+                colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
+            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+
+            
+            }, //config
+            annotations, // annotations
+            "8",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
         endpoints = new Array<string>();
-        endpoints.push('/topic/realtime/var/44');
-        endpoints.push('/topic/flink/var/44');
+        endpoints.push('/topic/realtime/var/10');
+        endpoints.push('/topic/flink/var/10');
 
         chart = new RealtimeChart(
-            'C044 - Raw / Mean',
+            'C0010 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
             annotations, // annotations
-            "44",
+            "10",
             calculations,
             endpoints,
         );
@@ -73,16 +254,132 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
         endpoints = new Array<string>();
-        endpoints.push('/topic/realtime/var/34');
-        endpoints.push('/topic/flink/var/34');
+        endpoints.push('/topic/realtime/var/15');
+        endpoints.push('/topic/flink/var/15');
 
         chart = new RealtimeChart(
-            'C0034 - Raw / Mean',
+            'C0015 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
             annotations, // annotations
-            "34",
+            "15",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/21');
+        endpoints.push('/topic/flink/var/21');
+
+        chart = new RealtimeChart(
+            'C0021 - Raw / Mean',
+            'Linechart',
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
+            annotations, // annotations
+            "21",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+        calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/24');
+        endpoints.push('/topic/flink/var/24');
+
+        chart = new RealtimeChart(
+            'C0024 - Raw / Mean',
+            'Linechart',
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
+            annotations, // annotations
+            "24",
+            calculations,
+            endpoints,
+        );
+        chart.alarms = true;
+
+        this.push(chart);
+
+calculations = new Array<Calculation>();
+        calculations.push(new Calculation('raw', 'Raw'));
+        endpoints = new Array<string>();
+        endpoints.push('/topic/realtime/var/25');
+
+        chart = new RealtimeChart(
+            'C0025 - Raw (2D)',
+            'Heatmap',
+            {
+                marginRight: 160,
+                marginLeft: 40,
+                propertyX: 'x',
+                propertyY: 'y',
+                propertyZ: 'value',
+                xAxisType: 'linear',
+                yAxisType: 'linear',
+                maxNumberOfElements: 20,
+                xAxisTicksRotation: -90,
+                xStep: 100,
+                 colorScale: scaleQuantize().range([
+                '#edf7e7',
+                // '#c8e3d2',
+                // '#91cdbf',
+                '#41b5ab',
+                // '#218ba4',
+                // '#145d94',
+                '#0c3183',
+                // '#0d2d76',
+                // '#0d2a6a',
+                '#0e265e',
+                // '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c'
+            ]),
+            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+
+            }, //config
+            annotations, // annotations
+            "25",
             calculations,
             endpoints,
         );
@@ -94,6 +391,10 @@ export class ChartService {
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
+
+        annotations = new Array<Annotation>();
+        annotations.push(a);
+
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/26');
         endpoints.push('/topic/flink/var/26');
@@ -101,7 +402,13 @@ export class ChartService {
         chart = new RealtimeChart(
             'C0026 - Raw / Mean',
             'Linechart',
-            {}, //config
+            {
+                marginRight: 100,
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+            },
             annotations, // annotations
             "26",
             calculations,
@@ -110,76 +417,6 @@ export class ChartService {
         chart.alarms = true;
 
         this.push(chart);
-
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
-/**
- * 
- *     id: number;
-    text: string;
-    type: AnnotationTypes;
-    settings: any;
-    axis: string;
-    value: number;
-    variable: number;
-    width: string;
- */
-
-        endpoints = new Array<string>();
-        endpoints.push('/topic/realtime/var/2');
-        endpoints.push('/topic/flink/var/2');
-
-
-
-        chart = new RealtimeChart(
-            'C0002 - Raw / Mean',
-            'Linechart',
-            {}, //config
-            annotations, // annotations
-            "2",
-            calculations,
-            endpoints,
-        );
-        chart.alarms = true;
-
-        this.push(chart);
-
-
-                calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
-/**
- * 
- *     id: number;
-    text: string;
-    type: AnnotationTypes;
-    settings: any;
-    axis: string;
-    value: number;
-    variable: number;
-    width: string;
- */
-
-        endpoints = new Array<string>();
-        endpoints.push('/topic/realtime/var/32');
-        endpoints.push('/topic/flink/var/32');
-
-
-
-        chart = new RealtimeChart(
-            'C0032 - Raw / Mean',
-            'Linechart',
-            {}, //config
-            annotations, // annotations
-            "32",
-            calculations,
-            endpoints,
-        );
-        chart.alarms = true;
-
-        this.push(chart);
-
     }
 
     getChart(id: number): RealtimeChart {

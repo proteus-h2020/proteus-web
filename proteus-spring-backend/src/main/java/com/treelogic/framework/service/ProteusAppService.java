@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.Pair;
 import com.treelogic.framework.domain.ProteusAppData;
+import com.treelogic.framework.domain.SAXResult;
 import com.treelogic.framework.domain.SensorMeasurement;
 
 import io.reactivex.subjects.PublishSubject;
@@ -19,7 +20,7 @@ public class ProteusAppService {
 	private PublishSubject<Pair<String, Integer>> coilSubject = PublishSubject.create();
 	private PublishSubject<Pair<String, Long>> messageCounterSubject = PublishSubject.create();
 
-	public void update(long counter, MomentsResult moment, SensorMeasurement sensor) {
+	public void update(long counter, MomentsResult moment, SensorMeasurement sensor, SAXResult saxResult) {
 		LOGGER.info("Updating app data...");
 		this.updateMessageCounter(counter);
 		if (moment != null) {

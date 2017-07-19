@@ -3,10 +3,8 @@ package com.treelogic.framework.domain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class SensorMeasurement{
+public abstract class SensorMeasurement extends ProteusJsonizableRecord{
 
-	protected int coilId;
-	protected int varName;
 	protected double value;
 	protected byte type;
 	protected double x;
@@ -18,32 +16,6 @@ public abstract class SensorMeasurement{
 		else{
 			this.type = 0x0;
 		}
-	}
-
-	public String toJson() {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public int getCoilId() {
-		return coilId;
-	}
-
-	public void setCoilId(int coilId) {
-		this.coilId = coilId;
-	}
-
-	public int getVarName() {
-		return varName;
-	}
-
-	public void setVarName(int varName) {
-		this.varName = varName;
 	}
 
 	public double getValue() {
@@ -66,16 +38,18 @@ public abstract class SensorMeasurement{
 		return type;
 	}
 
+	public void setType(byte type) {
+		this.type = type;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + coilId;
 		result = prime * result + type;
 		long temp;
 		temp = Double.doubleToLongBits(value);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + varName;
 		temp = Double.doubleToLongBits(x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
@@ -90,13 +64,9 @@ public abstract class SensorMeasurement{
 		if (getClass() != obj.getClass())
 			return false;
 		SensorMeasurement other = (SensorMeasurement) obj;
-		if (coilId != other.coilId)
-			return false;
 		if (type != other.type)
 			return false;
 		if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
-			return false;
-		if (varName != other.varName)
 			return false;
 		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
 			return false;
@@ -105,9 +75,9 @@ public abstract class SensorMeasurement{
 
 	@Override
 	public String toString() {
-		return "Row [coilId=" + coilId + ", varName=" + varName + ", value=" + value + ", type=" + type + ", x=" + x
-				+ "]";
+		return "SensorMeasurement [value=" + value + ", type=" + type + ", x=" + x + "]";
 	}
-
+	
+	
 
 }
