@@ -16,6 +16,11 @@ export class AppSubscriptionsService {
         this.websocketService.send(environment.websocketTopics.getters.coil);
     }
 
+    public getCoilData(coilID: number) {
+        let endpoint = environment.websocketTopics.getters.batch.coilData + coilID;
+        this.websocketService.send(endpoint);
+    }
+
     public getMessages(): void {
         this.websocketService.send(environment.websocketTopics.getters.messages);
     }
@@ -31,7 +36,15 @@ export class AppSubscriptionsService {
             .map((data: any) => JSON.parse(data));
     }
 
+    public historicalData(): Observable<any> {
+        return this.websocketService
+            .subscribe(environment.websocketTopics.getters.batch.dataNotification)
+            .map((data: any) => JSON.parse(data));
+    }
 
+    public requestHistoricalData(coilId: number, varId: number){
+        this.websocketService.subscribe(environment.websocketTopics.getters.batch.coilData + coilId + "/" + varId);
+    }
 
 
 

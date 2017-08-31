@@ -52,7 +52,7 @@ public class CoilController {
 			@Override
 			public void onNext(Pair<String, Integer> pair) {
 				
-				LOGGER.info("New Coil notification {}" , pair.getValue());
+				//LOGGER.info("New Coil notification {}" , pair.getValue());
 				sendCoilChangeNotification(pair);
 			}
 

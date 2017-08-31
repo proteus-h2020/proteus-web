@@ -49,7 +49,7 @@ public class Tuple3<T,K,V> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tuple3 other = (Tuple3) obj;
+		Tuple3<?, ?, ?> other = (Tuple3<?, ?, ?>) obj;
 		if (t1 == null) {
 			if (other.t1 != null)
 				return false;

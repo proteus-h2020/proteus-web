@@ -30,17 +30,17 @@ export const PAGES_MENU = [
             path: 'new',
             data: {
               menu: {
-                title: 'New visualization'
-              }
-            }
+                title: 'Create visualization',
+              },
+            },
           },
           {
             path: 'edit',
             data: {
               menu: {
-                title: 'Edit visualization'
-              }
-            }
+                title: 'Edit visualization',
+              },
+            },
           }
           // {
           //   path: 'ckeditor',

@@ -1,53 +1,50 @@
 <form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
 
   <div class="row">
-    <ba-card class="col" title="visualization.type">
-      <input type="radio" formControlName="type" value="Barchart"> Barchart
-      <input type="radio" formControlName="type" value="Gauge"> Gauge
-      <input type="radio" formControlName="type" value="Heatmap"> Heatmap
-      <input type="radio" formControlName="type" value="Linechart"> Linechart
-      <input type="radio" formControlName="type" value="Network"> Network chart
-      <input type="radio" formControlName="type" value="Scatterplot"> Scatterplot
-      <input type="radio" formControlName="type" value="StackedArea"> Stacked Area chart
-      <input type="radio" formControlName="type" value="Streamgraph"> Streamgraph
-      <input type="radio" formControlName="type" value="Sunburst"> Sunburst
-      <input type="radio" formControlName="type" value="Swimlane"> Swimlane
+    <ba-card class="col" title="visualization.mode">
+      <label for="coilSelection"><strong>Select your prefered coil ID:</strong></label>
+      <select id="coilSelection" class="form-control" formControlName="coilID">
+        <option value="current">Current coil (streaming)</option>
+        <option value="40101001">40101001</option>
+        <option value="40101002">40101002</option>
+        <option value="40101003">40101003</option>
+        <option value="40101006">40101006</option>
+
+      </select>
     </ba-card>
   </div>
 
   <div class="row">
-    <ba-card class="col" title="Real-time data">
-      <div class="row">
-        <div class="form-group col">
-          <div class="form-group">
-            <p>Choose your variable:</p>
-          </div>
-          <div class="row">
-            <label for="" class="col-3">Variable</label>
-            <div class="col-3">
-              <select id="" class="formControl" formControlName="variable" name="variable">
-              <option *ngFor="let v of variables" [value]="v">{{v}}</option>
-            </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group col">
-          <div class="form-group">
-            <p>Calculations:</p>
-          </div>
-
-          <select formControlName="calculations" multiple>
-            <option *ngFor="let c of calculations" [value]="c">{{c.label}}</option>
-          </select>
-        </div>
-      </div>
+    <ba-card class="col" title="visualization.type">
+      <label><strong>What kind of chart do you want to configure?:</strong></label>
+      <select formControlName="type" class="form-control">
+          <option value="Barchart"> Barchart</option>
+          <option value="Gauge"> Gauge</option>
+          <option value="Heatmap"> Heatmap</option>
+          <option value="Linechart"> Linechart</option>
+          <option value="Network"> Network</option>
+          <option value="Scatterplot"> Scatterplot</option>
+          <option value="StackedArea"> Stacked Area</option>
+          <option value="Streamgraph"> Streamgraph</option>
+          <option value="Sunburst"> Sunburst</option>
+          <option value="Swimlane"> Swimlane</option>
+        </select>
     </ba-card>
+  </div>
 
-    <ba-card class="col" title="Historical data">
+  <div class="row">
+    <ba-card class="col"  title="Real-time data">
+      <label for="varSelect"><strong>Select your var ID:</strong></label>
+      <select id="varSelect" class="form-control" formControlName="variable" name="variable">
+        <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+      </select>
 
+      <label><strong>Calculations:</strong></label>
+
+      <select class="form-control" formControlName="calculations" multiple>
+        <option *ngFor="let c of calculations" [value]="c">{{c.label}}</option>
+      </select>
     </ba-card>
-
   </div>
 
   <div class="row">

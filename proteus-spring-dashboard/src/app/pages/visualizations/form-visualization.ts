@@ -35,9 +35,10 @@ export class FormVisualization {
             title: [model ? model.title : 'untitled'],
             type: [model ? model.type : '', [<any>Validators.required]],
             configuration: FormVisualization._createConfigurationByChartProperties(currentConf),
-            variable: [model ? model.variable : null],
+            variable: [model ? model.variable :1],
             calculations: [model ? model.calculations : null, [<any>Validators.required]],
             alarms: [model ? model.alarms : null],
+            coilID: [model ? model.coilID : 'current']
            // alarmFactor: [model ? model.alarmFactor : 1]
         });
     }

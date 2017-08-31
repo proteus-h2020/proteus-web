@@ -1,3 +1,4 @@
+import { SelectVisualizationComponent } from './components/select/select.component';
 import { DashboardModule } from './../dashboard/dashboard.module';
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
@@ -26,6 +27,7 @@ import { AnnotationsService } from './components/annotations/annotations.service
   declarations: [
     KeysPipe,
     Visualizations,
+    SelectVisualizationComponent,
     CreateVisualizationComponent,
     EditVisualizationComponent,
     EditOneVisualizationComponent,

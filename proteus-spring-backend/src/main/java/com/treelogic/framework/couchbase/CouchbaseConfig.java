@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 
-@EnableCouchbaseRepositories
+@EnableCouchbaseRepositories(basePackages={"com.treelogic.framework.repository"})
 @Configuration
 public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 

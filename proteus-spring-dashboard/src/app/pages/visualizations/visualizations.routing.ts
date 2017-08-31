@@ -1,3 +1,4 @@
+import { SelectVisualizationComponent } from './components/select/select.component';
 import { Routes, RouterModule } from '@angular/router';
 
 import { Visualizations } from './visualizations.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
     path: '',
     component: Visualizations,
     children: [
+      { path: 'select', component: SelectVisualizationComponent },
       { path: 'new', component: CreateVisualizationComponent },
       { path: 'edit', component: EditVisualizationComponent },
       { path: 'edit/:id', component: EditOneVisualizationComponent },

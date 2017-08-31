@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-md-4">
+        <label class="radio-inline custom-radio nowrap">
+            <input #radioButtonRealtime name="visualizationType" type="radio" value="realtime">
+            <span>Real-time data (current coil)</span>
+        </label>
+    </div>
+    <div class="col-md-4">
+        <label class="radio-inline custom-radio nowrap">
+            <input #radioButtonBatch name="visualizationType" type="radio" value="batch">
+            <span>Batch data </span>
+        </label>
+    </div>
+</div>
+
+<hr/>
+
+<div class="row">
+    <button (click)="goToCreationPanel()" class="col-xs-12 col-md-12 col-lg-12 btn btn-info">Next</button>
+</div>

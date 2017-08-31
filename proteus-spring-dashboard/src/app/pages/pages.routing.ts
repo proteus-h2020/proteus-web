@@ -17,7 +17,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
-      { path: 'historical', loadChildren: './visualizations/visualizations.module#VisualizationsModule' },
+      { path: 'historical', loadChildren: './historical/historical.module#HistoricalModule' },
       { path: 'visualizations', loadChildren: './visualizations/visualizations.module#VisualizationsModule' },
     ],
   },
