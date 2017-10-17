@@ -5,7 +5,7 @@ export class KeysPipe implements PipeTransform {
   transform(value, args: string[]): any {
     let keys = [];
     for (let key in value) {
-      //only allow to modify string keys
+      // only allow to modify string keys
       if (typeof value[key] === 'string') {
         keys.push({ key: key, value: value[key] });
       }

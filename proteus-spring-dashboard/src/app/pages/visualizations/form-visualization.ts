@@ -7,7 +7,7 @@ export class FormVisualization {
     public static defaults = {};
     private static fb: FormBuilder = new FormBuilder();
     public static keyValues: string[] = [];
-    public static selectedCalculations: Calculation[] = new Array<Calculation>(); 
+    public static selectedCalculations: Calculation[] = new Array<Calculation>();
 
 
     public static valueKeysChange(keys: string[]) {
@@ -16,12 +16,12 @@ export class FormVisualization {
 
     public static calculationsCbChange(event: any) {
 
-        if(event.target.checked){
+        if (event.target.checked) {
             this.selectedCalculations.push(event.target.value);
         }
-        else{
+        else {
             let index = this.selectedCalculations.indexOf(event.target.value);
-            if(index > -1){
+            if (index > -1) {
                 this.selectedCalculations.splice(index, 1);
             }
         }
@@ -42,15 +42,16 @@ export class FormVisualization {
         });
     }
 
-    private static _createConfigurationByChartProperties(conf : any): FormGroup {
+    private static _createConfigurationByChartProperties(conf: any): FormGroup {
         let form = {};
-        for (var property in FormVisualization.defaults) {
+        for (let property in FormVisualization.defaults) {
             if (FormVisualization.defaults.hasOwnProperty(property)) {
                 form[property] = [conf ? conf[property] : FormVisualization.defaults[property]]
             }
         }
         return FormVisualization.fb.group(form);
     }
+    
     public static changeDefaultProperties(chartType: string, form: FormGroup) {
         FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
         form.setControl('configuration', this._createConfigurationByChartProperties(null));

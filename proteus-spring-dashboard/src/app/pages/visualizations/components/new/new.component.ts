@@ -10,7 +10,7 @@ import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
-import { Calculation,VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
+import { Calculation, VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 

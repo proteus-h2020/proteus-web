@@ -46,9 +46,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
 
     this.id = 'proteic' + Date.now().toString();
-    //this.chart.configuration.marginRight = 150;
+    // this.chart.configuration.marginRight = 150;
     this.chart.configuration.marginBottom = 50;
-    //this.chart.configuration.marginLeft = 70;
+    // this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
     this.chart.configuration.selector = '#' + this.id;
     this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
@@ -76,7 +76,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.proteicChart = new Heatmap([], this.chart.configuration);
         break;
       case 'Linechart':
-      console.log(this.chart);
         if (this.chart.alarms) {
           this.proteicChart = new Linechart([], this.chart.configuration)
             .annotations(this.chart.annotations)
@@ -85,10 +84,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
               return value < events.get('mean') - events.get('stdDeviation') ||
                 value > events.get('mean') + events.get('stdDeviation');
             }, alertCallback, {
-              click : (data : any) => window.alert('Variable = ' + data.key  +', value = ' + data.value + ', position(x) = ' + data.x),
+              click: (data: any) => window.alert('Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x),
             });
-        }
-        else {
+        } else {
           this.proteicChart = new Linechart([], this.chart.configuration)
             .annotations(this.chart.annotations)
             .unpivot(unpivot);
@@ -107,7 +105,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'Sunburst':
         break;
       case 'Swimlane':
-      this.proteicChart = new Swimlane([], this.chart.configuration);
+        this.proteicChart = new Swimlane([], this.chart.configuration);
         break;
       default:
         break;
@@ -116,12 +114,12 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     for (const websocketEndpoint of this.chart.endpoints) {
       const subs = this.websocketService.subscribe(websocketEndpoint);
       const subscription = subs.subscribe((data: any) => {
-        let json = JSON.parse(data);
-        if (typeof json.type !== 'undefined') { //Check if it is a real-time value. If so, add a key.
+        const json = JSON.parse(data);
+        if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
           json.key = '' + json.varId;
         }
-        if(typeof json.mean !== 'undefined'){
-          //TODO: add alarm factor
+        if (typeof json.mean !== 'undefined') {
+          // TODO: add alarm factor
         }
         if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
           this.proteicChart.clear();

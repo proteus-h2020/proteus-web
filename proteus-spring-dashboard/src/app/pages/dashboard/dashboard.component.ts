@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
   private subscriptions: Subscription[] = new Array<Subscription>();
   private coilId: number = 0;
-  private messageCounter : number = 0;
+  private messageCounter: number = 0;
 
 
   constructor(
@@ -35,9 +35,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    for(const s of this.subscriptions){
+    for (const s of this.subscriptions){
       s.unsubscribe();
-    } 
+    }
   }
 
   removeChart(chart: RealtimeChart) {
@@ -52,10 +52,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * It initializes subscriptions to the both chart and data services
-   * 
    * @private
-   * 
-   * @memberOf DashboardComponent
+   * @memberof DashboardComponent
    */
   private _initializeSubscriptions() {
 
@@ -69,9 +67,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const messageCounterSubscription = this.appSubscriptionService.messageCounter().subscribe(
       (data: any) => this.messageCounter = data.value,
-    ); 
+    );
 
-    //Get initial values
+    // Get initial values
     this.appSubscriptionService.getCoil();
     this.appSubscriptionService.getMessages();
 
