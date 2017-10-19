@@ -23,7 +23,9 @@
             <p>Choose your variable:</p>
           </div>
           <div class="row">
-            <label for="" class="col-3">Variable</label>
+            <div class="col-3">
+                <label for="" class="on-select">Variable</label>
+            </div>
             <div class="col-3">
               <select id="" class="formControl" formControlName="variable" name="variable">
               <option *ngFor="let v of variables" [value]="v">{{v}}</option>
@@ -55,7 +57,7 @@
 
       <div *ngIf="form.controls.type.value=='Linechart'" class="form-group">
         <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
-        <input class="form-control" formControlName="alarms" type="checkbox" name="chartAlarms" id="chartAlarms">
+        <input formControlName="alarms" type="checkbox" name="chartAlarms" id="chartAlarms">
       </div>
       <!--
       <div *ngIf="form.controls.alarms.value" class="form-group">
@@ -74,10 +76,17 @@
       <div class="form-group" formGroupName="configuration" ngDefaultControl>
         <!-- Default fields for the selected chart-->
         <div *ngFor="let entry of defaults() | keys" class="form-group">
-          <div>
+          <div *ngIf="typeOfDefault(entry.key) === 'string'">
             <label for="chartTitle">{{entry.key}}: </label>
             <input [formControlName]="entry.key" type="text" class="form-control" name="chartTitle">
           </div>
+          <div *ngIf="typeOfDefault(entry.key) === 'boolean'">
+            <label for="chartTitle">{{entry.key}}: </label>
+            <div class="radio-boolean">
+                <input [formControlName]="entry.key" type="radio" [value]="true"> true
+                <input [formControlName]="entry.key" type="radio" [value]="false"> false
+            </div>
+        </div>
         </div>
       </div>
 

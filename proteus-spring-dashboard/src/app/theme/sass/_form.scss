@@ -37,6 +37,13 @@
     font-weight: $font-normal;
     font-size: 13px;
   }
+  label.on-select {
+      line-height: 22px;
+  }
+  #chartAlarms {
+      margin-left: 10px;
+      vertical-align: text-bottom;
+  }
 }
 
 .form-control {
@@ -53,6 +60,10 @@
     border-color: $primary-bg;
     background: $input-background;
   }
+}
+
+.radio-boolean input:not(:first-child) {
+    margin-left: 100px;
 }
 
 select.form-control {
