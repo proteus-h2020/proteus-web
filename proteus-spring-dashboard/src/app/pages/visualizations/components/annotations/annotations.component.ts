@@ -8,7 +8,7 @@ import { AnnotationsService } from './annotations.service'
   styleUrls: ['./annotations.component.scss']
 })
 export class AnnotationsComponent implements OnInit {
- 
+
   selectedAnnotation: Annotation;
   newAnnotation: Annotation;
   annotations: Annotation[];
@@ -27,6 +27,10 @@ export class AnnotationsComponent implements OnInit {
   add(annotation: Annotation): void {
     this.annotationsService.create(annotation);
     this.newAnnotation = null;
+  }
+
+  cancel(annotation: Annotation): void {
+      this.newAnnotation = null;
   }
 
   delete(annotation: Annotation): void {
