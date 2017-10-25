@@ -46,12 +46,16 @@ export class FormVisualization {
         let form = {};
         for (let property in FormVisualization.defaults) {
             if (FormVisualization.defaults.hasOwnProperty(property)) {
-                form[property] = [conf ? conf[property] : FormVisualization.defaults[property]]
+                if (property == 'pauseButton') { // In proteic, default of pauseButton is false
+                    form[property] = [conf ? conf[property] : true];
+                } else {
+                    form[property] = [conf ? conf[property] : FormVisualization.defaults[property]];
+                }
             }
         }
         return FormVisualization.fb.group(form);
     }
-    
+
     public static changeDefaultProperties(chartType: string, form: FormGroup) {
         FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
         form.setControl('configuration', this._createConfigurationByChartProperties(null));

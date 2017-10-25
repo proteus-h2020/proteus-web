@@ -44,15 +44,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-
     this.id = 'proteic' + Date.now().toString();
-    // this.chart.configuration.marginRight = 150;
-    this.chart.configuration.marginBottom = 50;
-    // this.chart.configuration.marginLeft = 70;
-    this.chart.configuration.marginTop = 35;
-    this.chart.configuration.selector = '#' + this.id;
-    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
-    this.chart.configuration.legendPosition = 'top';
+    this._setChartConfiguration();
   }
 
   ngAfterViewInit(): void {
@@ -142,6 +135,21 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     this.proteicChart.erase();
   }
 
+  /**
+   * It assigns some chart configurations that user can't set
+   * @private
+   * @memberof Proteic
+   */
+  private _setChartConfiguration() {
+    // this.chart.configuration.marginRight = 100;
+    this.chart.configuration.marginBottom = 50;
+    // this.chart.configuration.marginLeft = 70;
+    this.chart.configuration.marginTop = 35;
+    this.chart.configuration.selector = '#' + this.id;
+    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
+    this.chart.configuration.legendPosition = 'top';
+    this.chart.configuration.pauseButtonPosition = 'right';
+  }
 
   private _calculateUnpivotArray(chart: RealtimeChart): string[] {
     const unpivot = new Array<string>();
