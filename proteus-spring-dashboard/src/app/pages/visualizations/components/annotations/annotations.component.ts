@@ -29,8 +29,13 @@ export class AnnotationsComponent implements OnInit {
     this.newAnnotation = null;
   }
 
-  cancel(annotation: Annotation): void {
-      this.newAnnotation = null;
+  cancel(): void {
+      if (this.newAnnotation) {
+          this.newAnnotation = null;
+      }
+      if (this.selectedAnnotation) {
+          this.selectedAnnotation = null;
+      }
   }
 
   delete(annotation: Annotation): void {
