@@ -45,7 +45,7 @@
       vertical-align: text-bottom;
   }
   .right {
-      left: 360px;
+      left: 330px;
   }
 }
 
@@ -67,6 +67,10 @@
 
 .radio-boolean input:not(:first-child) {
     margin-left: 100px;
+}
+
+table.form-group-table{
+    width: 50%;
 }
 
 select.form-control {

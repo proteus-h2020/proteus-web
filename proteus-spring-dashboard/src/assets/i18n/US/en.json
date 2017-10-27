@@ -115,6 +115,9 @@
     "annotations": {
       "title": "Annotations"
     },
+    "statistics": {
+      "title": "Statistics"
+    },
     "submit": "Confirm"
   }
 }
