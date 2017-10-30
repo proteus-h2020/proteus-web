@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'ba-card-proteic',
+  styleUrls: ['./baCardProteic.scss'],
   templateUrl: './baCardProteic.html',
 })
 export class BaCardProteic {

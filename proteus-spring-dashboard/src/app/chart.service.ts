@@ -4,8 +4,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from './realtime-chart';
-import {Colors} from 'proteic';
-import {scaleQuantize} from 'd3';
+import { Colors } from 'proteic';
+import { scaleQuantize } from 'd3';
 
 @Injectable()
 export class ChartService {
@@ -46,7 +46,7 @@ export class ChartService {
                 marginRight: 100,
             },
             annotations, // annotations
-            "2",
+            '2',
             calculations,
             endpoints,
         );
@@ -92,7 +92,7 @@ export class ChartService {
                 '#0e265e',
                 // '#0d2253',
                 // '#0c1e47',
-                '#0b1a3c'
+                '#0b1a3c',
             ]),
             legendCells: 6,
             legendTitle: 'Similarity',
@@ -100,7 +100,7 @@ export class ChartService {
             valuesFormat: '.4f',
             },
             annotations, // annotations
-            "2",
+            '2',
             calculations,
             endpoints,
         );
@@ -108,9 +108,6 @@ export class ChartService {
         this.push(chart);
 
 
-
-
-        
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
@@ -133,7 +130,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "3",
+            '3',
             calculations,
             endpoints,
         );
@@ -163,7 +160,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "5",
+            '5',
             calculations,
             endpoints,
         );
@@ -172,8 +169,7 @@ export class ChartService {
         this.push(chart);
 
 
-
- calculations = new Array<Calculation>();
+        calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/8');
@@ -204,21 +200,18 @@ export class ChartService {
                 '#0e265e',
                 // '#0d2253',
                 // '#0c1e47',
-                '#0b1a3c'
+                '#0b1a3c',
             ]),
-            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
-
-            
-            }, //config
+            onClick: (data: any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+            }, // config
             annotations, // annotations
-            "8",
+            '8',
             calculations,
             endpoints,
         );
         chart.alarms = true;
 
         this.push(chart);
-
 
 
         calculations = new Array<Calculation>();
@@ -243,7 +236,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "10",
+            '10',
             calculations,
             endpoints,
         );
@@ -273,7 +266,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "15",
+            '15',
             calculations,
             endpoints,
         );
@@ -303,7 +296,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "21",
+            '21',
             calculations,
             endpoints,
         );
@@ -333,7 +326,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "24",
+            '24',
             calculations,
             endpoints,
         );
@@ -341,7 +334,7 @@ export class ChartService {
 
         this.push(chart);
 
-calculations = new Array<Calculation>();
+        calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/25');
@@ -373,13 +366,12 @@ calculations = new Array<Calculation>();
                 '#0e265e',
                 // '#0d2253',
                 // '#0c1e47',
-                '#0b1a3c'
+                '#0b1a3c',
             ]),
-            onClick : (data : any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
-
-            }, //config
+            onClick: (data: any) => window.alert('Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y),
+            }, // config
             annotations, // annotations
-            "25",
+            '25',
             calculations,
             endpoints,
         );
@@ -410,7 +402,7 @@ calculations = new Array<Calculation>();
                 maxNumberOfElements: 1500,
             },
             annotations, // annotations
-            "26",
+            '26',
             calculations,
             endpoints,
         );
