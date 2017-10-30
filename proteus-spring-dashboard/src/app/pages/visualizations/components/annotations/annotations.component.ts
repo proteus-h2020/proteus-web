@@ -12,6 +12,7 @@ export class AnnotationsComponent implements OnInit {
   selectedAnnotation: Annotation;
   newAnnotation: Annotation;
   annotations: Annotation[];
+  annotationId: number = 0;
 
   constructor(private annotationsService: AnnotationsService) { }
 
@@ -25,17 +26,18 @@ export class AnnotationsComponent implements OnInit {
   }
 
   add(annotation: Annotation): void {
+    annotation.id = this.annotationId++;
     this.annotationsService.create(annotation);
     this.newAnnotation = null;
   }
 
   cancel(): void {
-      if (this.newAnnotation) {
-          this.newAnnotation = null;
-      }
-      if (this.selectedAnnotation) {
-          this.selectedAnnotation = null;
-      }
+    if (this.newAnnotation) {
+        this.newAnnotation = null;
+    }
+    if (this.selectedAnnotation) {
+        this.selectedAnnotation = null;
+    }
   }
 
   delete(annotation: Annotation): void {
