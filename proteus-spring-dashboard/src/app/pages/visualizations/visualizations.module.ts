@@ -12,7 +12,8 @@ import { EditVisualizationComponent } from './components/edit';
 import { EditOneVisualizationComponent } from './components/edit/editOne.component';
 import { KeysPipe } from './keys.pipe';
 import { AnnotationsComponent } from './components/annotations/annotations.component';
-import { AnnotationsService } from './components/annotations/annotations.service';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { ComponentsService } from './components/components.service';
 
 @NgModule({
   imports: [
@@ -30,8 +31,11 @@ import { AnnotationsService } from './components/annotations/annotations.service
     EditVisualizationComponent,
     EditOneVisualizationComponent,
     AnnotationsComponent,
+    StatisticsComponent,
   ],
-  providers: [AnnotationsService],
+  providers: [
+      ComponentsService,
+  ],
 })
 export class VisualizationsModule {
 }

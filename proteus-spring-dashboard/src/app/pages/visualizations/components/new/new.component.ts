@@ -11,6 +11,9 @@ import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
 import { Calculation, VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
+import { Statistics } from '../../components/statistics/statistics';
+import { ComponentsService } from '../../components/components.service';
+import { ComponentSet } from '../../components/componentSet';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
@@ -29,11 +32,10 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     constructor(
         private chartService: ChartService,
         private router: Router,
-        private annotationsService: AnnotationsService,
+        private componentsService: ComponentsService,
     ) {
         super();
     }
-
 
     public save(model: RealtimeChart, isValid: boolean) {
         let self = this;
@@ -53,12 +55,12 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
 
         endpoints = endpoints.filter(onlyUnique);
 
-        function createChart(annotations: Annotation[]) {
+        function createChart(components: ComponentSet) {
             model = new RealtimeChart(
                 model.title,
                 model.type,
                 model.configuration,
-                annotations.slice(),
+                components,
                 model.variable,
                 model.calculations,
                 endpoints,
@@ -69,8 +71,8 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
         }
 
         if (isValid) {
-            this.annotationsService.getAnnotations()
-                .then((annotations) => createChart(annotations));
+            this.componentsService.getComponents()
+                        .then((components) => createChart(components));
         }
     }
 
