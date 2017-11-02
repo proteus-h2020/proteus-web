@@ -44,10 +44,11 @@ export class FormVisualization {
 
     private static _createConfigurationByChartProperties(conf: any): FormGroup {
         let form = {};
+        let proteusWebDefault = {'pauseButton': true, 'propertyY': 'value'}; // set default value for proteus-web (different from its value in proteic)
         for (let property in FormVisualization.defaults) {
             if (FormVisualization.defaults.hasOwnProperty(property)) {
-                if (property == 'pauseButton') { // In proteic, default of pauseButton is false
-                    form[property] = [conf ? conf[property] : true];
+                if (property in proteusWebDefault) {
+                    form[property] = [conf ? conf[property] : proteusWebDefault[property]];
                 } else {
                     form[property] = [conf ? conf[property] : FormVisualization.defaults[property]];
                 }
