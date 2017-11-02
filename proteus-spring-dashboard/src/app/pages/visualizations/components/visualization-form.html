@@ -22,15 +22,11 @@
           <div class="form-group">
             <p>Choose your variable:</p>
           </div>
-          <div class="row">
-            <div class="col-3">
-                <label for="" class="on-select">Variable</label>
-            </div>
-            <div class="col-3">
-              <select id="" class="formControl" formControlName="variable" name="variable">
+          <div class="form-group">
+            <label for="" class="on-select">Variable</label>
+            <select id="" class="formControl" formControlName="variable" name="variable">
               <option *ngFor="let v of variables" [value]="v">{{v}}</option>
             </select>
-            </div>
           </div>
         </div>
 
