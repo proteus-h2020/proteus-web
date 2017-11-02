@@ -44,9 +44,10 @@
       margin-left: 10px;
       vertical-align: text-bottom;
   }
-  .right {
-      left: 330px;
-  }
+}
+
+.form-group.right-row {
+  float: right;
 }
 
 .form-control {

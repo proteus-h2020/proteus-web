@@ -52,13 +52,9 @@
       <p class="form-text small-text">Variable that holds the whidth for a band annotation.</p>
     </div>
   </div>
-  <div class="form-group row">
-    <div class="col-2 right">
-      <button class="btn btn-general" (click)="add(newAnnotation)">Save</button>
-    </div>
-    <div class="col-2 right">
-      <button class="btn btn-general" (click)="cancel(newAnnotation)">Cancel</button>
-    </div>
+  <div class="form-group right-row">
+    <button class="btn btn-col" (click)="add(newAnnotation)">Save</button>
+    <button class="btn btn-col" (click)="cancel(newAnnotation)">Cancel</button>
   </div>
 </div>
 
@@ -95,12 +91,8 @@
       <option value="band">band</option>
     </select>
   </div>
-  <div class="form-group row">
-    <div class="col-2 right">
-      <button class="btn btn-general" (click)="create(annotation)">Save</button>
-    </div>
-    <div class="col-2 right">
-      <button class="btn btn-general" (click)="cancel()">Cancel</button>
-    </div>
+  <div class="form-group right-row">
+    <button class="btn btn-col" (click)="create(annotation)">Save</button>
+    <button class="btn btn-col" (click)="cancel()">Cancel</button>
   </div>
 </div>
