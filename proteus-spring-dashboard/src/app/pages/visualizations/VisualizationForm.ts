@@ -72,5 +72,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
+      FormVisualization.defaults = {};
     }
 }
