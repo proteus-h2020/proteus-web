@@ -44,7 +44,8 @@ export class FormVisualization {
   /**
    * Function that creates configuration menu on Visualization board by chart property
    * (New-visualization): Basically, default config values get from proteic defaults configuration
-   * (Edit-visualization): Create configuration with user-input config values. If not, config values gets from only proteic defaults
+   * (Edit-visualization): Create configuration form with user-input config values. If no user-input values,
+   * config values get from only proteic defaults
    * @param {model} If model exists, it creates configuration on edit-visualization, else new-visualization
    * @private {static}
    * @memberof FormVisualization
@@ -53,7 +54,8 @@ export class FormVisualization {
     let form = {},
       conf = null,
       defaults,
-      proteusWebDefaults = {'pauseButton': true, 'propertyY': 'value'}; // default values for new-visualization (different from its value in proteic)
+      // default values for new-visualization (different from its value in proteic)
+      proteusWebDefaults = {'pauseButton': true, 'propertyY': 'value'};
 
     if (model) {
       FormVisualization.defaults = getDefaultOptions(model.type.toLowerCase());
@@ -69,7 +71,8 @@ export class FormVisualization {
           defaults = FormVisualization.defaults[property];
         }
 
-        if (conf) { // Edit-visualization: If proteic chart defaults add, already generated chart configuration should be updated
+        // Edit-visualization: If proteic chart defaults add, generated chart configuration should be updated
+        if (conf) {
           form[property] = [conf[property] ? conf[property] : FormVisualization.defaults[property]];
         }
         else { // New-visualization
