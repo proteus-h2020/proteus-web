@@ -64,13 +64,15 @@ export class FormVisualization {
       if (FormVisualization.defaults.hasOwnProperty(property)) {
         if (property in proteusWebDefaults) {
           defaults = proteusWebDefaults[property];
-        } else {
+        }
+        else {
           defaults = FormVisualization.defaults[property];
         }
 
         if (conf) { // Edit-visualization: If proteic chart defaults add, already generated chart configuration should be updated
           form[property] = [conf[property] ? conf[property] : FormVisualization.defaults[property]];
-        } else { // New-visualization
+        }
+        else { // New-visualization
           form[property] = [defaults];
         }
       }
