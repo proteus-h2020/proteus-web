@@ -20,63 +20,66 @@ import { getAvailableVisualizations, Heatmap } from 'proteic';
 import { onlyUnique } from '../../../../utils/Array';
 
 @Component({
-    selector: 'create-visualization',
-    templateUrl: '../visualization-form.html',
-    providers: []
+  selector: 'create-visualization',
+  templateUrl: '../visualization-form.html',
+  providers: []
 })
 
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
 
-    private events: any[] = [];
+  private events: any[] = [];
 
-    constructor(
-        private chartService: ChartService,
-        private router: Router,
-        private componentsService: ComponentsService,
-    ) {
-        super();
+  constructor(
+    private chartService: ChartService,
+    private router: Router,
+    private componentsService: ComponentsService,
+  ) {
+    super();
+  }
+
+  public save(model: RealtimeChart, isValid: boolean) {
+    let self = this;
+    let alarms = model.alarms;
+    let endpoints = new Array<string>();
+    this.submitted = true;
+
+    if (model.calculations) {
+      for (const calc of model.calculations) {
+        if (calc.value === 'raw') {
+          endpoints.push('/topic/realtime/var/' + model.variable);
+        } else if (calc.value == 'mean' || calc.value == 'variance') {
+          endpoints.push('/topic/flink/var/' + model.variable);
+        }
+      }
     }
 
-    public save(model: RealtimeChart, isValid: boolean) {
-        let self = this;
-        this.submitted = true;
-        let alarms = model.alarms;
-        let endpoints = new Array<string>();
+    endpoints = endpoints.filter(onlyUnique);
 
-        if (model.calculations) {
-            for (const calc of model.calculations) {
-                if (calc.value === 'raw') {
-                    endpoints.push('/topic/realtime/var/' + model.variable);
-                } else if (calc.value == 'mean' || calc.value == 'variance') {
-                    endpoints.push('/topic/flink/var/' + model.variable);
-                }
-            }
-        }
+    function createChart(components: ComponentSet) {
+      // It should be deep-copy for nested object
+      let copyComponents: ComponentSet = JSON.parse(JSON.stringify(components)) as ComponentSet;
 
-        endpoints = endpoints.filter(onlyUnique);
-
-        function createChart(components: ComponentSet) {
-            model = new RealtimeChart(
-                model.title,
-                model.type,
-                model.configuration,
-                components,
-                model.variable,
-                model.calculations,
-                endpoints,
-            );
-            model.alarms = alarms;
-            self.chartService.push(model);
-            self.router.navigate(['pages/dashboard']);
-        }
-
-        if (isValid) {
-            this.componentsService.getComponents()
-                        .then((components) => createChart(components));
-        }
+      model = new RealtimeChart(
+        model.title,
+        model.type,
+        model.configuration,
+        copyComponents,
+        model.variable,
+        model.calculations,
+        endpoints,
+      );
+      model.alarms = alarms;
+      self.chartService.push(model);
+      self.router.navigate(['pages/dashboard']);
     }
 
-    public _createForm() {
-        this.form = FormVisualization.createForm();
+    if (isValid) {
+      this.componentsService.getComponents()
+                  .then((components) => createChart(components));
     }
+  }
+
+  public _createForm() {
+    this.form = FormVisualization.createForm();
+  }
 }
