@@ -26,6 +26,8 @@ export class StatisticsComponent implements OnInit {
   }
 
   add(statistics: Statistics): void {
+    let modifier = statistics.settings;
+    statistics.modifier = (confidence) => modifier * confidence;
     statistics.id = this.statisticsId++;
     this.componentsService.create(statistics);
     this.newStatistics = null;

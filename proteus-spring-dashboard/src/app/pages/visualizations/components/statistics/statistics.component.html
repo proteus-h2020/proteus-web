@@ -31,9 +31,9 @@
   <div class="form-group row" *ngIf="newStatistics.type == 'confidenceBand'">
     <label class="col-2  col-form-label" for="statisticsValue">Modifier </label>
     <div class="col-10">
-      <input id="statisticsValue" class="form-control" [(ngModel)]="newStatistics.modifier">
-      <p class="form-text small-text">Function that modifies the confidence interval for a confidence band.</p>
-      <p class="form-text small-text">ex) (confidence) => 0.95 * confidence</p>
+      <input id="statisticsValue" class="form-control" [(ngModel)]="newStatistics.settings" type="number">
+      <p class="form-text small-text">Value that modifies the confidence interval for a confidence band.</p>
+      <p class="form-text small-text">ex)If you input 0.95, confidence = 0.95 * confidence</p>
       <p class="form-text small-text">(Optional) If you don't want, leave it blank</p>
     </div>
   </div>
