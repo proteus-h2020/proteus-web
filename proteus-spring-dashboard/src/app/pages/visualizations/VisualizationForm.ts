@@ -5,7 +5,7 @@ import { FormVisualization } from './form-visualization';
 import { FormGroup } from '@angular/forms';
 
 export class Calculation {
-    value; 
+    value;
     label;
     constructor(value: string, label: string) {
         this.value = value;
@@ -43,6 +43,10 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
     protected defaults() {
         return FormVisualization.defaults;
+    }
+
+    protected typeOfDefault(key: string) {
+        return typeof FormVisualization.defaults[key];
     }
 
     protected valueKeysChange(keys: string[]) {

@@ -14,14 +14,11 @@ export class RealtimeChart {
         public title: string,
         public type: string,
         public configuration: any,
-        public annotations: Annotation[],  
+        public annotations: Annotation[],
         public variable: string,
-        public calculations: Calculation[], 
+        public calculations: Calculation[],
         public endpoints: string[],
-    ) { 
+    ) {
         this.id = RealtimeChart.N++;
     }
-
-
-
 }

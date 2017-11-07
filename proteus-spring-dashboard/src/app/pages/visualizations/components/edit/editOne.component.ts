@@ -40,7 +40,7 @@ export class EditOneVisualizationComponent extends VisualizationForm {
     public save(model: RealtimeChart, isValid: boolean) {
         this.submitted = true; // set form submit to true
 
-        //update model
+        // update model
         this.chart.configuration = model.configuration;
         this.chart.type = model.type;
         this.chart.title = model.title;
