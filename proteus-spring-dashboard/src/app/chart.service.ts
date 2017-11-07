@@ -26,12 +26,15 @@ export class ChartService {
         a.width = 'stdDeviation';
         a.text = '+/- STD';
 
+        let s = <any>{};
+
+        s.type = 'confidenceBand';
+        s.variable = 'mean';
+        s.confidence = 'stdDeviation';
+
         let calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
-
-        let annotations = new Array<Annotation>();
-        annotations.push(a);
 
         let components = new ComponentSet();
         components.annotations.push(a);
@@ -50,7 +53,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
                 marginRight: 100,
             },
-            components, // components config of annotations, statistics 
+            components, // components config of annotations, statistics
             '2',
             calculations,
             endpoints,
@@ -256,7 +259,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/15');
@@ -287,7 +290,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/21');
@@ -318,7 +321,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/24');
@@ -395,7 +398,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/26');
