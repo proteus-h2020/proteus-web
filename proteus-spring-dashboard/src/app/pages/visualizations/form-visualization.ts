@@ -37,6 +37,7 @@ export class FormVisualization {
       variable: [model ? model.variable : null],
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
+      coilID: [model ? model.coilID : 'current']
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }

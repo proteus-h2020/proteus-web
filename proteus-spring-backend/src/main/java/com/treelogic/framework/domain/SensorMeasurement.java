@@ -1,7 +1,5 @@
 package com.treelogic.framework.domain;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class SensorMeasurement extends ProteusJsonizableRecord{
 

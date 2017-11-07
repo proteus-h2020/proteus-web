@@ -109,6 +109,7 @@
     "donut": "Donut"
   },
   "visualization": {
+    "mode": "Visualization mode",
     "type": "Visualization type",
     "calculations": "Calculations",
     "configuration": "Configuration",

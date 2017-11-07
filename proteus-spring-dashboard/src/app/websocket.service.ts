@@ -59,14 +59,14 @@ export class WebsocketService {
                 this.stomp = Stomp.over(this.socket);
                 this.stomp.heartbeat.outgoing = 10000;
                 this.stomp.heartbeat.incoming = 10000;
-                this.stomp.debug = false;
+                this.stomp.debug = true;
                 this.stomp.connect({},
                     () => {
                         this.onConnect();
                         resolve('Connection  to ' + this.socket + ' has been successful');
                     },
-                    () => {
-                        this.onError('Error connecting to the ws');
+                    (e: any ) => {
+                        this.onError('Error connecting to the ws '+ e);
                         reject('Error connecting to ' + environment.wsEndpoint);
                     });
             });

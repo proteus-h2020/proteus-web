@@ -48,7 +48,7 @@ public class MessageCounterController {
 
 			@Override
 			public void onNext(Pair<String, Long> pair) {
-				LOGGER.info("New message counter {}", pair.getValue());
+				LOGGER.debug("New message counter {}", pair.getValue());
 				sendMessageCounter(pair);
 			}
 
