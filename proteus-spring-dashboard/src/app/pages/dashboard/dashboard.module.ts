@@ -1,3 +1,4 @@
+import { ProteicModule } from './proteic/proteic.module';
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,13 +16,13 @@ import { Proteic } from './proteic';
     FormsModule,
     AppTranslationModule,
     NgaModule,
-    routing
+    routing,
+    ProteicModule
   ],
   declarations: [
-    Proteic,
     DashboardComponent,
   ],
-  providers: [
+  exports: [
   ]
 })
 export class DashboardModule {}

@@ -21,7 +21,7 @@ public class ProteusAppService {
 	private PublishSubject<Pair<String, Long>> messageCounterSubject = PublishSubject.create();
 
 	public void update(long counter, MomentsResult moment, SensorMeasurement sensor, SAXResult saxResult) {
-		LOGGER.info("Updating app data...");
+		LOGGER.debug("Updating app data...");
 		this.updateMessageCounter(counter);
 		if (moment != null) {
 			this.updateCoilId(moment.getCoilId());

@@ -2,7 +2,6 @@ package com.treelogic.framework.kafka;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 import javax.annotation.PostConstruct;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -52,7 +52,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
         }
 
         endpoints = endpoints.filter(onlyUnique);
-
+        let coilID  = model.coilID;
         function createChart(annotations: Annotation[]) {
             model = new RealtimeChart(
                 model.title,
@@ -64,8 +64,15 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
                 endpoints,
             );
             model.alarms = alarms;
+            model.coilID = coilID;
+            
             self.chartService.push(model);
-            self.router.navigate(['pages/dashboard']);
+            if (model.coilID === 'current') {
+                self.router.navigate(['pages/dashboard']);
+            }
+            else {
+                self.router.navigate(['pages/historical']);
+            }
         }
 
         if (isValid) {

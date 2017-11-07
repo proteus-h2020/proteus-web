@@ -5,16 +5,19 @@
 
 export const environment = {
   production: false,
-  wsEndpoint: 'http://localhost:8080/wsEndpoint',
-  wsReconnectionTime:10000,
-  websocketTopics:{
+  wsEndpoint: 'http://localhost:8090/wsEndpoint',
+  wsReconnectionTime: 10000,
+  websocketTopics: {
     coilNotification: '/topic/coil',
     messageCounter: '/topic/messageCounter',
-    getters:{
+    getters: {
       coil: '/app/get/coil',
       messages: '/app/get/messages',
-
-    }
+      batch: {
+        dataNotification: '/topic/get/data/coil',
+        coilData: '/app/get/data/coil/', // coil id is concatenated here
+      },
+    },
   },
 };
 

@@ -20,6 +20,8 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     variables: string[];
     calculations: Calculation[];
 
+    private type: string = 'streaming'; //batch or streaming
+    
     constructor() {
 
     }
