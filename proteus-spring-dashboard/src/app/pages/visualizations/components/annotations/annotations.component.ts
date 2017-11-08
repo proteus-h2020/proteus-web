@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Annotation, AnnotationTypes } from './annotation';
-import { AnnotationsService } from './annotations.service'
+import { ComponentsService } from '../components.service';
 
 @Component({
   selector: 'app-annotations',
@@ -12,29 +12,36 @@ export class AnnotationsComponent implements OnInit {
   selectedAnnotation: Annotation;
   newAnnotation: Annotation;
   annotations: Annotation[];
+  annotationId: number = 1;
 
-  constructor(private annotationsService: AnnotationsService) { }
+  constructor(private componentsService: ComponentsService) { }
 
   ngOnInit(): void {
     this.getAnnotations();
   }
 
   getAnnotations(): void {
-    this.annotationsService.getAnnotations()
-      .then(annotations => this.annotations = annotations);
+    this.componentsService.getComponents()
+      .then((components) => this.annotations = components.annotations);
   }
 
   add(annotation: Annotation): void {
-    this.annotationsService.create(annotation);
+    annotation.id = this.annotationId++;
+    this.componentsService.create(annotation);
     this.newAnnotation = null;
   }
 
-  cancel(annotation: Annotation): void {
-      this.newAnnotation = null;
+  cancel(): void {
+    if (this.newAnnotation) {
+        this.newAnnotation = null;
+    }
+    if (this.selectedAnnotation) {
+        this.selectedAnnotation = null;
+    }
   }
 
   delete(annotation: Annotation): void {
-    this.annotationsService.delete(annotation.id);
+    this.componentsService.delete(annotation);
   }
 
   edit(annotation: Annotation): void {

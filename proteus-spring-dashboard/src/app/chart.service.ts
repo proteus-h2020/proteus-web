@@ -1,4 +1,6 @@
-import { Annotation, AnnotationTypes } from './pages//visualizations/components/annotations/annotation';
+import { Annotation, AnnotationTypes } from './pages/visualizations/components/annotations/annotation';
+import { Statistics } from './pages/visualizations/components/statistics/statistics';
+import { ComponentSet } from './pages/visualizations/components/componentSet';
 import { Calculation } from './pages/visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -24,12 +26,18 @@ export class ChartService {
         a.width = 'stdDeviation';
         a.text = '+/- STD';
 
+        let s = <any>{};
+
+        s.type = 'confidenceBand';
+        s.variable = 'mean';
+        s.confidence = 'stdDeviation';
+
         let calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        let annotations = new Array<Annotation>();
-        annotations.push(a);
+        let components = new ComponentSet();
+        components.annotations.push(a);
 
         let endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/2');
@@ -45,7 +53,7 @@ export class ChartService {
                 maxNumberOfElements: 1500,
                 marginRight: 100,
             },
-            annotations, // annotations
+            components, // components config of annotations, statistics
             '2',
             calculations,
             endpoints,
@@ -58,8 +66,9 @@ export class ChartService {
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+
+        components = new ComponentSet();
+        components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/flink/sax');
@@ -99,7 +108,7 @@ export class ChartService {
             displayValues: true,
             valuesFormat: '.4f',
             },
-            annotations, // annotations
+            components,
             '2',
             calculations,
             endpoints,
@@ -112,8 +121,8 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
@@ -129,7 +138,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '3',
             calculations,
             endpoints,
@@ -142,8 +151,8 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/5');
@@ -159,7 +168,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '5',
             calculations,
             endpoints,
@@ -204,7 +213,7 @@ export class ChartService {
             ]),
             onClick: (data: any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
             }, // config
-            annotations, // annotations
+            components,
             '8',
             calculations,
             endpoints,
@@ -218,8 +227,8 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/10');
@@ -235,7 +244,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '10',
             calculations,
             endpoints,
@@ -244,12 +253,13 @@ export class ChartService {
 
         this.push(chart);
 
+
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/15');
@@ -265,7 +275,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '15',
             calculations,
             endpoints,
@@ -274,12 +284,13 @@ export class ChartService {
 
         this.push(chart);
 
+
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/21');
@@ -295,7 +306,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '21',
             calculations,
             endpoints,
@@ -304,12 +315,13 @@ export class ChartService {
 
         this.push(chart);
 
+
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/24');
@@ -325,7 +337,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '24',
             calculations,
             endpoints,
@@ -333,6 +345,7 @@ export class ChartService {
         chart.alarms = true;
 
         this.push(chart);
+
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
@@ -370,7 +383,7 @@ export class ChartService {
             ]),
             onClick: (data: any) => window.alert('Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y),
             }, // config
-            annotations, // annotations
+            components,
             '25',
             calculations,
             endpoints,
@@ -384,8 +397,8 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
         calculations.push(new Calculation('mean', 'Mean'));
 
-        annotations = new Array<Annotation>();
-        annotations.push(a);
+        components = new ComponentSet();
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/26');
@@ -401,7 +414,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
             },
-            annotations, // annotations
+            components,
             '26',
             calculations,
             endpoints,

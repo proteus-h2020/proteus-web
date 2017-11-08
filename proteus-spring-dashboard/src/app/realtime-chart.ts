@@ -1,5 +1,6 @@
 import { Annotation } from './pages/visualizations/components/annotations/annotation';
 import { Calculation } from './pages/visualizations/VisualizationForm';
+import { ComponentSet } from './pages/visualizations/components/componentSet';
 
 export class RealtimeChart {
 
@@ -14,7 +15,7 @@ export class RealtimeChart {
         public title: string,
         public type: string,
         public configuration: any,
-        public annotations: Annotation[],
+        public components: ComponentSet,
         public variable: string,
         public calculations: Calculation[],
         public endpoints: string[],

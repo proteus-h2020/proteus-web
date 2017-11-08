@@ -33,7 +33,6 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   private lastCoilReceived: number = -1;
 
-
   @Input() private chart: RealtimeChart;
 
   private proteicChart: Chart;
@@ -58,6 +57,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
     };
 
+    const annotations = this.chart.components.annotations;
+    const statistics = this.chart.components.statistics;
+
     switch (this.chart.type) {
       case 'Barchart':
         this.proteicChart = new Barchart([], this.chart.configuration).unpivot(unpivot);
@@ -71,7 +73,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'Linechart':
         if (this.chart.alarms) {
           this.proteicChart = new Linechart([], this.chart.configuration)
-            .annotations(this.chart.annotations)
+            .annotations(annotations)
+            .statistics(statistics)
             .unpivot(unpivot)
             .alert(this.chart.variable, (value, events) => {
               return value < events.get('mean') - events.get('stdDeviation') ||
@@ -80,9 +83,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
               click: (data: any) => window.alert('Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x),
             });
         } else {
-          this.proteicChart = new Linechart([], this.chart.configuration)
-            .annotations(this.chart.annotations)
-            .unpivot(unpivot);
+            this.proteicChart = new Linechart([], this.chart.configuration)
+              .annotations(annotations)
+              .statistics(statistics)
+              .unpivot(unpivot);
         }
         break;
       case 'Network':

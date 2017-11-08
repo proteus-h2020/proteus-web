@@ -39,14 +39,16 @@
   }
   label.on-select {
       line-height: 22px;
+      margin-right: 15px;
   }
   #chartAlarms {
       margin-left: 10px;
       vertical-align: text-bottom;
   }
-  .right {
-      left: 360px;
-  }
+}
+
+.form-group.right-row {
+  float: right;
 }
 
 .form-control {
@@ -67,6 +69,10 @@
 
 .radio-boolean input:not(:first-child) {
     margin-left: 100px;
+}
+
+table.form-group-table{
+    width: 50%;
 }
 
 select.form-control {

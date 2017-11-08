@@ -11,77 +11,81 @@ import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
 import { Calculation, VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
+import { Statistics } from '../../components/statistics/statistics';
+import { ComponentsService } from '../../components/components.service';
+import { ComponentSet } from '../../components/componentSet';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
 import { onlyUnique } from '../../../../utils/Array';
 
 @Component({
-    selector: 'create-visualization',
-    templateUrl: '../visualization-form.html',
-    providers: []
+  selector: 'create-visualization',
+  templateUrl: '../visualization-form.html',
+  providers: []
 })
 
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
 
-    private events: any[] = [];
+  private events: any[] = [];
 
-    constructor(
-        private chartService: ChartService,
-        private router: Router,
-        private annotationsService: AnnotationsService,
-    ) {
-        super();
+  constructor(
+    private chartService: ChartService,
+    private router: Router,
+    private componentsService: ComponentsService,
+  ) {
+    super();
+  }
+
+  public save(model: RealtimeChart, isValid: boolean) {
+    let self = this;
+    let alarms = model.alarms;
+    let endpoints = new Array<string>();
+    this.submitted = true;
+
+    if (model.calculations) {
+      for (const calc of model.calculations) {
+        if (calc.value === 'raw') {
+          endpoints.push('/topic/realtime/var/' + model.variable);
+        } else if (calc.value == 'mean' || calc.value == 'variance') {
+          endpoints.push('/topic/flink/var/' + model.variable);
+        }
+      }
     }
 
+    endpoints = endpoints.filter(onlyUnique);
+    let coilID  = model.coilID;
+    function createChart(components: ComponentSet) {
+      // It should be deep-copy for nested object
+      let copyComponents: ComponentSet = JSON.parse(JSON.stringify(components)) as ComponentSet;
+      model = new RealtimeChart(
+        model.title,
+        model.type,
+        model.configuration,
+        copyComponents,
+        model.variable,
+        model.calculations,
+        endpoints,
+      );
+      model.alarms = alarms;
+      model.coilID = coilID;
 
-    public save(model: RealtimeChart, isValid: boolean) {
-        let self = this;
-        this.submitted = true;
-        let alarms = model.alarms;
-        let endpoints = new Array<string>();
-
-        if (model.calculations) {
-            for (const calc of model.calculations) {
-                if (calc.value === 'raw') {
-                    endpoints.push('/topic/realtime/var/' + model.variable);
-                } else if (calc.value == 'mean' || calc.value == 'variance') {
-                    endpoints.push('/topic/flink/var/' + model.variable);
-                }
-            }
-        }
-
-        endpoints = endpoints.filter(onlyUnique);
-        let coilID  = model.coilID;
-        function createChart(annotations: Annotation[]) {
-            model = new RealtimeChart(
-                model.title,
-                model.type,
-                model.configuration,
-                annotations.slice(),
-                model.variable,
-                model.calculations,
-                endpoints,
-            );
-            model.alarms = alarms;
-            model.coilID = coilID;
-            
-            self.chartService.push(model);
-            if (model.coilID === 'current') {
-                self.router.navigate(['pages/dashboard']);
-            }
-            else {
-                self.router.navigate(['pages/historical']);
-            }
-        }
-
-        if (isValid) {
-            this.annotationsService.getAnnotations()
-                .then((annotations) => createChart(annotations));
-        }
+      self.chartService.push(model);
+      if (model.coilID === 'current') {
+          self.router.navigate(['pages/dashboard']);
+      }
+      else {
+          self.router.navigate(['pages/historical']);
+      }
     }
 
-    public _createForm() {
-        this.form = FormVisualization.createForm();
+    if (isValid) {
+      this.componentsService.getComponents()
+                  .then((components) => createChart(components));
     }
+  }
+
+  public _createForm() {
+    this.form = FormVisualization.createForm();
+  }
 }
