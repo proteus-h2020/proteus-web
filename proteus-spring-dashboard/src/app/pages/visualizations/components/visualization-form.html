@@ -86,7 +86,7 @@
       </div>
     </ba-card>
 
-    <table class="form-group-table">
+    <table *ngIf="form.controls.type.value=='Linechart'; else blank" class="form-group-table">
         <tbody>
             <tr>
                 <td>
@@ -105,6 +105,9 @@
         </tbody>
     </table>
 
+    <ng-template #blank>
+      <div class="col"></div>
+    </ng-template>
   </div>
 
 
