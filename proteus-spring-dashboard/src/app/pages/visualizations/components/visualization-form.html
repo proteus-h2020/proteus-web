@@ -92,24 +92,27 @@
       </div>
     </ba-card>
 
-    <table class="form-group-table">
-        <tbody>
-            <tr *ngFor="let chart of chartsWithAnnotations()">
-                <td *ngIf="form.controls.type.value == chart">
-                    <ba-card class="smart-table-container" title="visualization.annotations.title">
-                      <app-annotations></app-annotations>
-                    </ba-card>
-                </td>
-            </tr>
-            <tr *ngFor="let chart of chartsWithStatistics()">
-                <td *ngIf="form.controls.type.value == chart">
-                    <ba-card class="smart-table-container" title="visualization.statistics.title">
-                      <app-statistics></app-statistics>
-                    </ba-card>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col">
+      <table class="form-group-table">
+          <tbody>
+              <tr *ngFor="let chart of chartsWithAnnotations()">
+                  <td *ngIf="form.controls.type.value == chart">
+                      <ba-card class="smart-table-container" title="visualization.annotations.title">
+                        <app-annotations></app-annotations>
+                      </ba-card>
+                  </td>
+              </tr>
+              <tr *ngFor="let chart of chartsWithStatistics()">
+                  <td *ngIf="form.controls.type.value == chart">
+                      <ba-card class="smart-table-container" title="visualization.statistics.title">
+                        <app-statistics></app-statistics>
+                      </ba-card>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
   </div>
 
 
