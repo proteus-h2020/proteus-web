@@ -57,6 +57,14 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
         FormVisualization.calculationsCbChange(event);
     }
 
+    protected chartsWithAnnotations() {
+      return ['Linechart', 'Scatterplot', 'Barchart'];
+    }
+
+    protected chartsWithStatistics() {
+      return ['Linechart'];
+    }
+
     public ngOnInit() {
         this._createForm();
 

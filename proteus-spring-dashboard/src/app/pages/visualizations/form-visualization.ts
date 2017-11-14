@@ -18,8 +18,7 @@ export class FormVisualization {
 
     if (event.target.checked) {
       this.selectedCalculations.push(event.target.value);
-    }
-    else {
+    } else {
       let index = this.selectedCalculations.indexOf(event.target.value);
       if (index > -1) {
           this.selectedCalculations.splice(index, 1);
@@ -37,13 +36,14 @@ export class FormVisualization {
       variable: [model ? model.variable : null],
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
-      coilID: [model ? model.coilID : 'current']
+      coilID: [model ? model.coilID : 'current'],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
 
   /**
-   * Function that creates configuration menu on Visualization board by chart property
+   * @method
+   * It creates configuration menu on Visualization board by chart property
    * (New-visualization): Basically, default config values get from proteic defaults configuration
    * (Edit-visualization): Create configuration form with user-input config values. If no user-input values,
    * config values get from only proteic defaults
@@ -56,7 +56,7 @@ export class FormVisualization {
       conf = null,
       defaults,
       // default values for new-visualization (different from its value in proteic)
-      proteusWebDefaults = {'pauseButton': true, 'propertyY': 'value'};
+      proteusWebDefaults = { 'propertyY': 'value' };
 
     if (model) {
       FormVisualization.defaults = getDefaultOptions(model.type.toLowerCase());
@@ -67,16 +67,14 @@ export class FormVisualization {
       if (FormVisualization.defaults.hasOwnProperty(property)) {
         if (property in proteusWebDefaults) {
           defaults = proteusWebDefaults[property];
-        }
-        else {
+        } else {
           defaults = FormVisualization.defaults[property];
         }
 
         // Edit-visualization: If proteic chart defaults add, generated chart configuration should be updated
         if (conf) {
           form[property] = [conf[property] ? conf[property] : FormVisualization.defaults[property]];
-        }
-        else { // New-visualization
+        } else { // New-visualization
           form[property] = [defaults];
         }
       }
