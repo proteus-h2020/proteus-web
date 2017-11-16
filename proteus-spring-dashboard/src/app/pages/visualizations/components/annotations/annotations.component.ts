@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
+import { ComponentSet } from '../componentSet';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-annotations',
@@ -14,18 +16,27 @@ export class AnnotationsComponent implements OnInit {
   annotations: Annotation[];
   annotationId: number = 1;
 
-  constructor(private componentsService: ComponentsService) { }
+  constructor(
+    private componentsService: ComponentsService,
+    private route: Router,
+  ) { }
 
   ngOnInit(): void {
-    this.getAnnotations();
+    let id;
+    if (this.route.url != '/pages/visualizations/new') { // edit
+      id = +this.route.url.split('/').pop();
+    }
+
+    this.showAnnotations(id);
   }
 
-  getAnnotations(): void {
-    this.componentsService.getComponents()
-      .then((components) => this.annotations = components.annotations);
+  showAnnotations(id: number = null): void {
+    this.componentsService.getComponents(id)
+          .then((components) => this.annotations = components.annotations);
   }
 
   add(annotation: Annotation): void {
+    this.annotationId = this.componentsService.getComponentLastId(annotation);
     annotation.id = this.annotationId++;
     this.componentsService.create(annotation);
     this.newAnnotation = null;

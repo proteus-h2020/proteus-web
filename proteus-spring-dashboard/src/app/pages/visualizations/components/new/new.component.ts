@@ -56,13 +56,11 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     endpoints = endpoints.filter(onlyUnique);
     let coilID  = model.coilID;
     function createChart(components: ComponentSet) {
-      // It should be deep-copy for nested object
-      let copyComponents: ComponentSet = JSON.parse(JSON.stringify(components)) as ComponentSet;
       model = new RealtimeChart(
         model.title,
         model.type,
         model.configuration,
-        copyComponents,
+        components,
         model.variable,
         model.calculations,
         endpoints,
@@ -72,10 +70,9 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
 
       self.chartService.push(model);
       if (model.coilID === 'current') {
-          self.router.navigate(['pages/dashboard']);
-      }
-      else {
-          self.router.navigate(['pages/historical']);
+        self.router.navigate(['pages/dashboard']);
+      } else {
+        self.router.navigate(['pages/historical']);
       }
     }
 
