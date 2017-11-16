@@ -12,34 +12,90 @@ import { ComponentSet } from './componentSet';
 @Injectable()
 export class ComponentsService {
 
-  private components: ComponentSet;
+  /**
+  * An array of component set (Annotations, Statistics)
+  * Each element is for each chart (differentiated by chart id)
+  * Important: chartId of each component set is assigned when chart is created
+  * @see realtime-chart.ts @see new.components.ts
+  * @private
+  * @type {ComponentSet[]}
+  * @memberof ComponentsService
+  */
+  private components: ComponentSet[];
+
+  /**
+  * This variable is used for edit-visualization
+  * If it is null, components is configured in new-visualization
+  * The component set of specific chart can be served by it
+  * It is assigned in getComponents() @see getComponents()
+  * @private
+  * @memberof ComponentsService
+  */
+  private chartId: number;
 
   constructor() {
-    this.components = new ComponentSet();
+    this.components = new Array<ComponentSet>();
   }
 
-  public getComponents(): Promise<ComponentSet> {
-    return Promise.resolve(this.components);
+  public getComponents(id: number = null): Promise<ComponentSet> {
+    let component;
+    this.chartId = id;
+
+    component = this.components.find((c) => c.chartId == id);
+    if (!component) {
+      this.components.push(new ComponentSet());
+      component = this.components[this.components.length - 1];
+    }
+
+    return Promise.resolve(component);
   }
 
   /**
+   * @method
    * Inject componet by type of config
-   * If new option of component adds, we can use other instance methods by scaling out
+   * If new options of component add, we can inject component by scaling out condition statements
+   * How to use: @see delete() @see create()
    * @private
    * @memberof ComponentsService
    */
   private injectComponent(config: any) {
     let component;
-    if (config instanceof Annotation) {
-        component = this.components.annotations;
+    if (this.chartId) { // edit
+      component = this.components.find((c) => c.chartId == this.chartId);
+    } else { // new
+      let lastIndex = this.components.length - 1;
+      if (lastIndex == -1) {
+        this.components.push(new ComponentSet());
+        lastIndex++;
+      }
+
+      component = this.components[lastIndex];
     }
-    else if (config instanceof Statistics) {
-        component = this.components.statistics;
+
+    if (config instanceof Annotation || config == 'annotations') {
+      return component.annotations;
+    } else if (config instanceof Statistics || config == 'statistics') {
+      return component.statistics;
     }
-    return component;
   }
 
-  delete(config: any): void {
+  /**
+  * @method
+  * If edit-visualization, get the last id of the component's configuration on already generated chart
+  * If new-visualization, it returns 1
+  * @memberof ComponentsService
+  */
+  public getComponentLastId(config: any): number {
+    let lastId = 1;
+    if (this.chartId) { // edit
+      let component = this.injectComponent(config);
+      // check component is already configurated
+      let lastId = component.length >= 1 ? ++component[component.length - 1].id : 1;
+    }
+    return lastId;
+  }
+
+  public delete(config: any): void {
     let component = this.injectComponent(config);
     const index = component.indexOf(component.find(c => c.id === config.id));
     component.splice(index, 1);
@@ -47,7 +103,7 @@ export class ComponentsService {
     Promise.resolve(this.components);
   }
 
-  create(config: any): void {
+  public create(config: any): void {
     let component = this.injectComponent(config);
     component.push(config);
   }
