@@ -24,7 +24,7 @@ export class ChartService {
         a.axis = 'y';
         a.variable = 'mean';
         a.width = 'stdDeviation';
-        a.text = '+/- STD';
+        a.text = '+/- last STD';
 
         let s = <any>{};
 
@@ -37,7 +37,8 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         let components = new ComponentSet();
-        components.annotations.push(a);
+        // // components.annotations.push(a);
+        components.statistics.push(s);
 
         let endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/2');
@@ -52,6 +53,7 @@ export class ChartService {
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
                 marginRight: 100,
+                colorScale: Colors.category3(),
             },
             components, // components config of annotations, statistics
             '2',
@@ -68,7 +70,7 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/flink/sax');
@@ -122,7 +124,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
@@ -137,6 +139,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '3',
@@ -152,7 +155,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/5');
@@ -167,6 +170,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '5',
@@ -219,6 +223,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.layout = '12';
 
         this.push(chart);
 
@@ -228,7 +233,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/10');
@@ -243,6 +248,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '10',
@@ -274,6 +280,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '15',
@@ -290,6 +297,7 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
+        components.annotations.push(a);
         components.statistics.push(s);
 
         endpoints = new Array<string>();
@@ -305,6 +313,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '21',
@@ -314,7 +323,7 @@ export class ChartService {
         chart.alarms = true;
 
         this.push(chart);
-
+        chart.layout = '12';
 
         calculations = new Array<Calculation>();
         calculations.push(new Calculation('raw', 'Raw'));
@@ -336,6 +345,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '24',
@@ -413,6 +423,7 @@ export class ChartService {
                 propertyY: 'value',
                 propertyKey: 'key',
                 maxNumberOfElements: 1500,
+                colorScale: Colors.category3(),
             },
             components,
             '26',
