@@ -163,3 +163,5 @@ node_modules/
 static/
 node/
 /bin/
+proteus-spring-backend/bin
+proteus-spring-dashboard/bin
