@@ -8,5 +8,5 @@ export class Annotation {
     axis: string;
     value: number;
     variable: string;
-    width: string;
+    width: string | number;
 }

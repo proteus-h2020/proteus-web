@@ -38,6 +38,7 @@ export class AnnotationsComponent implements OnInit {
   add(annotation: Annotation): void {
     this.annotationId = this.componentsService.getComponentLastId(annotation);
     annotation.id = this.annotationId++;
+    annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
     this.componentsService.create(annotation);
     this.newAnnotation = null;
   }
