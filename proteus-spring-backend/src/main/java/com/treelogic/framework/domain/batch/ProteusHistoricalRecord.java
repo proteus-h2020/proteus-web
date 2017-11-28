@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
+
 import com.couchbase.client.java.repository.annotation.Field;
 
 @Document
@@ -40,6 +41,9 @@ public class ProteusHistoricalRecord {
 		private double variance;
 		private double x;
 		private double y;
+		
+		public ProteusSimpleMoment() {
+		}
 		
 		public int getCounter() {
 			return counter;

@@ -45,7 +45,28 @@ export class AppSubscriptionsService {
     public requestHistoricalData(coilId: number, varId: number){
         this.websocketService.subscribe(environment.websocketTopics.getters.batch.coilData + coilId + "/" + varId);
     }
+    
+    public realtimeData(): Observable<any> {
+           return this.websocketService
+                .subscribe(environment.websocketTopics.getters.batch.realtimeNotification)
+                .map((data:any) => JSON.parse(data));
+    }
 
+    public requestRealtimeData(coilId: number){
+        this.websocketService.subscribe(environment.websocketTopics.getters.batch.realtimeData + coilId);
+    }
+
+    public requestSimpleMomentsData(coilId: number){
+        this.websocketService.subscribe(environment.websocketTopics.getters.batch.simpleMomentsData + coilId);
+    }
+
+    public requestGetKeys(){
+        this.websocketService.subscribe(environment.websocketTopics.getters.batch.getKeys);
+    }
+
+    public requestHSMData(coilId: number) {
+        this.websocketService.subscribe(environment.websocketTopics.getters.batch.HSMData + coilId);
+    }
 
 
 }
