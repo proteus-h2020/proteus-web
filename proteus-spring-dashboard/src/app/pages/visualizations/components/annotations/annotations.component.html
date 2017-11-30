@@ -19,6 +19,7 @@
       <option value="threshold">Threshold</option>
       <option value="band">Band</option>
     </select>
+      <p class="form-text small-text" *ngIf="newAnnotation.type == 'band'">Band annotation can be used in Linechart.</p>
     </div>
   </div>
   <div class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
