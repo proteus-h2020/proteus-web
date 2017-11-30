@@ -433,6 +433,10 @@ export class ChartService {
         return null;
     }
 
+    getCharts(): RealtimeChart[] {
+      return this.charts;
+    }
+
     getChartsSubscription(): Subject<RealtimeChart[]> {
         return this.notifier;
     }
