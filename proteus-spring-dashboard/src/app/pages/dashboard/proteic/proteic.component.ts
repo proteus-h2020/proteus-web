@@ -145,7 +145,17 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
    * @memberof Proteic
    */
   private _setChartConfiguration() {
-    // this.chart.configuration.marginRight = 100;
+    switch (this.chart.type) {
+      case 'Heatmap':
+      case 'Swimlane':
+        this.chart.configuration.marginRight = 160;
+        this.chart.configuration.marginLeft = 40;
+        break;
+
+      default:
+        this.chart.configuration.marginRight = 100;
+        break;
+    }
     this.chart.configuration.marginBottom = 50;
     // this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
