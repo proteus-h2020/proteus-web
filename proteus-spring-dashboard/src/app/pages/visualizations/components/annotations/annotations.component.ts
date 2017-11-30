@@ -57,10 +57,14 @@ export class AnnotationsComponent implements OnInit {
   }
 
   edit(annotation: Annotation): void {
+    if (annotation.variable) {
+      annotation.value = undefined;
+    }
     this.selectedAnnotation = annotation;
   }
 
   create(annotation: Annotation): void {
+    annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
     this.selectedAnnotation = null;
   }
 

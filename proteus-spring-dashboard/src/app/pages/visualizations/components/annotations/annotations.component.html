@@ -79,20 +79,48 @@
 </table>
 
 <div *ngIf="selectedAnnotation">
-  <h3>Edit annotation</h3>
   <div class="form-group">
-    <label for="annotationText">Text</label>
-    <input id="annotationText" class="form-control" [(ngModel)]="selectedAnnotation.text">
+    <h3>Edit annotation</h3>
   </div>
-  <div class="form-group">
-    <label for="annotationType">Type</label>
-    <select id="annotationType" class="formControl" [(ngModel)]="selectedAnnotation.type">
-      <option value="threshold">threshold</option>
-      <option value="band">band</option>
-    </select>
+  <div class="form-group row">
+      <label for="annotationText" class="col-2 col-form-label">Text</label>
+    <div class="col-10">
+      <input id="annotationText" class="form-control" [(ngModel)]="selectedAnnotation.text">
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'threshold'">
+    <label for="annotationAxis" class="col-2  col-form-label">Axis</label>
+    <div class="col-10">
+      <select id="annotationAxis" class="formControl" [(ngModel)]="selectedAnnotation.axis">
+        <option value="x">X</option>
+        <option value="y">Y</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'threshold' && !selectedAnnotation.variable">
+  <!--div class="form-group row" *ngIf="editVariableCondition()"-->
+    <label class="col-2  col-form-label" for="annotationValue">Value </label>
+    <div class="col-9">
+      <input id="annotationValue" class="form-control" [(ngModel)]="selectedAnnotation.value">
+      <p class="form-text small-text">Value for a static annotation.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type && !selectedAnnotation.value">
+    <label class="col-2  col-form-label" for="annotationValue">Variable </label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="selectedAnnotation.variable">
+      <p class="form-text small-text">Variable that holds the value for a dynamic annotation.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'band'">
+    <label class="col-2  col-form-label" for="annotationValue">Width </label>
+    <div class="col-10">
+      <input id="annotationValue" class="form-control" [(ngModel)]="selectedAnnotation.width">
+      <p class="form-text small-text">Variable that holds the whidth for a band annotation.</p>
+    </div>
   </div>
   <div class="form-group right-row">
-    <button class="btn btn-col" (click)="create(annotation)">Save</button>
+    <button class="btn btn-col" (click)="create(selectedAnnotation)">Save</button>
     <button class="btn btn-col" (click)="cancel()">Cancel</button>
   </div>
 </div>
