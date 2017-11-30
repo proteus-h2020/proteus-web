@@ -6,7 +6,7 @@ export const PAGES_MENU = [
         path: 'dashboard',
         data: {
           menu: {
-            title: 'general.menu.dashboard',
+            title: 'Dashboard',
             icon: 'ion-speedometer',
             selected: false,
             expanded: false,
@@ -56,7 +56,7 @@ export const PAGES_MENU = [
         path: 'historical',
         data: {
           menu: {
-            title: 'general.menu.historical',
+            title: 'Historical data',
             icon: 'ion-arrow-graph-up-left',
             selected: false,
             expanded: false,
