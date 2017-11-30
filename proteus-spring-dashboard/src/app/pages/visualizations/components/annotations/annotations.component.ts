@@ -3,6 +3,7 @@ import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
 import { Router, ActivatedRoute } from '@angular/router';
+import { deepCopy } from '../../../../utils/DeepCopy';
 
 @Component({
   selector: 'app-annotations',
@@ -11,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AnnotationsComponent implements OnInit {
 
-  selectedAnnotation: Annotation;
+  selectedAnnotation: Annotation; // selected Annotation for edit
   newAnnotation: Annotation;
   annotations: Annotation[];
   annotationId: number = 1;
@@ -60,11 +61,12 @@ export class AnnotationsComponent implements OnInit {
     if (annotation.variable) {
       annotation.value = undefined;
     }
-    this.selectedAnnotation = annotation;
+    this.selectedAnnotation = deepCopy(annotation);
   }
 
-  create(annotation: Annotation): void {
+  update(annotation: Annotation): void {
     annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
+    this.componentsService.update(annotation);
     this.selectedAnnotation = null;
   }
 

@@ -133,4 +133,12 @@ export class ComponentsService {
     let component = this.injectComponent(config);
     component.push(config);
   }
+
+  public update(config: any): void {
+    let component = this.injectComponent(config);
+    const index = component.indexOf(component.find(c => c.id === config.id));
+    component[index] = config;
+
+    Promise.resolve(this.components);
+  }
 }

@@ -62,7 +62,11 @@ export class StatisticsComponent implements OnInit {
     this.selectedStatistics = statistics;
   }
 
-  create(statistics: Statistics): void {
+  update(statistics: Statistics): void {
+    let modifier = statistics.settings ? statistics.settings : 1;
+    statistics.modifier = (confidence) => modifier * confidence;
+
+    this.componentsService.update(statistics);
     this.selectedStatistics = null;
   }
 

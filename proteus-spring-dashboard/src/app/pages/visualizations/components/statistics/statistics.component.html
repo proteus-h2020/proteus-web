@@ -63,15 +63,36 @@
 </table>
 
 <div *ngIf="selectedStatistics">
-  <h3>Edit statistics</h3>
   <div class="form-group">
-    <label for="statisticsType">Type</label>
-    <select id="statisticsType" class="formControl" [(ngModel)]="selectedStatistics.type">
-     <option value="confidenceBand">Confidence band</option>
-    </select>
+    <h3>Edit statistics</h3>
   </div>
+
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Variable </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.variable">
+      <p class="form-text small-text">Variable that holds the value for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Confidence </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.confidence">
+      <p class="form-text small-text">Variable that holds the confidence interval for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Modifier </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.settings" type="number">
+      <p class="form-text small-text">Value that modifies the confidence interval for a confidence band.</p>
+      <p class="form-text small-text">ex)If you input 0.95, confidence = 0.95 * confidence</p>
+      <p class="form-text small-text">(Optional) If you don't want, leave it blank</p>
+    </div>
+  </div>
+
   <div class="form-group right-row">
-    <button class="btn btn-col" (click)="create(stats)">Save</button>
+    <button class="btn btn-col" (click)="update(selectedStatistics)">Save</button>
     <button class="btn btn-col" (click)="cancel()">Cancel</button>
   </div>
 </div>
