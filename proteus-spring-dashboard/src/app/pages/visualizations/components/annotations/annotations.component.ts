@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-annotations',
   templateUrl: './annotations.component.html',
@@ -16,18 +15,19 @@ export class AnnotationsComponent implements OnInit {
   annotations: Annotation[];
   annotationId: number = 1;
 
+  private id: number = null;
+
   constructor(
     private componentsService: ComponentsService,
-    private route: Router,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+    this.route.params.subscribe(params => { this.id = parseInt(params['id']); });
+  }
 
   ngOnInit(): void {
-    let id;
-    if (this.route.url != '/pages/visualizations/new') { // edit
-      id = +this.route.url.split('/').pop();
-    }
+    this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
 
-    this.showAnnotations(id);
+    this.showAnnotations(this.id);
   }
 
   showAnnotations(id: number = null): void {
