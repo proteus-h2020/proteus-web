@@ -3,6 +3,7 @@ import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-annotations',
   templateUrl: './annotations.component.html',
