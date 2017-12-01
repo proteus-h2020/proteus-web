@@ -37,7 +37,8 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         let components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
+        components.statistics.push(s);
 
         let endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/2');
