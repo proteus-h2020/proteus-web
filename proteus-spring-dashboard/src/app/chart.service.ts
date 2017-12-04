@@ -69,7 +69,8 @@ export class ChartService {
         calculations.push(new Calculation('raw', 'Raw'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/flink/sax');
@@ -123,7 +124,8 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
@@ -153,7 +155,8 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/5');
@@ -229,7 +232,8 @@ export class ChartService {
         calculations.push(new Calculation('mean', 'Mean'));
 
         components = new ComponentSet();
-        components.annotations.push(a);
+        // components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/10');
