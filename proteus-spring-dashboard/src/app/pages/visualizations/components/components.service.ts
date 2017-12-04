@@ -37,6 +37,16 @@ export class ComponentsService {
     this.components = new Array<ComponentSet>();
   }
 
+  /**
+   * @method
+   * Initialize components config in create-visualization
+   * by fitlering remaining components config of uncreated chart
+   * @memberof ComponentsService
+   */
+  public initialize() {
+    this.components = this.components.filter((component) => component.chartId != null);
+  }
+
   public getComponents(id: number = null): Promise<ComponentSet> {
     let component;
     this.chartId = id;

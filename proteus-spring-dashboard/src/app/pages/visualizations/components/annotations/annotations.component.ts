@@ -26,6 +26,9 @@ export class AnnotationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
+    if (!this.id) {
+      this.componentsService.initialize();
+    }
 
     this.showAnnotations(this.id);
   }
