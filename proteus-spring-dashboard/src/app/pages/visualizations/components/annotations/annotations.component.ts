@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './annotations.component.html',
   styleUrls: ['./annotations.component.scss']
 })
-export class AnnotationsComponent implements OnInit {
+export class AnnotationsComponent implements OnInit, OnDestroy {
 
   selectedAnnotation: Annotation;
   newAnnotation: Annotation;
@@ -26,9 +26,6 @@ export class AnnotationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
-    if (!this.id) {
-      this.componentsService.initialize();
-    }
 
     this.showAnnotations(this.id);
   }
@@ -70,4 +67,7 @@ export class AnnotationsComponent implements OnInit {
     this.newAnnotation = new Annotation();
   }
 
+  ngOnDestroy() {
+    this.componentsService.initialize();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Statistics, StatisticsTypes } from './statistics';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent implements OnInit, OnDestroy {
 
   selectedStatistics: Statistics;
   newStatistics: Statistics;
@@ -27,9 +27,6 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
-    if (!this.id) {
-      this.componentsService.initialize();
-    }
 
     this.showStatistics(this.id);
   }
@@ -74,4 +71,7 @@ export class StatisticsComponent implements OnInit {
     this.newStatistics = new Statistics();
   }
 
+  ngOnDestroy() {
+    this.componentsService.initialize();
+  }
 }
