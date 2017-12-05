@@ -37,7 +37,7 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	public List<Integer> findKeys() {
 		String bucketName = this.template.getCouchbaseBucket().name();
 
-		String query = String.format("select META(`%1$s`).id AS _ID, META(`%1$s`).cas AS _CAS from `%1$s`", bucketName);
+		String query = String.format("select META(`%1$s`).id AS _ID from `%1$s`", bucketName);
 		
 		List<Integer> keys = new ArrayList<>();
 
