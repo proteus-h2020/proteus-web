@@ -58,6 +58,11 @@ export class FormVisualization {
       // default values for new-visualization (different from its value in proteic)
       proteusWebDefaults = { 'propertyY': 'value' };
 
+    if (FormVisualization.defaults.hasOwnProperty('propertyZ')) {
+      proteusWebDefaults['propertyZ'] = proteusWebDefaults.propertyY;
+      delete proteusWebDefaults.propertyY;
+    }
+
     if (model) {
       FormVisualization.defaults = getDefaultOptions(model.type.toLowerCase());
       conf = model.configuration;
