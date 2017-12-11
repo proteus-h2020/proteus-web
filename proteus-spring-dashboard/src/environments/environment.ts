@@ -22,10 +22,10 @@ export const environment = {
         simpleMomentsData: '/app/get/simplemoments/coil/', //coil id is concatenated here
         getKeysNotification: '/topic/get/keys',
         getKeys: '/app/get/keys',
-        HSMNotification: '/topic/get/hsm/coil/', //coil id is concatenated here
+        HSMNotification: '/topic/get/hsm/coil', //coil id is concatenated here
         HSMData: '/app/get/hsm/coil/', //coil id is concatenated here
         streamNotification: '/topic/get/stream/coil/',
-        streamData: '/app/get/stream/coil/'
+        streamData: '/app/get/stream/coil/',
       },
     },
   },

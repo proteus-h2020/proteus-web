@@ -59,9 +59,22 @@ export class AppSubscriptionsService {
     public requestSimpleMomentsData(coilId: number){
         this.websocketService.subscribe(environment.websocketTopics.getters.batch.simpleMomentsData + coilId);
     }
+    
+    public keys(): Observable<any> {
+           return this.websocketService
+                .subscribe(environment.websocketTopics.getters.batch.getKeysNotification)
+                .map((data:any) => JSON.parse(data));
+    }
 
     public requestGetKeys(){
         this.websocketService.subscribe(environment.websocketTopics.getters.batch.getKeys);
+    }
+    
+    
+    public HSMData(): Observable<any> {
+           return this.websocketService
+                .subscribe(environment.websocketTopics.getters.batch.HSMNotification)
+                .map((data:any) => JSON.parse(data));
     }
 
     public requestHSMData(coilId: number) {
