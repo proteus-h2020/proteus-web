@@ -45,8 +45,8 @@
 
         <div class="col">
           <label><strong>Calculations:</strong></label>
-          <select class="form-control" formControlName="calculations" multiple>
-            <option *ngFor="let c of calculations" [value]="c">{{c.label}}</option>
+          <select multiple class="form-control" formControlName="calculations" name="calculations">
+            <option *ngFor="let c of calculations" [value]="c.value">{{c.label}}</option>
           </select>
         </div>
       </div>

@@ -168,8 +168,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   private _calculateUnpivotArray(chart: RealtimeChart): string[] {
     const unpivot = new Array<string>();
     for (const calculation of this.chart.calculations) {
-      if (calculation.value !== 'raw') {
-        unpivot.push(calculation.value);
+      if (calculation !== 'raw') {
+        unpivot.push(calculation);
       }
     }
     return unpivot;

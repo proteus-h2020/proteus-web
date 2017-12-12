@@ -4,7 +4,7 @@ import { RealtimeChart } from './../../realtime-chart';
 import { FormVisualization } from './form-visualization';
 import { FormGroup } from '@angular/forms';
 
-export class Calculation {
+class Calculation {
     value;
     label;
     constructor(value: string, label: string) {

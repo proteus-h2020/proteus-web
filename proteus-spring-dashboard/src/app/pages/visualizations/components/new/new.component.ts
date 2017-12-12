@@ -10,7 +10,7 @@ import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
 import { Annotation } from '../../components/annotations/annotation';
 import { AnnotationsService } from '../../components/annotations/annotations.service';
-import { Calculation, VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
+import { VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
 import { Statistics } from '../../components/statistics/statistics';
 import { ComponentsService } from '../../components/components.service';
 import { ComponentSet } from '../../components/componentSet';
@@ -45,16 +45,17 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
 
     if (model.calculations) {
       for (const calc of model.calculations) {
-        if (calc.value === 'raw') {
+        if (calc == 'raw') {
           endpoints.push('/topic/realtime/var/' + model.variable);
-        } else if (calc.value == 'mean' || calc.value == 'variance') {
+        }
+        if (calc == 'mean' || calc == 'variance') {
           endpoints.push('/topic/flink/var/' + model.variable);
         }
       }
     }
 
     endpoints = endpoints.filter(onlyUnique);
-    let coilID  = model.coilID;
+    let coilID = model.coilID;
     function createChart(components: ComponentSet) {
       model = new RealtimeChart(
         model.title,
