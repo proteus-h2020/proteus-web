@@ -6,7 +6,7 @@ export const PAGES_MENU = [
         path: 'dashboard',
         data: {
           menu: {
-            title: 'Dashboard',
+            title: 'general.menu.dashboard',
             icon: 'ion-speedometer',
             selected: false,
             expanded: false,
@@ -32,7 +32,7 @@ export const PAGES_MENU = [
             path: 'new',
             data: {
               menu: {
-                title: 'Create visualization',
+                title: 'general.menu.create',
                 pathMatch: 'full',
               },
             },
@@ -41,7 +41,7 @@ export const PAGES_MENU = [
             path: 'edit',
             data: {
               menu: {
-                title: 'Edit visualization',
+                title: 'general.menu.edit',
               },
             },
           },
@@ -59,7 +59,7 @@ export const PAGES_MENU = [
         path: 'historical',
         data: {
           menu: {
-            title: 'Historical data',
+            title: 'general.menu.historical',
             icon: 'ion-arrow-graph-up-left',
             selected: false,
             expanded: false,

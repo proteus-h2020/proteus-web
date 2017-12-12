@@ -22,6 +22,8 @@
       "proteus_gh_link": "Proteus repository",
       "dashboard": "Dashboard",
       "visualizations": "Visualizations",
+      "create": "Create visualizations",
+      "edit": "Edit visualizations",
       "historical": "Historical data",
       "editors": "Editors",
       "ck_editor": "CKEditor",
