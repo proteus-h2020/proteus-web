@@ -10,9 +10,10 @@ export const PAGES_MENU = [
             icon: 'ion-speedometer',
             selected: false,
             expanded: false,
-            order: 0
-          }
-        }
+            order: 0,
+            pathMatch: 'full',
+          },
+        },
       },
       {
         path: 'visualizations',
@@ -23,14 +24,16 @@ export const PAGES_MENU = [
             selected: false,
             expanded: false,
             order: 100,
-          }
+            pathMatch: 'full',
+          },
         },
         children: [
           {
             path: 'new',
             data: {
               menu: {
-                title: 'Create visualization',
+                title: 'general.menu.create',
+                pathMatch: 'full',
               },
             },
           },
@@ -38,10 +41,10 @@ export const PAGES_MENU = [
             path: 'edit',
             data: {
               menu: {
-                title: 'Edit visualization',
+                title: 'general.menu.edit',
               },
             },
-          }
+          },
           // {
           //   path: 'ckeditor',
           //   data: {
@@ -50,7 +53,7 @@ export const PAGES_MENU = [
           //     }
           //   }
           // }
-        ]
+        ],
       },
        {
         path: 'historical',
@@ -60,9 +63,10 @@ export const PAGES_MENU = [
             icon: 'ion-arrow-graph-up-left',
             selected: false,
             expanded: false,
-            order: 0
-          }
-        }
+            order: 0,
+            pathMatch: 'full',
+          },
+        },
       },
       {
         path: '',
@@ -72,9 +76,10 @@ export const PAGES_MENU = [
             url: 'https://www.proteus-bigdata.com/',
             icon: 'ion-information-circled',
             order: 800,
-            target: '_blank'
-          }
-        }
+            target: '_blank',
+            pathMatch: 'full',
+          },
+        },
       },
       {
         path: '',
@@ -84,10 +89,11 @@ export const PAGES_MENU = [
             url: 'https://github.com/proteus-h2020/',
             icon: 'ion-social-github',
             order: 800,
-            target: '_blank'
-          }
-        }
-      }
+            target: '_blank',
+            pathMatch: 'full',
+          },
+        },
+      },
       // {
       //   path: 'components',
       //   data: {
@@ -389,6 +395,6 @@ export const PAGES_MENU = [
       //     }
       //   ]
       // },
-    ]
-  }
+    ],
+  },
 ];
