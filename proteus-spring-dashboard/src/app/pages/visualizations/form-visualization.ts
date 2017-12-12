@@ -1,29 +1,15 @@
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
 import { getDefaultOptions } from 'proteic';
-import { Calculation } from 'app/pages/visualizations/VisualizationForm';
 
 export class FormVisualization {
   public static defaults = {};
   private static fb: FormBuilder = new FormBuilder();
   public static keyValues: string[] = [];
-  public static selectedCalculations: Calculation[] = new Array<Calculation>();
 
 
   public static valueKeysChange(keys: string[]) {
     this.keyValues = keys;
-  }
-
-  public static calculationsCbChange(event: any) {
-
-    if (event.target.checked) {
-      this.selectedCalculations.push(event.target.value);
-    } else {
-      let index = this.selectedCalculations.indexOf(event.target.value);
-      if (index > -1) {
-          this.selectedCalculations.splice(index, 1);
-      }
-    }
   }
 
   public static createForm(model: RealtimeChart = null): FormGroup {

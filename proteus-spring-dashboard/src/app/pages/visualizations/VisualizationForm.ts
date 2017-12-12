@@ -20,7 +20,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     variables: string[];
     calculations: Calculation[];
 
-    private type: string = 'streaming'; //batch or streaming
+    private type: string = 'streaming'; // batch or streaming
 
     constructor() {
 
@@ -51,10 +51,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
     protected valueKeysChange(keys: string[]) {
         FormVisualization.valueKeysChange(keys);
-    }
-
-    protected calculationsCbChange(event: any) {
-        FormVisualization.calculationsCbChange(event);
     }
 
     protected chartsWithAnnotations() {
