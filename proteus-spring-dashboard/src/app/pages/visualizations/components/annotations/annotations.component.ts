@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { deepCopy } from '../../../../utils/DeepCopy';
 
 @Component({
@@ -10,25 +10,26 @@ import { deepCopy } from '../../../../utils/DeepCopy';
   templateUrl: './annotations.component.html',
   styleUrls: ['./annotations.component.scss']
 })
-export class AnnotationsComponent implements OnInit {
+export class AnnotationsComponent implements OnInit, OnDestroy {
 
   selectedAnnotation: Annotation; // selected Annotation for edit
   newAnnotation: Annotation;
   annotations: Annotation[];
   annotationId: number = 1;
 
+  private id: number = null;
+
   constructor(
     private componentsService: ComponentsService,
-    private route: Router,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+    this.route.params.subscribe(params => { this.id = parseInt(params['id']); });
+  }
 
   ngOnInit(): void {
-    let id;
-    if (this.route.url != '/pages/visualizations/new') { // edit
-      id = +this.route.url.split('/').pop();
-    }
+    this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
 
-    this.showAnnotations(id);
+    this.showAnnotations(this.id);
   }
 
   showAnnotations(id: number = null): void {
@@ -74,4 +75,7 @@ export class AnnotationsComponent implements OnInit {
     this.newAnnotation = new Annotation();
   }
 
+  ngOnDestroy() {
+    this.componentsService.initialize();
+  }
 }

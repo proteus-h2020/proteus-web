@@ -1,33 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Statistics, StatisticsTypes } from './statistics';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent implements OnInit, OnDestroy {
 
   selectedStatistics: Statistics;
   newStatistics: Statistics;
   statistics: Statistics[];
   statisticsId: number = 1;
 
+  private id: number = null;
+
   constructor(
     private componentsService: ComponentsService,
-    private route: Router,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+    this.route.params.subscribe(params => { this.id = parseInt(params['id']); });
+  }
 
   ngOnInit(): void {
-    let id;
-    if (this.route.url != '/pages/visualizations/new') { // edit
-      id = +this.route.url.split('/').pop();
-    }
+    this.id = this.id ? this.id : null; // If id exists, page is edit-visualization
 
-    this.showStatistics(id);
+    this.showStatistics(this.id);
   }
 
   showStatistics(id: number = null): void {
@@ -74,4 +75,7 @@ export class StatisticsComponent implements OnInit {
     this.newStatistics = new Statistics();
   }
 
+  ngOnDestroy() {
+    this.componentsService.initialize();
+  }
 }
