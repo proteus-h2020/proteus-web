@@ -21,7 +21,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     calculations: Calculation[];
 
     private type: string = 'streaming'; //batch or streaming
-    
+
     constructor() {
 
     }
@@ -58,7 +58,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     protected chartsWithAnnotations() {
-      return ['Linechart', 'Scatterplot', 'Barchart'];
+      return ['Linechart', 'Scatterplot', 'Barchart', 'Heatmap', 'StackedArea', 'Swimlane', 'Streamgraph'];
     }
 
     protected chartsWithStatistics() {
