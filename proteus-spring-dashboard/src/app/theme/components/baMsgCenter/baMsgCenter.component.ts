@@ -1,27 +1,26 @@
-import {Component} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotificationsService } from './../../../notifications.service';
 
 import { Subscription } from 'rxjs/Rx';
 
-import {BaMsgCenterService} from './baMsgCenter.service';
+import { BaMsgCenterService } from './baMsgCenter.service';
 
 @Component({
   selector: 'ba-msg-center',
   providers: [BaMsgCenterService],
   styleUrls: ['./baMsgCenter.scss'],
-  templateUrl: './baMsgCenter.html'
+  templateUrl: './baMsgCenter.html',
 })
-export class BaMsgCenter {
+export class BaMsgCenter implements OnInit, OnDestroy {
 
-
-private notifications: Array<any> = new Array<any>();
+  private notifications: Array<any> = new Array<any>();
 
   private subscriptions: Subscription[] = new Array<Subscription>();
 
-  public messages:Array<Object>;
+  public messages: Array<Object>;
 
   constructor(
-    private _baMsgCenterService:BaMsgCenterService,
+    private _baMsgCenterService: BaMsgCenterService,
     private notificationService: NotificationsService,
 ) {
     this.notifications = this._baMsgCenterService.getNotifications();
@@ -32,7 +31,7 @@ private notifications: Array<any> = new Array<any>();
     this._initializeSubscriptions();
   }
 
-  ngOnDestroy()   {
+  ngOnDestroy() {
     for (const s of this.subscriptions) {
       s.unsubscribe();
     }
@@ -48,7 +47,7 @@ private notifications: Array<any> = new Array<any>();
     );
   }
 
-  public markAllAsRead(){
+  public markAllAsRead() {
     this.notificationService.clear();
   }
 }

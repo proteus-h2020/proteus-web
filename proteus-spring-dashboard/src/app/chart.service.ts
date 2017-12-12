@@ -1,7 +1,6 @@
 import { Annotation, AnnotationTypes } from './pages/visualizations/components/annotations/annotation';
 import { Statistics } from './pages/visualizations/components/statistics/statistics';
 import { ComponentSet } from './pages/visualizations/components/componentSet';
-import { Calculation } from './pages/visualizations/VisualizationForm';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
@@ -32,9 +31,9 @@ export class ChartService {
         s.variable = 'mean';
         s.confidence = 'stdDeviation';
 
-        let calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        let calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         let components = new ComponentSet();
         // components.annotations.push(a);
@@ -65,8 +64,8 @@ export class ChartService {
         this.charts.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
+        calculations = new Array<string>();
+        calculations.push('raw');
 
         components = new ComponentSet();
         components.annotations.push(a);
@@ -118,9 +117,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.annotations.push(a);
@@ -148,9 +147,9 @@ export class ChartService {
 
         this.push(chart);
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.annotations.push(a);
@@ -179,8 +178,8 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
+        calculations = new Array<string>();
+        calculations.push('raw');
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/8');
 
@@ -224,9 +223,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.annotations.push(a);
@@ -255,9 +254,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.statistics.push(s);
@@ -286,9 +285,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.statistics.push(s);
@@ -317,9 +316,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.statistics.push(s);
@@ -348,8 +347,8 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
+        calculations = new Array<string>();
+        calculations.push('raw');
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/25');
 
@@ -394,9 +393,9 @@ export class ChartService {
         this.push(chart);
 
 
-        calculations = new Array<Calculation>();
-        calculations.push(new Calculation('raw', 'Raw'));
-        calculations.push(new Calculation('mean', 'Mean'));
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
         components.statistics.push(s);
@@ -432,6 +431,10 @@ export class ChartService {
             }
         }
         return null;
+    }
+
+    getCharts(): RealtimeChart[] {
+      return this.charts;
     }
 
     getChartsSubscription(): Subject<RealtimeChart[]> {

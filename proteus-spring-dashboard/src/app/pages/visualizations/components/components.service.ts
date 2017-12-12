@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Annotation } from './annotations/annotation';
 import { Statistics } from './statistics/statistics';
 import { ComponentSet } from './componentSet';
-
+import { ChartService } from './../../../chart.service';
 /**
  * Service class of Components
  * (Annotations, Statistics ..)
@@ -33,7 +33,9 @@ export class ComponentsService {
   */
   private chartId: number;
 
-  constructor() {
+  constructor(
+    private chartService: ChartService,
+  ) {
     this.components = new Array<ComponentSet>();
   }
 
@@ -48,6 +50,7 @@ export class ComponentsService {
   }
 
   public getComponents(id: number = null): Promise<ComponentSet> {
+    this.cleanComponents();
     let component;
     this.chartId = id;
 
@@ -58,6 +61,29 @@ export class ComponentsService {
     }
 
     return Promise.resolve(component);
+  }
+
+  /**
+   * @method
+   * Clean components (annotations, statistics) when its chart was removed
+   * @private
+   * @memberof ComponentsService
+   */
+  private cleanComponents() {
+    let charts = this.chartService.getCharts();
+    let chartIDlist = [];
+    for (let i in charts) {
+      chartIDlist.push(charts[i].id);
+    }
+
+    for (let i in this.components) {
+      if (this.components[i].chartId) {
+        let id = this.components[i].chartId;
+        if (chartIDlist.indexOf(id) == -1) {
+          this.components = this.components.filter((component) => component.chartId != id);
+        }
+      }
+    }
   }
 
   /**
@@ -116,5 +142,13 @@ export class ComponentsService {
   public create(config: any): void {
     let component = this.injectComponent(config);
     component.push(config);
+  }
+
+  public update(config: any): void {
+    let component = this.injectComponent(config);
+    const index = component.indexOf(component.find(c => c.id === config.id));
+    component[index] = config;
+
+    Promise.resolve(this.components);
   }
 }

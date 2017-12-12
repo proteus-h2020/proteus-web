@@ -3,6 +3,8 @@ import { Annotation, AnnotationTypes } from './annotation';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
 import { ActivatedRoute } from '@angular/router';
+import { deepCopy } from '../../../../utils/DeepCopy';
+
 @Component({
   selector: 'app-annotations',
   templateUrl: './annotations.component.html',
@@ -10,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
 
-  selectedAnnotation: Annotation;
+  selectedAnnotation: Annotation; // selected Annotation for edit
   newAnnotation: Annotation;
   annotations: Annotation[];
   annotationId: number = 1;
@@ -38,6 +40,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   add(annotation: Annotation): void {
     this.annotationId = this.componentsService.getComponentLastId(annotation);
     annotation.id = this.annotationId++;
+    annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
     this.componentsService.create(annotation);
     this.newAnnotation = null;
   }
@@ -56,10 +59,15 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   edit(annotation: Annotation): void {
-    this.selectedAnnotation = annotation;
+    if (annotation.variable) {
+      annotation.value = undefined;
+    }
+    this.selectedAnnotation = deepCopy(annotation);
   }
 
-  create(annotation: Annotation): void {
+  update(annotation: Annotation): void {
+    annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
+    this.componentsService.update(annotation);
     this.selectedAnnotation = null;
   }
 

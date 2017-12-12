@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core'
+import { Injectable } from '@angular/core'
 
 @Injectable()
 export class BaMsgCenterService {
@@ -19,11 +19,11 @@ export class BaMsgCenterService {
     // },
   ];
 
-  public getMessages():Array<Object> {
+  public getMessages(): Array<Object> {
     return this._messages;
   }
 
-  public getNotifications():Array<Object> {
+  public getNotifications(): Array<Object> {
     return this._notifications;
   }
 }

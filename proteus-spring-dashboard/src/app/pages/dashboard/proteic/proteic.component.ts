@@ -54,7 +54,12 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     const unpivot = this._calculateUnpivotArray(this.chart);
 
     const alertCallback: Function = (data: any) => {
-      this.notificationService.push({ id: data.varId, label: 'Alarm', text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key });
+      this.notificationService.push(
+        { id: data.varId,
+          label: 'Alarm',
+          text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key,
+        },
+      );
     };
 
     const annotations = this.chart.components.annotations;
@@ -80,7 +85,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
               return value < events.get('mean') - events.get('stdDeviation') ||
                 value > events.get('mean') + events.get('stdDeviation');
             }, alertCallback, {
-              click: (data: any) => window.alert('Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x),
+              click: (data: any) => window.alert(
+                'Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x,
+              ),
             });
         } else {
             this.proteicChart = new Linechart([], this.chart.configuration)
@@ -145,7 +152,17 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
    * @memberof Proteic
    */
   private _setChartConfiguration() {
-    // this.chart.configuration.marginRight = 100;
+    switch (this.chart.type) {
+      case 'Heatmap':
+      case 'Swimlane':
+        this.chart.configuration.marginRight = 160;
+        this.chart.configuration.marginLeft = 40;
+        break;
+
+      default:
+        this.chart.configuration.marginRight = 100;
+        break;
+    }
     this.chart.configuration.marginBottom = 50;
     // this.chart.configuration.marginLeft = 70;
     this.chart.configuration.marginTop = 35;
@@ -158,8 +175,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   private _calculateUnpivotArray(chart: RealtimeChart): string[] {
     const unpivot = new Array<string>();
     for (const calculation of this.chart.calculations) {
-      if (calculation.value !== 'raw') {
-        unpivot.push(calculation.value);
+      if (calculation !== 'raw') {
+        unpivot.push(calculation);
       }
     }
     return unpivot;
