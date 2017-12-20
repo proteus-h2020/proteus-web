@@ -14,12 +14,14 @@ export class EditVisualizationComponent implements OnInit, OnDestroy {
 
     private charts: RealtimeChart[];
     private chartsSubscription: Subscription;
-    
+
     constructor(private chartService: ChartService) {}
 
 
     ngOnInit() {
-        this.chartsSubscription = this.chartService.getChartsSubscription().subscribe((charts: RealtimeChart[]) => this._handleChartsSubscription(charts));
+        this.chartsSubscription = this.chartService
+                                      .getChartsSubscription()
+                                      .subscribe((charts: RealtimeChart[]) => this._handleChartsSubscription(charts));
     }
 
     ngOnDestroy() {

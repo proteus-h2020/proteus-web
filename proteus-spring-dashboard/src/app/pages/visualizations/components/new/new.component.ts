@@ -22,7 +22,6 @@ import { onlyUnique } from '../../../../utils/Array';
 @Component({
   selector: 'create-visualization',
   templateUrl: '../visualization-form.html',
-  providers: []
 })
 
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
@@ -40,6 +39,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
   public save(model: RealtimeChart, isValid: boolean) {
     let self = this;
     let alarms = model.alarms;
+    let coilID = model.coilID;
     let endpoints = new Array<string>();
     this.submitted = true;
 
@@ -55,7 +55,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     }
 
     endpoints = endpoints.filter(onlyUnique);
-    let coilID = model.coilID;
+
     function createChart(components: ComponentSet) {
       model = new RealtimeChart(
         model.title,

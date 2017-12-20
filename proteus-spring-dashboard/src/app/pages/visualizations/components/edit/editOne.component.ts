@@ -15,7 +15,7 @@ import 'style-loader!./editOne.scss';
     templateUrl: '../visualization-form.html',
 })
 
-export class EditOneVisualizationComponent extends VisualizationForm {
+export class EditOneVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
 
     private chart: RealtimeChart;
     private paramsSubscription: Subscription;
@@ -25,8 +25,9 @@ export class EditOneVisualizationComponent extends VisualizationForm {
         private chartService: ChartService,
         private router: Router) {
         super();
-        this.paramsSubscription = this.route.params.subscribe((params: Params) => this._handleParamChange(params, 'id'));
-
+        this.paramsSubscription = this.route.params.subscribe((params: Params) => {
+                                                      this._handleParamChange(params, 'id');
+                                                    });
     }
 
     private _handleParamChange(params: Params, paramName: string) {
