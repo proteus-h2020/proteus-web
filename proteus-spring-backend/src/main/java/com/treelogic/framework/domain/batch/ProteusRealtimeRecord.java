@@ -5,6 +5,8 @@ public class ProteusRealtimeRecord {
 	private double x;
 	private Double y;
 	
+	public ProteusRealtimeRecord() {}
+	
 	public ProteusRealtimeRecord(double x, Double y, int varId, double value){
 		this.x = x;
 		this.y = y;

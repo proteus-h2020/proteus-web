@@ -16,10 +16,20 @@ export const environment = {
       batch: {
         dataNotification: '/topic/get/data/coil',
         coilData: '/app/get/data/coil/', // coil id is concatenated here
+        realtimeNotification: '/topic/get/realtime/coil',
+        realtimeData: '/app/get/realtime/coil/', // coil id is concatenated here
+        simpleMomentsNotification: '/topic/get/simplemoments/coil/', // coil id is concatenated here
+        simpleMomentsData: '/app/get/simplemoments/coil/', // coil id is concatenated here
+        getKeysNotification: '/topic/get/keys',
+        getKeys: '/app/get/keys',
+        HSMNotification: '/topic/get/hsm/coil', // coil id is concatenated here
+        HSMData: '/app/get/hsm/coil/', // coil id is concatenated here
+        streamNotification: '/topic/get/stream/coil/',
+        streamData: '/app/get/stream/coil/',
       },
     },
   },
 };
 
-//wsEndpoint: 'http://localhost:8080/wsEndpoint
-//  wsEndpoint: 'http://192.168.3.31:8081/wsEndpoint',
+// wsEndpoint: 'http://localhost:8080/wsEndpoint
+// wsEndpoint: 'http://192.168.3.31:8081/wsEndpoint',
