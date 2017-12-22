@@ -1,10 +1,6 @@
 <form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
 
   <div class="row">
-
-  </div>
-
-  <div class="row">
     <ba-card class="col" title="visualization.type">
       <label><strong>What kind of chart do you want to configure?:</strong></label>
       <select formControlName="type" class="form-control">
@@ -24,14 +20,20 @@
 
   <div class="row">
       <ba-card class="col" title="visualization.mode">
-        <label for="coilSelection"><strong>Select your prefered coil ID:</strong></label>
-        <select id="coilSelection" class="form-control" formControlName="coilID">
-          <option value="current">Current coil (streaming)</option>
-          <option value="40101001">40101001</option>
-          <option value="40101002">40101002</option>
-          <option value="40101003">40101003</option>
-          <option value="40101006">40101006</option>
-        </select>
+        <div class="row">
+          <div class="col">
+            <label for="coilSelection"><strong>Search your prefered coil ID:</strong></label>
+          </div>
+          <div class="col">
+            <input class="form-control" type="text" formControlName="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
+            <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
+              <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
+                <a *ngIf="coilID=='current';else batch" >Current coil (streaming)</a>
+                <ng-template #batch><a>{{coilID}}</a></ng-template>
+              </li>
+            </ol>
+          </div>
+        </div>
       </ba-card>
 
     <ba-card class="col"  title="Real-time data">
