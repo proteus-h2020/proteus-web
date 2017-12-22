@@ -26,8 +26,8 @@ public class ProteusHistoricalRecordService {
 		return proteusRepository.findOne(id);
 	}
 
-	public List<Integer> findKeys() {
-		return proteusRepository.findKeys();
+	public List<Integer> findAllCoilIDs() {
+		return proteusRepository.findAllCoilIDs();
 	}
 	
 	public List<ProteusHistoricalRecord> findByCoilIdAndProteusRealtimeVarId(int coilid, int varid){

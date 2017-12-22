@@ -119,30 +119,30 @@ public class ProteusHistoricalDataController {
 		}
 	}
 
-	@MessageMapping("/get/keys")
-	public void getKeys() {
-		LOGGER.info("Send keys");
-		this.sendKeys();
+	@MessageMapping("/get/all/coilIDs")
+	public void getAllCoilIDs() {
+		LOGGER.info("Send All CoilIDs");
+		this.sendAllCoilIDs();
 	}
 
-	private void sendKeys() {
-		List<Integer> keys = this.proteusService.findKeys();
-		LOGGER.info(String.format("Sending %1$s keys with buffer size: %2$s", keys.size(), realTimeBufferSize));
+	private void sendAllCoilIDs() {
+		List<Integer> allCoilIDs = this.proteusService.findAllCoilIDs();
+		LOGGER.info(String.format("Sending %1$s coilIDs with buffer size: %2$s", allCoilIDs.size(), realTimeBufferSize));
 
-		Observable.from(keys).buffer(realTimeBufferSize).subscribe(new Subscriber<List<Integer>>() {
+		Observable.from(allCoilIDs).buffer(realTimeBufferSize).subscribe(new Subscriber<List<Integer>>() {
 			@Override
 			public void onCompleted() {
-				LOGGER.info("Keys data Completed");
+				LOGGER.info("all CoilIDs data Completed");
 			}
 
 			@Override
 			public void onError(Throwable throwable) {
-				LOGGER.error(String.format("keys send with error: %1$s", throwable));
+				LOGGER.error(String.format("allCoilIDs send with error: %1$s", throwable));
 			}
 
 			@Override
-			public void onNext(List<Integer> keys) {
-				simpMessagingTemplate.convertAndSend("/topic/get/keys", keys);
+			public void onNext(List<Integer> allCoilIDs) {
+				simpMessagingTemplate.convertAndSend("/topic/get/all/coilIDs", allCoilIDs);
 			}
 		});
 	}

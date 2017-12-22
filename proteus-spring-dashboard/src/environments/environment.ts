@@ -20,8 +20,10 @@ export const environment = {
         realtimeData: '/app/get/realtime/coil/', // coil id is concatenated here
         simpleMomentsNotification: '/topic/get/simplemoments/coil/', // coil id is concatenated here
         simpleMomentsData: '/app/get/simplemoments/coil/', // coil id is concatenated here
-        getKeysNotification: '/topic/get/keys',
-        getKeys: '/app/get/keys',
+        // getKeysNotification: '/topic/get/keys',
+        // getKeys: '/app/get/keys',
+        allCoilIDsNotification: '/topic/get/all/coilIDs',
+        allCoilIDs: '/app/get/all/coilIDs',
         HSMNotification: '/topic/get/hsm/coil', // coil id is concatenated here
         HSMData: '/app/get/hsm/coil/', // coil id is concatenated here
         streamNotification: '/topic/get/stream/coil/',

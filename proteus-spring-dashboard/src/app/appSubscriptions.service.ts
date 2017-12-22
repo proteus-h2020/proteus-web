@@ -60,14 +60,14 @@ export class AppSubscriptionsService {
     this.websocketService.subscribe(environment.websocketTopics.getters.batch.simpleMomentsData + coilId);
   }
 
-  public keys(): Observable<any> {
+  public allCoilIDs(): Observable<any> {
     return this.websocketService
-      .subscribe(environment.websocketTopics.getters.batch.getKeysNotification)
+      .subscribe(environment.websocketTopics.getters.batch.allCoilIDsNotification)
       .map((data: any) => JSON.parse(data));
   }
 
-  public requestGetKeys() {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.getKeys);
+  public requestAllCoilIDs() {
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.allCoilIDs);
   }
 
   public HSMData(): Observable<any> {
