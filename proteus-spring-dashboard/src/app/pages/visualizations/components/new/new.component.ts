@@ -41,7 +41,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
   public save(model: RealtimeChart, isValid: boolean) {
     let self = this;
     let alarms = model.alarms;
-    let coilID = this.coilID;
+    let coilID = model.coilID;
     let endpoints = new Array<string>();
     this.submitted = true;
 
