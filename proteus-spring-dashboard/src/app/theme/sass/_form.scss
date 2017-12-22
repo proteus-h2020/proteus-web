@@ -91,6 +91,25 @@ textarea.form-control {
   height: 96px;
 }
 
+ol.auto-complete {
+  padding: 0px;
+  overflow-y:auto;
+  height:auto;
+  max-height:200px;
+  border: 1px solid $input-border;
+  border-top: 0px;
+}
+
+li.form-control.auto-complete {
+  border-radius: 0px;
+  border: 0px;
+  cursor: pointer;
+  &:hover {
+    background-color: $primary-bg;
+    color: $input-background;
+  }
+}
+
 .form-inline {
   .form-group {
     input {

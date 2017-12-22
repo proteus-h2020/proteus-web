@@ -14,6 +14,7 @@ import { VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
 import { Statistics } from '../../components/statistics/statistics';
 import { ComponentsService } from '../../components/components.service';
 import { ComponentSet } from '../../components/componentSet';
+import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
@@ -32,14 +33,15 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     private chartService: ChartService,
     private router: Router,
     private componentsService: ComponentsService,
+    public appSubscriptionsService: AppSubscriptionsService,
   ) {
-    super();
+    super(appSubscriptionsService);
   }
 
   public save(model: RealtimeChart, isValid: boolean) {
     let self = this;
     let alarms = model.alarms;
-    let coilID = model.coilID;
+    let coilID = this.coilID;
     let endpoints = new Array<string>();
     this.submitted = true;
 

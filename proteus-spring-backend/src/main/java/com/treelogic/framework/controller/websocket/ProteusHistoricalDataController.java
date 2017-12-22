@@ -142,16 +142,7 @@ public class ProteusHistoricalDataController {
 
 			@Override
 			public void onNext(List<Integer> keys) {
-				for (Integer k : keys) {
-					try {
-						Thread.sleep(30); // if we remove this line websocket connection is closed when sending data. Some kind of data overflow happens.
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					simpMessagingTemplate.convertAndSend("/topic/get/keys",
-							new Tuple2<Integer, Integer>(k, k));
-				}
+				simpMessagingTemplate.convertAndSend("/topic/get/keys", keys);
 			}
 		});
 	}

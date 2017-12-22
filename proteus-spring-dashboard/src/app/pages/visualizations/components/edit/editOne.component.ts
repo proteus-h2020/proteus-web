@@ -6,6 +6,7 @@ import { ChartService } from './../../../../chart.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { VisualizationForm } from './../../VisualizationForm';
+import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
 
 import 'style-loader!./editOne.scss';
 
@@ -23,8 +24,10 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
     constructor(
         private route: ActivatedRoute,
         private chartService: ChartService,
-        private router: Router) {
-        super();
+        private router: Router,
+        public appSubscriptionsService: AppSubscriptionsService,
+      ) {
+        super(appSubscriptionsService);
         this.paramsSubscription = this.route.params.subscribe((params: Params) => {
                                                       this._handleParamChange(params, 'id');
                                                     });
