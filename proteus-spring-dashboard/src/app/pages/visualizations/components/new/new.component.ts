@@ -51,6 +51,9 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
         if (calc == 'mean' || calc == 'variance') {
           endpoints.push('/topic/flink/var/' + model.variable);
         }
+        if (calc == 'sax_vsm') {
+          endpoints.push('/topic/flink/sax');
+        }
       }
     }
 
