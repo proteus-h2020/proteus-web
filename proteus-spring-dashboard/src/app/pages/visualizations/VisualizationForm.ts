@@ -89,9 +89,9 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-      this.appSubscriptionsService.requestGetKeys();
+      this.appSubscriptionsService.requestAllCoilIDs();
 
-      this.appSubscriptionsService.keys().subscribe(
+      this.appSubscriptionsService.allCoilIDs().subscribe(
         (coilID: any) => {
           this.availableCoilIDs = this.availableCoilIDs.concat(coilID);
         },
