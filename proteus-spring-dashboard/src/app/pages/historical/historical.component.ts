@@ -19,12 +19,6 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   private coilId: number = 40304075;
   private varId: number = 2;
 
-<<<<<<< HEAD
-=======
-  private coilData: any;
-  private coilId: number = 40101001;
-  private varId: number = 4;
->>>>>>> ded134d7ce13a93ff472624229e41ad62a4f00bf
   private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
   private subscriptions: Subscription[] = new Array<Subscription>();
 
@@ -62,7 +56,6 @@ export class HistoricalComponent implements OnInit, OnDestroy {
       },
     );
 
-<<<<<<< HEAD
     const chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
       // todo: filter with rxjs
      (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.coilID !== 'current'),
@@ -74,35 +67,12 @@ export class HistoricalComponent implements OnInit, OnDestroy {
     );
   }
 
-=======
-    const chartsSubscription = this.chartProteicService
-    .getChartsSubscription()
-    .subscribe((charts: RealtimeChart[]) => {
-      this.charts = charts.filter((c: RealtimeChart) => c.coilID !== 'current'); // TODO: filter with rxjs
-    });
 
-    this.subscriptions.push(coilDataSubscription);
-    this.subscriptions.push(chartsSubscription);
-
-    this._requestHistoricalData(this.coilId, this.varId);
-
-  }
-
-
->>>>>>> ded134d7ce13a93ff472624229e41ad62a4f00bf
   private _requestHistoricalData(coilId: number, varId: number) {
     this.appSubscriptionsService.requestHistoricalData(coilId, varId);
   }
 
-<<<<<<< HEAD
-=======
-  ngOnDestroy() {
-    for (const s of this.subscriptions) {
-      s.unsubscribe();
-    }
-  }
 
->>>>>>> ded134d7ce13a93ff472624229e41ad62a4f00bf
   /**
 
   private changeCoilIDSelection(event: any) {
