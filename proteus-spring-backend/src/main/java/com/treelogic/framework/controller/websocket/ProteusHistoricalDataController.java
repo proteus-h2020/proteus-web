@@ -17,6 +17,7 @@ import com.treelogic.framework.domain.batch.ProteusHistoricalRecord;
 import com.treelogic.framework.domain.batch.ProteusRealtimeRecord;
 import com.treelogic.framework.domain.tuples.Tuple2;
 import com.treelogic.framework.service.ProteusHistoricalRecordService;
+import com.treelogic.framework.domain.Pair;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -39,46 +40,38 @@ public class ProteusHistoricalDataController {
 	public ProteusHistoricalDataController() {
 	}
 
-	@MessageMapping("/get/data/coil/{coilID}/{varID}")
-	public void getCoilData(@DestinationVariable int coilID, @DestinationVariable int varID) {
+	@MessageMapping("/get/historical/coil/{coilID}/{varID}")
+	public void getHistoricalData(@DestinationVariable int coilID, @DestinationVariable int varID) {
 		LOGGER.info("Received Coil Id: " + coilID+" and var " + varID);
-		this.sendProteusData(coilID, varID);
+		this.sendHistoricalData(coilID, varID);
 	}
 
-	private void sendProteusData(final int coilID, int varID) {	
+	private void sendHistoricalData(final int coilID, int varID) {	
 		
-		List<ProteusRealtimeRecord> realtime = this.proteusService.findRealtimeByCoilIdVarId(coilID, varID);		
-		LOGGER.info(String.format("Sending %1$s realtime records by coilId: %2$s and varId: %3$s with buffer size: %4$s", realtime.size(), coilID, varID, realTimeBufferSize));
+		List<ProteusRealtimeRecord> historicalRecords = this.proteusService.findRealtimeByCoilIdVarId(coilID, varID);		
+		LOGGER.info(String.format("Sending %1$s historical records by coilId: %2$s and varId: %3$s with buffer size: %4$s", historicalRecords.size(), coilID, varID, realTimeBufferSize));
 		
-		if (!realtime.isEmpty()) {
-			Observable.from(realtime).buffer(realTimeBufferSize).subscribe(new Subscriber<List<ProteusRealtimeRecord>>()  {
+		if (!historicalRecords.isEmpty()) {
+			Observable.from(historicalRecords).buffer(realTimeBufferSize).subscribe(new Subscriber<List<ProteusRealtimeRecord>>()  {
 
 				@Override
 				public void onCompleted() {
-					LOGGER.info("Realtime record send completed");
+					LOGGER.info("Historical record send completed");
 					
 				}
 
 				@Override
 				public void onError(Throwable throwable) {
-					LOGGER.error(String.format("Realtime record send with error: %1$s", throwable));
+					LOGGER.error(String.format("Historical record send with error: %1$s", throwable));
 					
 				}
 
 				@Override
 				public void onNext(List<ProteusRealtimeRecord> proteusRealtimeRecords) {
 					for (ProteusRealtimeRecord record : proteusRealtimeRecords) {
-						//TODO: ?¿ Could not replay
-//						try {
-//							Thread.sleep(30); // if we remove this line websocket connection is closed when sending data. Some kind of data overflow happens.
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-						simpMessagingTemplate.convertAndSend("/topic/get/data/coil",
-								new Tuple2<Integer, ProteusRealtimeRecord>(coilID, record));
+						simpMessagingTemplate.convertAndSend("/topic/get/historical/coil",
+								new Pair<Integer, ProteusRealtimeRecord>(coilID, record));
 					}
-					
 				}
 			});
 		}
@@ -112,46 +105,37 @@ public class ProteusHistoricalDataController {
 				public void onNext(List<ProteusRealtimeRecord> proteusRealtimeRecords) {
 					for (ProteusRealtimeRecord record : proteusRealtimeRecords) {
 						simpMessagingTemplate.convertAndSend("/topic/get/realtime/coil",
-								new Tuple2<Integer, ProteusRealtimeRecord>(coilID, record));
+								new Pair<Integer, ProteusRealtimeRecord>(coilID, record));
 					}
 				}
 			});
 		}
 	}
 
-	@MessageMapping("/get/keys")
-	public void getKeys() {
-		LOGGER.info("Send keys");
-		this.sendKeys();
+	@MessageMapping("/get/all/coilIDs")
+	public void getAllCoilIDs() {
+		LOGGER.info("Send All CoilIDs");
+		this.sendAllCoilIDs();
 	}
 
-	private void sendKeys() {
-		List<Integer> keys = this.proteusService.findKeys();
-		LOGGER.info(String.format("Sending %1$s keys with buffer size: %2$s", keys.size(), realTimeBufferSize));
+	private void sendAllCoilIDs() {
+		List<Integer> allCoilIDs = this.proteusService.findAllCoilIDs();
+		LOGGER.info(String.format("Sending %1$s coilIDs with buffer size: %2$s", allCoilIDs.size(), realTimeBufferSize));
 
-		Observable.from(keys).buffer(realTimeBufferSize).subscribe(new Subscriber<List<Integer>>() {
+		Observable.from(allCoilIDs).buffer(realTimeBufferSize).subscribe(new Subscriber<List<Integer>>() {
 			@Override
 			public void onCompleted() {
-				LOGGER.info("Keys data Completed");
+				LOGGER.info("all CoilIDs data Completed");
 			}
 
 			@Override
 			public void onError(Throwable throwable) {
-				LOGGER.error(String.format("keys send with error: %1$s", throwable));
+				LOGGER.error(String.format("allCoilIDs send with error: %1$s", throwable));
 			}
 
 			@Override
-			public void onNext(List<Integer> keys) {
-				for (Integer k : keys) {
-					try {
-						Thread.sleep(30); // if we remove this line websocket connection is closed when sending data. Some kind of data overflow happens.
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					simpMessagingTemplate.convertAndSend("/topic/get/keys",
-							new Tuple2<Integer, Integer>(k, k));
-				}
+			public void onNext(List<Integer> allCoilIDs) {
+				simpMessagingTemplate.convertAndSend("/topic/get/all/coilIDs", allCoilIDs);
 			}
 		});
 	}
@@ -185,7 +169,7 @@ public class ProteusHistoricalDataController {
 				
 				for (ProteusHistoricalRecord.ProteusSimpleMoment sm : proteusSimpleMomentRecord) {
 					simpMessagingTemplate.convertAndSend("/topic/get/simplemoments/coil",
-							new Tuple2<Integer, ProteusHistoricalRecord.ProteusSimpleMoment>(coilID, sm));
+							new Pair<Integer, ProteusHistoricalRecord.ProteusSimpleMoment>(coilID, sm));
 				}
 			}
 		});
