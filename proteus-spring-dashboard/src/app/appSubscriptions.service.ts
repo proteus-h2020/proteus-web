@@ -16,11 +16,6 @@ export class AppSubscriptionsService {
     this.websocketService.send(environment.websocketTopics.getters.coil);
   }
 
-  public getCoilData(coilID: number) {
-    let endpoint = environment.websocketTopics.getters.batch.coilData + coilID;
-    this.websocketService.send(endpoint);
-  }
-
   public getMessages(): void {
     this.websocketService.send(environment.websocketTopics.getters.messages);
   }

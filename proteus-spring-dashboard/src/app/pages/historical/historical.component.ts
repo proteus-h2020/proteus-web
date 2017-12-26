@@ -67,21 +67,8 @@ export class HistoricalComponent implements OnInit, OnDestroy {
     );
   }
 
-
   private _requestHistoricalData(coilId: number, varId: number) {
     this.appSubscriptionsService.requestHistoricalData(coilId, varId);
   }
-
-
-  /**
-
-  private changeCoilIDSelection(event: any) {
-    if(event.target.value){
-      let coilID = parseInt(event.target.value, 10);
-      this.appSubscriptionsService.getCoilData(coilID);
-    }
-  }
-
-  **/
 
 }
