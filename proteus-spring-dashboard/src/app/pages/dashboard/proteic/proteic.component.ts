@@ -146,16 +146,16 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         varID: number = +this.chart.variable;
       // TODO Improve: add for loop by endpoints (realtime by coil and var, moments by coil -> need to explore it more)
       this.appSubscriptionsService.requestHistoricalData(coilID, varID);
-      const historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe(
-        (data: any) => {
-          const json = data.value;
-          if (json) {
-            json.key = '' + json.varId;
-            this.proteicChart.keepDrawing(json);
-          }
-        });
-        this.subscriptions.push(historicalDataSubscription);
+      const historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe((data: any) => {
+        const json = data.value;
+        if (json) {
+          json.key = '' + json.varId;
+          this.proteicChart.keepDrawing(json);
+        }
+      });
+      this.subscriptions.push(historicalDataSubscription);
     }
+
   }
 
   ngOnDestroy() {
