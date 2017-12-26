@@ -22,7 +22,7 @@ export class FormVisualization {
       variable: [model ? model.variable : null],
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
-      coilID: [model ? model.coilID : 'current'],
+      coilID: [model ? model.coilID : '', [<any>Validators.required]],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -77,6 +77,10 @@ export class FormVisualization {
   public static changeDefaultProperties(chartType: string, form: FormGroup) {
     FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
     form.setControl('configuration', this._createConfigurationByChartProperties(null));
+  }
+
+  public static changeCoilID(coilID: string, form: FormGroup) {
+    form.controls['coilID'].setValue(coilID);
   }
 
   public static isDynamicKey(key: string) {

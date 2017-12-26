@@ -25,7 +25,7 @@
             <label for="coilSelection"><strong>Search your prefered coil ID:</strong></label>
           </div>
           <div class="col">
-            <input class="form-control" type="text" formControlName="coilID" [(ngModel)]="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
+            <input class="form-control" type="text" formControlName="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
             <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
               <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
                 <a *ngIf="coilID=='current';else batch" >Current coil (streaming)</a>

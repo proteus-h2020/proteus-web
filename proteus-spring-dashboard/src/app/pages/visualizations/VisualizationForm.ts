@@ -30,7 +30,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     // TODO use @angular-material if angular version of this project is updated
     public availableCoilIDs: number[] = [];
     public matchingCoilIDs: any[] = [];
-    public coilID: string = '';
 
     constructor(
       protected appSubscriptionsService: AppSubscriptionsService,
@@ -73,10 +72,12 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
     protected searchCoilIDs() {
       this.matchingCoilIDs = ['current'];
-      if (this.coilID !== '') {
+      let inputCoilID = this.form.controls['coilID'].value;
+
+      if (inputCoilID !== '') {
         let match = this.availableCoilIDs.filter((availableCoilID) =>
-                                        availableCoilID.toString().indexOf(this.coilID) > -1 &&
-                                        availableCoilID.toString() != this.coilID);
+                                        availableCoilID.toString().indexOf(inputCoilID) > -1 &&
+                                        availableCoilID.toString() != inputCoilID);
         this.matchingCoilIDs = this.matchingCoilIDs.concat(match);
       } else {
         this.matchingCoilIDs = this.matchingCoilIDs.concat(this.availableCoilIDs);
@@ -84,7 +85,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     protected selectCoilID(coilID: any) {
-      this.coilID = coilID;
+      FormVisualization.changeCoilID(coilID, this.form);
       this.matchingCoilIDs = [];
     }
 
@@ -99,7 +100,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
       this._createForm();
 
-      this.form.controls['type'].valueChanges.subscribe(type => {
+      this.form.controls['type'].valueChanges.subscribe((type) => {
         FormVisualization.changeDefaultProperties(type, this.form);
       });
 
