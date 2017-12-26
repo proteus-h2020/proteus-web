@@ -30,6 +30,7 @@ export class AppSubscriptionsService {
       .subscribe(environment.websocketTopics.coilNotification)
       .map((data: any) => JSON.parse(data));
   }
+
   public messageCounter(): Observable<any> {
     return this.websocketService
       .subscribe(environment.websocketTopics.messageCounter)
@@ -38,45 +39,45 @@ export class AppSubscriptionsService {
 
   public historicalData(): Observable<any> {
     return this.websocketService
-      .subscribe(environment.websocketTopics.getters.batch.dataNotification)
+      .subscribe(environment.websocketTopics.getters.batch.historicalData)
       .map((data: any) => JSON.parse(data));
   }
 
   public requestHistoricalData(coilId: number, varId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.coilData + coilId + '/' + varId);
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHistorical + coilId + '/' + varId);
   }
 
   public realtimeData(): Observable<any> {
     return this.websocketService
-      .subscribe(environment.websocketTopics.getters.batch.realtimeNotification)
+      .subscribe(environment.websocketTopics.getters.batch.realtimeData)
       .map((data: any) => JSON.parse(data));
   }
 
   public requestRealtimeData(coilId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.realtimeData + coilId);
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestRealtime + coilId);
   }
 
   public requestSimpleMomentsData(coilId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.simpleMomentsData + coilId);
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestSimpleMoments + coilId);
   }
 
   public allCoilIDs(): Observable<any> {
     return this.websocketService
-      .subscribe(environment.websocketTopics.getters.batch.allCoilIDsNotification)
+      .subscribe(environment.websocketTopics.getters.batch.allCoilIDs)
       .map((data: any) => JSON.parse(data));
   }
 
   public requestAllCoilIDs() {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.allCoilIDs);
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestAllCoilIDs);
   }
 
   public HSMData(): Observable<any> {
     return this.websocketService
-      .subscribe(environment.websocketTopics.getters.batch.HSMNotification)
+      .subscribe(environment.websocketTopics.getters.batch.HSMData)
       .map((data: any) => JSON.parse(data));
   }
 
   public requestHSMData(coilId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.HSMData + coilId);
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHSM + coilId);
   }
 }
