@@ -23,7 +23,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     public submitted: boolean;
     private cancellableSubscriptions: Subscription[];
     variables: string[];
-    calculations: PairForm[];
+
 
     // TODO use @angular-material if angular version of this project is updated
     public availableCoilIDs: number[] = [];
@@ -69,8 +69,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     protected visualizationModes() {
-      let initMode = [new PairForm('streaming', 'REAL-TIME DATA')]; // when visualization type is not selected
-      return FormVisualization.mode ? FormVisualization.mode : initMode;
+      return FormVisualization.mode;
+    }
+
+    protected calculations() {
+      return FormVisualization.calculations;
     }
 
     protected searchCoilIDs() {
@@ -94,6 +97,25 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       this.matchingCoilIDs = [];
     }
 
+    protected dataPropertyTitle(mode: string) {
+      let title: string;
+      switch (mode) {
+        case 'streaming':
+          title = 'Real-time data';
+          break;
+        case 'historical':
+          title = 'Historical data';
+          break;
+        case 'hsm':
+          title = 'Hsm data';
+          break;
+        default:
+          title = 'Data property';
+          break;
+      }
+      return title;
+    }
+
     public ngOnInit() {
       this.appSubscriptionsService.requestAllCoilIDs();
 
@@ -110,16 +132,17 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
         FormVisualization.changeVisualizationMode(type, this.form);
       });
 
+      this.form.controls['mode'].valueChanges.subscribe((mode) => {
+        FormVisualization.changeDataProperties(mode, this.form);
+      });
+
       this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
-      this.calculations = [
-        new PairForm('raw', 'Raw'),
-        new PairForm('mean', 'Mean'),
-        new PairForm('variance', 'Variance'),
-        new PairForm('sax_vsm', 'SAX/VSM'),
-      ];
+
     }
 
     public ngOnDestroy() {
       FormVisualization.defaults = {};
+      FormVisualization.mode = [];
+      FormVisualization.calculations = [];
     }
 }

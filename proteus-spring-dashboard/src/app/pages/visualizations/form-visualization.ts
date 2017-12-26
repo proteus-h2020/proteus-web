@@ -8,6 +8,7 @@ export class FormVisualization {
   private static fb: FormBuilder = new FormBuilder();
   public static keyValues: string[] = [];
   public static mode: PairForm[];
+  public static calculations: PairForm[];
 
 
   public static valueKeysChange(keys: string[]) {
@@ -25,7 +26,7 @@ export class FormVisualization {
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : '', [<any>Validators.required]],
-      mode: [model ? model.mode : 'streaming', [<any>Validators.required]],
+      mode: [model ? model.mode : '', [<any>Validators.required]],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -97,6 +98,33 @@ export class FormVisualization {
 
     let defaultValue = FormVisualization.mode[0].value;
     form.controls['mode'].setValue(defaultValue);
+  }
+
+  public static changeDataProperties(mode: string, form: FormGroup) {
+    switch (mode) {
+      case 'streaming':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+          new PairForm('mean', 'Mean'),
+          new PairForm('variance', 'Variance'),
+          new PairForm('sax_vsm', 'SAX/VSM'),
+        ];
+        break;
+      case 'historical':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+          // new PairForm('mean', 'Mean'),
+          // new PairForm('variance', 'Variance'),
+        ];
+        break;
+      case 'hsm':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+        ];
+        break;
+      default:
+        break;
+    }
   }
 
   public static changeCoilID(coilID: number, form: FormGroup) {

@@ -41,10 +41,16 @@
         </div>
       </ba-card>
 
-    <ba-card class="col"  title="Real-time data" *ngIf="form.controls.mode.value=='streaming'">
+    <ba-card class="col"  title="{{dataPropertyTitle(form.controls.mode.value)}}">
       <div class="row">
-        <div class="col">
+        <div class="col" *ngIf="form.controls.mode.value!='hsm'">
           <label for="varSelect"><strong>Select your var ID:</strong></label>
+          <select id="varSelect" class="form-control" formControlName="variable" name="variable">
+            <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+          </select>
+        </div>
+        <div class="col" *ngIf="form.controls.mode.value=='hsm'">
+          <label for="varSelect"><strong>Search your variable:</strong></label>
           <select id="varSelect" class="form-control" formControlName="variable" name="variable">
             <option *ngFor="let v of variables" [value]="v">{{v}}</option>
           </select>
@@ -53,24 +59,10 @@
         <div class="col">
           <label><strong>Calculations:</strong></label>
           <select multiple class="form-control" formControlName="calculations" name="calculations">
-            <option *ngFor="let c of calculations" [value]="c.value">{{c.label}}</option>
+            <option *ngFor="let c of calculations()" [value]="c.value">{{c.label}}</option>
           </select>
         </div>
       </div>
-    </ba-card>
-
-    <ba-card class="col" title="Historical data" *ngIf="form.controls.mode.value=='historical'">
-      <div class="row">
-        <div class="col">
-          <label for="varSelect"><strong>Select your var ID:</strong></label>
-          <select id="varSelect" class="form-control" formControlName="variable" name="variable">
-            <option *ngFor="let v of variables" [value]="v">{{v}}</option>
-          </select>
-        </div>
-      </div>
-    </ba-card>
-
-    <ba-card class="col" title="Hsm data" *ngIf="form.controls.mode.value=='hsm'">
     </ba-card>
   </div>
 
