@@ -9,6 +9,7 @@ export class RealtimeChart {
   public alarmFactor: number = 1;
   public layout: string = '6';
   public coilID: string = 'current';
+  public mode: string;
 
   constructor(
     public title: string,

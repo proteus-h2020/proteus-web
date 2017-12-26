@@ -1,11 +1,13 @@
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
 import { getDefaultOptions } from 'proteic';
+import { PairForm } from './VisualizationForm';
 
 export class FormVisualization {
   public static defaults = {};
   private static fb: FormBuilder = new FormBuilder();
   public static keyValues: string[] = [];
+  public static mode: PairForm[];
 
 
   public static valueKeysChange(keys: string[]) {
@@ -23,6 +25,7 @@ export class FormVisualization {
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : '', [<any>Validators.required]],
+      mode: [model ? model.mode : 'streaming', [<any>Validators.required]],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -77,6 +80,23 @@ export class FormVisualization {
   public static changeDefaultProperties(chartType: string, form: FormGroup) {
     FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
     form.setControl('configuration', this._createConfigurationByChartProperties(null));
+  }
+
+  public static changeVisualizationMode(chartType: string, form: FormGroup) {
+    switch (chartType) {
+      case 'ParallelCoordinates':
+        FormVisualization.mode = [new PairForm('hsm', 'HSM DATA')];
+        break;
+      default:
+        FormVisualization.mode = [
+          new PairForm('streaming', 'REAL-TIME DATA'),
+          new PairForm('historical', 'HISTORICAL DATA'),
+        ];
+        break;
+    }
+
+    let defaultValue = FormVisualization.mode[0].value;
+    form.controls['mode'].setValue(defaultValue);
   }
 
   public static changeCoilID(coilID: string, form: FormGroup) {

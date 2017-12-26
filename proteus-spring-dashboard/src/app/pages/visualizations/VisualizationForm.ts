@@ -8,7 +8,7 @@ import { FormVisualization } from './form-visualization';
 import { AppSubscriptionsService } from './../../appSubscriptions.service';
 
 
-class Calculation {
+export class PairForm {
     value;
     label;
     constructor(value: string, label: string) {
@@ -23,9 +23,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     public submitted: boolean;
     private cancellableSubscriptions: Subscription[];
     variables: string[];
-    calculations: Calculation[];
-
-    private type: string = 'streaming'; // batch or streaming
+    calculations: PairForm[];
 
     // TODO use @angular-material if angular version of this project is updated
     public availableCoilIDs: number[] = [];
@@ -70,6 +68,10 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       return ['Linechart'];
     }
 
+    protected visualizationModes() {
+      return FormVisualization.mode;
+    }
+
     protected searchCoilIDs() {
       this.matchingCoilIDs = ['current'];
       let inputCoilID = this.form.controls['coilID'].value;
@@ -102,14 +104,15 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
       this.form.controls['type'].valueChanges.subscribe((type) => {
         FormVisualization.changeDefaultProperties(type, this.form);
+        FormVisualization.changeVisualizationMode(type, this.form);
       });
 
       this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
       this.calculations = [
-        new Calculation('raw', 'Raw'),
-        new Calculation('mean', 'Mean'),
-        new Calculation('variance', 'Variance'),
-        new Calculation('sax_vsm', 'SAX/VSM'),
+        new PairForm('raw', 'Raw'),
+        new PairForm('mean', 'Mean'),
+        new PairForm('variance', 'Variance'),
+        new PairForm('sax_vsm', 'SAX/VSM'),
       ];
     }
 

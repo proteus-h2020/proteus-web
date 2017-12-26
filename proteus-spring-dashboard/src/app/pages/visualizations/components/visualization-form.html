@@ -14,6 +14,7 @@
           <option value="Streamgraph"> Streamgraph</option>
           <option value="Sunburst"> Sunburst</option>
           <option value="Swimlane"> Swimlane</option>
+          <option value="ParallelCoordinates">Parallel Coordinates</option>
         </select>
     </ba-card>
   </div>
@@ -22,9 +23,14 @@
       <ba-card class="col" title="visualization.mode">
         <div class="row">
           <div class="col">
-            <label for="coilSelection"><strong>Search your prefered coil ID:</strong></label>
+            <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
+            <select id="modeSelection" class="form-control" formControlName="mode">
+              <option *ngFor="let mode of visualizationModes()" [value]="mode.value">{{mode.label}}</option>
+            </select>
           </div>
+
           <div class="col">
+            <label for="coilSelection"><strong>Search your prefered coil ID:</strong></label>
             <input class="form-control" type="text" formControlName="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
             <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
               <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
@@ -36,7 +42,7 @@
         </div>
       </ba-card>
 
-    <ba-card class="col"  title="Real-time data">
+    <ba-card class="col"  title="Real-time data" *ngIf="form.controls.mode.value=='streaming'">
       <div class="row">
         <div class="col">
           <label for="varSelect"><strong>Select your var ID:</strong></label>
@@ -52,6 +58,20 @@
           </select>
         </div>
       </div>
+    </ba-card>
+
+    <ba-card class="col" title="Historical data" *ngIf="form.controls.mode.value=='historical'">
+      <div class="row">
+        <div class="col">
+          <label for="varSelect"><strong>Select your var ID:</strong></label>
+          <select id="varSelect" class="form-control" formControlName="variable" name="variable">
+            <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+          </select>
+        </div>
+      </div>
+    </ba-card>
+
+    <ba-card class="col" title="Hsm data" *ngIf="form.controls.mode.value=='hsm'">
     </ba-card>
   </div>
 
