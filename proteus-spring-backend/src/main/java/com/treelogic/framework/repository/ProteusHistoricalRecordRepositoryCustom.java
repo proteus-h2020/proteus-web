@@ -10,7 +10,7 @@ import rx.Observable;
 
 public interface ProteusHistoricalRecordRepositoryCustom {
 
-	List<Integer> findKeys();
+	List<Integer> findAllCoilIDs();
 	
 	List<ProteusHistoricalRecord> findByCoilIdAndProteusRealtimeVarId(int coilid, int varid);
 	

@@ -34,12 +34,12 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 
 	
 	@Override
-	public List<Integer> findKeys() {
+	public List<Integer> findAllCoilIDs() {
 		String bucketName = this.template.getCouchbaseBucket().name();
 
 		String query = String.format("select META(`%1$s`).id AS _ID from `%1$s`", bucketName);
 		
-		List<Integer> keys = new ArrayList<>();
+		List<Integer> allCoilIDs = new ArrayList<>();
 
 		List<Map<String, Object>> results = template.getCouchbaseBucket()
 				.async()
@@ -52,10 +52,10 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 				.single();
 
 		for (Map<String, Object> r : results) {
-			keys.add(Integer.valueOf(r.get("_ID").toString()));
+			allCoilIDs.add(Integer.valueOf(r.get("_ID").toString()));
 		}
 
-		return keys;
+		return allCoilIDs;
 	}
 
 	@Override

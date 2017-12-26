@@ -58,7 +58,7 @@ public class CouchbaseTests {
 		
 		proteusRepo.save(Arrays.asList(new ProteusHistoricalRecord[]{record1, record2, record3}));
 		
-		List<Integer> keys = proteusRepo.findKeys();
+		List<Integer> keys = proteusRepo.findAllCoilIDs();
 		
 		System.out.println("KEEEEEEEEEEEEYS:  " + keys);
 	}

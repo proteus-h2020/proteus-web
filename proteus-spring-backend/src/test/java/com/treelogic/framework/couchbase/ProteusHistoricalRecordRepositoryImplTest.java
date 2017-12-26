@@ -27,7 +27,7 @@ public class ProteusHistoricalRecordRepositoryImplTest {
 
     @Test
     public void getKeys() {
-        List<Integer> keys = proteusRepo.findKeys();
+        List<Integer> keys = proteusRepo.findAllCoilIDs();
         
         assertTrue(keys.size() > 0);
     }
