@@ -14,8 +14,8 @@ export const environment = {
       coil: '/app/get/coil',
       messages: '/app/get/messages',
       batch: {
-        historicalData: '/topic/get/data/coil',
-        requestHistorical: '/app/get/data/coil/', // coil id and var id are concatenated here
+        historicalData: '/topic/get/historical/coil',
+        requestHistorical: '/app/get/historical/coil/', // coil id and var id are concatenated here
         realtimeData: '/topic/get/realtime/coil',
         requestRealtime: '/app/get/realtime/coil/', // coil id is concatenated here
         simpleMomentsData: '/topic/get/simplemoments/coil',
