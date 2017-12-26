@@ -16,8 +16,8 @@ import { AppSubscriptionsService } from './../../appSubscriptions.service';
 export class HistoricalComponent implements OnInit, OnDestroy {
 
   private coilData: any;
-  private coilId: number = 40304075;
-  private varId: number = 2;
+  private coilId: number;
+  private varId: number;
 
   private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
   private subscriptions: Subscription[] = new Array<Subscription>();
@@ -48,21 +48,12 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   }
 
   private _initializeSubscriptions() {
-    this._requestHistoricalData(this.coilId, this.varId);
-
-    const coilDataSubscription = this.appSubscriptionsService.historicalData().subscribe(
-      (coilData: any) => {
-        this.coilData = coilData;
-      },
-    );
-
     const chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
       // todo: filter with rxjs
      (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.coilID !== 'current'),
     );
 
     this.subscriptions.push(
-      coilDataSubscription,
       chartsSubscription,
     );
   }

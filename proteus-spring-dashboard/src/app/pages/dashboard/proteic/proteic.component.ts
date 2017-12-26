@@ -1,10 +1,12 @@
-import { NotificationsService } from './../../../notifications.service';
 import { Subscription } from 'rxjs/Rx';
+
+import { Component, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
+import { NotificationsService } from './../../../notifications.service';
 import { WebsocketService } from './../../../websocket.service';
 import { AppSubscriptionsService } from './../../../appSubscriptions.service';
-
 import { RealtimeChart } from './../../../realtime-chart';
-import { Component, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
 
 import {
   Chart,
@@ -40,6 +42,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private websocketService: WebsocketService,
     private notificationService: NotificationsService,
+    private appSubscriptionsService: AppSubscriptionsService,
   ) { }
 
   ngOnInit() {
@@ -115,27 +118,42 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         break;
     }
 
-    for (const websocketEndpoint of this.chart.endpoints) {
-      const subs = this.websocketService.subscribe(websocketEndpoint);
-      const subscription = subs.subscribe((data: any) => {
-        const json = JSON.parse(data);
-        if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
-          json.key = '' + json.varId;
-        }
-        if (typeof json.mean !== 'undefined') {
-          // TODO: add alarm factor
-        }
-        if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
-          this.proteicChart.clear();
-          this.notificationService.clear();
-          this.proteicChart.keepDrawing(json);
-        } else {
-          this.proteicChart.keepDrawing(json);
-        }
+    if (this.chart.coilID === 'current') {
+      for (const websocketEndpoint of this.chart.endpoints) {
+        const subs = this.websocketService.subscribe(websocketEndpoint);
+        const subscription = subs.subscribe((data: any) => {
+          const json = JSON.parse(data);
+          if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
+            json.key = '' + json.varId;
+          }
+          if (typeof json.mean !== 'undefined') {
+            // TODO: add alarm factor
+          }
+          if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
+            this.proteicChart.clear();
+            this.notificationService.clear();
+            this.proteicChart.keepDrawing(json);
+          } else {
+            this.proteicChart.keepDrawing(json);
+          }
 
-        this.lastCoilReceived = json.coilId;
-      });
-      this.subscriptions.push(subscription);
+          this.lastCoilReceived = json.coilId;
+        });
+        this.subscriptions.push(subscription);
+      }
+    } else { // hisorical
+      const coilID: number = +this.chart.coilID,
+        varID: number = +this.chart.variable;
+      // TODO Improve: add for loop by endpoints (realtime by coil and var, moments by coil -> need to explore it more)
+      this.appSubscriptionsService.requestHistoricalData(coilID, varID);
+      const historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe(
+        (data: any) => {
+          const json = data.value;
+          if (json) {
+            this.proteicChart.keepDrawing(json);
+          }
+        });
+        this.subscriptions.push(historicalDataSubscription);
     }
   }
 

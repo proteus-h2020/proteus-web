@@ -45,6 +45,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     let endpoints = new Array<string>();
     this.submitted = true;
 
+    // TODO Improve: push endpoint of historical data
     if (model.calculations) {
       for (const calc of model.calculations) {
         if (calc == 'raw') {
