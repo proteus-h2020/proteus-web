@@ -150,6 +150,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         (data: any) => {
           const json = data.value;
           if (json) {
+            json.key = '' + json.varId;
             this.proteicChart.keepDrawing(json);
           }
         });
