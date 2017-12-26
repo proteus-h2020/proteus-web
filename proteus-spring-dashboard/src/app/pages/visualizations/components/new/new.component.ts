@@ -42,6 +42,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     let self = this;
     let alarms = model.alarms;
     let coilID = model.coilID;
+    let mode = model.mode;
     let endpoints = new Array<string>();
     this.submitted = true;
 
@@ -74,9 +75,10 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
       );
       model.alarms = alarms;
       model.coilID = coilID;
+      model.mode = mode;
 
       self.chartService.push(model);
-      if (model.coilID === 'current') {
+      if (model.mode === 'streaming') {
         self.router.navigate(['pages/dashboard']);
       } else {
         self.router.navigate(['pages/historical']);

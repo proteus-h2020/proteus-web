@@ -118,7 +118,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         break;
     }
 
-    if (this.chart.coilID === 'current') {
+    if (this.chart.mode === 'streaming') {
       for (const websocketEndpoint of this.chart.endpoints) {
         const subs = this.websocketService.subscribe(websocketEndpoint);
         const subscription = subs.subscribe((data: any) => {
@@ -141,7 +141,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         });
         this.subscriptions.push(subscription);
       }
-    } else { // hisorical
+    } else if (this.chart.mode === 'historical'){ // hisorical
       const coilID: number = +this.chart.coilID,
         varID: number = +this.chart.variable;
       // TODO Improve: add for loop by endpoints (realtime by coil and var, moments by coil -> need to explore it more)

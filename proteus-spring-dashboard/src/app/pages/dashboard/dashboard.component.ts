@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _initializeSubscriptions() {
 
     const chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
-      (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.coilID === 'current'),
+      (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.mode === 'streaming'),
     );
 
     const coilSubscription = this.appSubscriptionService.coilChange().subscribe(

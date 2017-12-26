@@ -52,7 +52,7 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
 
         if (isValid) {
             this.chartService.update(model);
-            if (model.coilID === 'current') {
+            if (model.mode === 'streaming') {
               this.router.navigate(['pages/dashboard']);
             } else {
               this.router.navigate(['pages/historical']);

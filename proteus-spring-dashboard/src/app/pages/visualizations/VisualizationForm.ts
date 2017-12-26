@@ -27,7 +27,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
     // TODO use @angular-material if angular version of this project is updated
     public availableCoilIDs: number[] = [];
-    public matchingCoilIDs: any[] = [];
+    public matchingCoilIDs: number[] = [];
 
     constructor(
       protected appSubscriptionsService: AppSubscriptionsService,
@@ -69,11 +69,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     protected visualizationModes() {
-      return FormVisualization.mode;
+      let initMode = [new PairForm('streaming', 'REAL-TIME DATA')]; // when visualization type is not selected
+      return FormVisualization.mode ? FormVisualization.mode : initMode;
     }
 
     protected searchCoilIDs() {
-      this.matchingCoilIDs = ['current'];
       let inputCoilID = this.form.controls['coilID'].value;
 
       if (inputCoilID !== '') {
@@ -86,8 +86,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       }
     }
 
-    protected selectCoilID(coilID: any) {
-      FormVisualization.changeCoilID(coilID, this.form);
+    protected selectCoilID(coilID: number) {
+      if (coilID) {
+        FormVisualization.changeCoilID(coilID, this.form);
+      }
+
       this.matchingCoilIDs = [];
     }
 
@@ -95,7 +98,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       this.appSubscriptionsService.requestAllCoilIDs();
 
       this.appSubscriptionsService.allCoilIDs().subscribe(
-        (coilID: any) => {
+        (coilID: number) => {
           this.availableCoilIDs = this.availableCoilIDs.concat(coilID);
         },
       );

@@ -99,7 +99,7 @@ export class FormVisualization {
     form.controls['mode'].setValue(defaultValue);
   }
 
-  public static changeCoilID(coilID: string, form: FormGroup) {
+  public static changeCoilID(coilID: number, form: FormGroup) {
     form.controls['coilID'].setValue(coilID);
   }
 
