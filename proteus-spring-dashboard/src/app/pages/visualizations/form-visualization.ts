@@ -1,4 +1,4 @@
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
 import { getDefaultOptions } from 'proteic';
 import { PairForm } from './VisualizationForm';
@@ -9,7 +9,6 @@ export class FormVisualization {
   public static keyValues: string[] = [];
   public static mode: PairForm[];
   public static calculations: PairForm[];
-
 
   public static valueKeysChange(keys: string[]) {
     this.keyValues = keys;
@@ -27,6 +26,8 @@ export class FormVisualization {
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : ''],
       mode: [model ? model.mode : '', [<any>Validators.required]],
+      coilIDs: model ? model.coilIDs : FormVisualization.fb.array([new FormControl('')]),
+      hsmVariables: model ? model.hsmVariables : FormVisualization.fb.array([new FormControl('')],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -128,7 +129,7 @@ export class FormVisualization {
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
-    if (mode == 'historical' || mode == 'hsm') {
+    if (mode == 'historical') {
       form.controls['coilID'].setValidators([<any>Validators.required]);
     }
   }

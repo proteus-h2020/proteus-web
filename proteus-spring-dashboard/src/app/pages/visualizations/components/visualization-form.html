@@ -41,22 +41,29 @@
 
           <div class="col" *ngIf="form.controls.mode.value=='hsm'">
             <label for="coilSelection"><strong>Search your coil ID:</strong></label>
-            <div class="row">
-              <div class="col-8">
-                <input class="form-control" type="text" formControlName="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
-              </div>
-              <div class="col-3">
-                <button class="form-control">+</button>
-              </div>
-            </div>
+            <div class="form-group" formArrayName="coilIDs">
+              <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx">
+                <div class="row">
+                  <div class="col-9">
+                    <input class="form-control" type="text" [formControlName]="idx" (focus)=searchCoilIDs(idx) (keyup)=searchCoilIDs(idx)>
+                  </div>
+                  <div class="col-3" *ngIf="idx==0">
+                    <button class="form-control" (click)=addForm()>+</button>
+                  </div>
+                  <div class="col-3" *ngIf="idx!=0">
+                    <button class="form-control" (click)=deleteForm(idx)>-</button>
+                  </div>
+                </div>
 
-            <div class="row">
-              <div class="col-8">
-                <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
-                  <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
-                    <a>{{coilID}}</a>
-                  </li>
-                </ol>
+                <div class="row">
+                  <div class="col-9">
+                    <ol *ngIf="matchingCoilIDs.length > 0 && index==idx" class="auto-complete">
+                      <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
+                        <a>{{coilID}}</a>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -72,7 +79,7 @@
           </select>
         </div>
         <div class="col" *ngIf="form.controls.mode.value=='hsm'">
-          <label for="varSelect"><strong>Search your variable:</strong></label>
+          <label for="varSelect"><strong>Search your HSM variable:</strong></label>
           <select id="varSelect" class="form-control" formControlName="variable" name="variable">
             <option *ngFor="let v of variables" [value]="v">{{v}}</option>
           </select>

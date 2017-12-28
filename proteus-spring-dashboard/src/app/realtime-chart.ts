@@ -10,6 +10,8 @@ export class RealtimeChart {
   public layout: string = '6';
   public coilID: number;
   public mode: string = 'streaming';
+  public coilIDs: number[];
+  public hsmVariables: string[];
 
   constructor(
     public title: string,
