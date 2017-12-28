@@ -71,6 +71,14 @@
     margin-left: 100px;
 }
 
+button.form-control {
+  cursor: pointer;
+  &:active, &:target {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: $default-text;
+  }
+}
+
 table.form-group-table{
     width: 100%;
 }

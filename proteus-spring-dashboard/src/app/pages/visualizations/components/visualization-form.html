@@ -38,6 +38,28 @@
               </li>
             </ol>
           </div>
+
+          <div class="col" *ngIf="form.controls.mode.value=='hsm'">
+            <label for="coilSelection"><strong>Search your coil ID:</strong></label>
+            <div class="row">
+              <div class="col-8">
+                <input class="form-control" type="text" formControlName="coilID" (focus)=searchCoilIDs() (keyup)=searchCoilIDs()>
+              </div>
+              <div class="col-3">
+                <button class="form-control">+</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-8">
+                <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
+                  <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)=selectCoilID(coilID)>
+                    <a>{{coilID}}</a>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
         </div>
       </ba-card>
 
