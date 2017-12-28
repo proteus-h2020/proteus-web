@@ -25,7 +25,7 @@ export class FormVisualization {
       variable: [model ? model.variable : null],
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
       alarms: [model ? model.alarms : null],
-      coilID: [model ? model.coilID : '', [<any>Validators.required]],
+      coilID: [model ? model.coilID : ''],
       mode: [model ? model.mode : '', [<any>Validators.required]],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
@@ -124,6 +124,12 @@ export class FormVisualization {
         break;
       default:
         break;
+    }
+  }
+
+  public static changeValidation(mode: string, form: FormGroup) {
+    if (mode == 'historical' || mode == 'hsm') {
+      form.controls['coilID'].setValidators([<any>Validators.required]);
     }
   }
 
