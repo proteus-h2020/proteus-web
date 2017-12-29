@@ -22,6 +22,8 @@ export const environment = {
         requestSimpleMoments: '/app/get/simplemoments/coil/', // coil id is concatenated here
         allCoilIDs: '/topic/get/all/coilIDs',
         requestAllCoilIDs: '/app/get/all/coilIDs',
+        allHSMvars: '/topic/get/all/hsmVars',
+        requestAllHSMvars: '/app/get/all/hsmVars',
         HSMData: '/topic/get/hsm/coil',
         requestHSM: '/app/get/hsm/coil/', // coil id is concatenated here
         streamData: '/topic/get/stream/coil',

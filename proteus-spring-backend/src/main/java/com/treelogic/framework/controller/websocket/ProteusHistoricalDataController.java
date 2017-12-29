@@ -209,6 +209,34 @@ public class ProteusHistoricalDataController {
 		});
 
 	}
+	
+	@MessageMapping("/get/all/hsmVars")
+	public void getAllHSMVars() {
+		LOGGER.info("Send all HSM variables");
+		this.sendAllHSMvars();
+	}
+	
+	public void sendAllHSMvars() {
+		List<String> allHSMvars = this.proteusService.findAllHSMvars();
+		LOGGER.info(String.format("Sending %1$s HSM variables with buffer size: %2$s", allHSMvars.size(), realTimeBufferSize));
+
+		Observable.from(allHSMvars).buffer(realTimeBufferSize).subscribe(new Subscriber<List<String>>() {
+			@Override
+			public void onCompleted() {
+				LOGGER.info("all HSM variables data Completed");
+			}
+
+			@Override
+			public void onError(Throwable throwable) {
+				LOGGER.error(String.format("all HSM variables send with error: %1$s", throwable));
+			}
+
+			@Override
+			public void onNext(List<String> allHSMvars) {
+				simpMessagingTemplate.convertAndSend("/topic/get/all/hsmVars", allHSMvars);
+			}
+		});
+	}
 
 	@MessageMapping("/get/realtime/stream/coil/{coilID}") 
 	public void getRealtimeStream (@DestinationVariable int coilID){

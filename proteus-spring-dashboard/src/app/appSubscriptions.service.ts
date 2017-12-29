@@ -72,7 +72,17 @@ export class AppSubscriptionsService {
       .map((data: any) => JSON.parse(data));
   }
 
-  public requestHSMData(coilId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHSM + coilId);
+  public requestHSMData(coilIds: number[]) {
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHSM + coilIds);
+  }
+
+  public allHSMvariables(): Observable<any> {
+    return this.websocketService
+      .subscribe(environment.websocketTopics.getters.batch.allHSMvars)
+      .map((data: any) => JSON.parse(data));
+  }
+
+  public requestAllHSMvariables() {
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestAllHSMvars);
   }
 }

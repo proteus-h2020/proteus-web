@@ -45,6 +45,10 @@ public class ProteusHistoricalRecordService {
 	public List<Map<String, Object>> findHSMByCoilId(int[] coils) {
 		return this.proteusRepository.findProteusHSMByCoilId(coils);
 	}
+	
+	public List<String> findAllHSMvars() {
+		return this.proteusRepository.findAllHSMvars();
+	}
 
 	public Observable<ProteusRealtimeRecord> findRealtimeStream(int coilid) {
 		return this.proteusRepository.findProteusRealtimeStream(coilid);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -122,6 +123,33 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .timeout(10, TimeUnit.SECONDS)
                 .toBlocking()
                 .single();
+	}
+	
+	@Override
+	public List<String> findAllHSMvars() {
+		int coilid = 40304075;
+		Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
+                .from(this.template.getCouchbaseBucket().name())
+				.useKeysValues(String.valueOf(coilid));
+		
+		List<String> allHSMvars = new ArrayList<>();
+
+		List<Map<String, Object>> results = template.getCouchbaseBucket()
+				.async()
+				.query(N1qlQuery.simple(query))
+				.flatMap(new MapperQueryRows())
+				.map(new MapperHashMap())
+				.toList()
+				.timeout(10, TimeUnit.SECONDS)
+				.toBlocking()
+				.single();
+		
+		for (Map<String, Object> r : results) {
+			Map<String, String> hsmData = (Map<String, String>)r.get("proteus-hsm");	
+			allHSMvars.addAll(hsmData.keySet());
+		}
+
+		return allHSMvars;
 	}
 
 	@Override

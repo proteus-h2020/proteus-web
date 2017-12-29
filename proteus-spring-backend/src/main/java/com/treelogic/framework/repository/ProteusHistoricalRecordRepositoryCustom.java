@@ -21,6 +21,8 @@ public interface ProteusHistoricalRecordRepositoryCustom {
 	List<ProteusHistoricalRecord.ProteusSimpleMoment> findProteusCalculationsByCoilId(int coilid);
 
 	List<Map<String, Object>> findProteusHSMByCoilId(int[] coilid);
+	
+	List<String> findAllHSMvars();
 
 	Observable<ProteusRealtimeRecord> findProteusRealtimeStream(int coilid);
 
