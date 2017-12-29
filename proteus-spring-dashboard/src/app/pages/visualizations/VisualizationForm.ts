@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs/Rx';
 
 import { OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 
 import { RealtimeChart } from './../../realtime-chart';
 import { FormVisualization } from './form-visualization';
@@ -27,7 +27,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     // TODO use @angular-material if angular version of this project is updated
     public availableCoilIDs: number[] = [];
     public matchingCoilIDs: number[] = [];
-    public index: number;
+    public coilIDsIndex: number;
+
+    public availableHSMvariables: string[] = [];
+    public matchingHSMvariables: string[] = [];
+    public hsmVariablesIndex: number;
 
     constructor(
       protected appSubscriptionsService: AppSubscriptionsService,
@@ -76,29 +80,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       return FormVisualization.calculations;
     }
 
-    protected searchCoilIDs(index: number = null) {
-      let inputCoilID = index !== null ? this.coilIDs.at(index).value : this.form.controls['coilID'].value;
-      this.index = index;
-
-      if (inputCoilID !== '') {
-        this.matchingCoilIDs = this.availableCoilIDs.filter((availableCoilID) =>
-                                        availableCoilID.toString().indexOf(inputCoilID) > -1 &&
-                                        availableCoilID.toString() != inputCoilID);
-      } else {
-        this.matchingCoilIDs = this.matchingCoilIDs.concat(this.availableCoilIDs);
-      }
-    }
-
-    protected selectCoilID(coilID: number) {
-      if (this.index === null) {
-        FormVisualization.changeCoilID(coilID, this.form);
-      } else {
-        this.coilIDs.at(this.index).setValue(coilID);
-      }
-
-      this.matchingCoilIDs = [];
-    }
-
     protected dataPropertyTitle(mode: string) {
       let title: string;
       switch (mode) {
@@ -122,22 +103,99 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       return this.form.get('coilIDs') as FormArray;
     }
 
-    protected addForm() {
-      this.coilIDs.push(new FormControl(''));
+    get hsmVariables(): FormArray {
+      return this.form.get('hsmVariables') as FormArray;
     }
 
-    protected deleteForm(index: number) {
-      this.coilIDs.removeAt(index);
+    protected search(index: number = null, target: string) {
+      switch (target) {
+        case 'coilIDs':
+          let inputCoilID = index !== null ? this.coilIDs.at(index).value : this.form.controls['coilID'].value;
+          this.coilIDsIndex = index;
+
+          if (inputCoilID !== '') {
+            this.matchingCoilIDs = this.availableCoilIDs.filter((availableCoilID) =>
+                                            availableCoilID.toString().indexOf(inputCoilID) > -1 &&
+                                            availableCoilID.toString() != inputCoilID);
+          } else {
+            this.matchingCoilIDs = this.availableCoilIDs;
+          }
+          break;
+        case 'hsmVariables':
+          let inputHSMvars = this.hsmVariables.at(index).value;
+          this.hsmVariablesIndex = index;
+
+          if (inputHSMvars !== '') {
+            this.matchingHSMvariables = this.availableHSMvariables.filter((hsmVariable) =>
+                                                hsmVariable.toLowerCase().indexOf(inputHSMvars) > -1 &&
+                                                hsmVariable.toLowerCase() != inputHSMvars);
+          } else {
+            this.matchingHSMvariables = this.availableHSMvariables;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+
+    protected select(value: number | string, target: string) {
+      switch (target) {
+        case 'coilIDs':
+          if (this.coilIDsIndex === null) { // single coil ID
+            FormVisualization.changeCoilID(+value, this.form);
+          } else {
+            this.coilIDs.at(this.coilIDsIndex).setValue(value);
+          }
+          this.matchingCoilIDs = [];
+          break;
+        case 'hsmVariables':
+          if (this.hsmVariablesIndex !== null) {
+            this.hsmVariables.at(this.hsmVariablesIndex).setValue(value);
+          }
+          this.matchingHSMvariables = [];
+          break;
+        default:
+          break;
+      }
+
+    }
+
+    protected addForm(target: string) {
+      switch (target) {
+        case 'coilIDs':
+          this.coilIDs.push(new FormControl('', <any>Validators.required));
+          break;
+        case 'hsmVariables':
+          this.hsmVariables.push(new FormControl('', <any>Validators.required));
+          break;
+      }
+    }
+
+    protected deleteForm(index: number, target: string) {
+      switch (target) {
+        case 'coilIDs':
+          this.coilIDs.removeAt(index);
+          break;
+        case 'hsmVariables':
+          this.hsmVariables.removeAt(index);
+          break;
+      }
     }
 
     public ngOnInit() {
       this.appSubscriptionsService.requestAllCoilIDs();
 
       this.appSubscriptionsService.allCoilIDs().subscribe(
-        (coilID: number) => {
+        (coilID: number[]) => {
           this.availableCoilIDs = this.availableCoilIDs.concat(coilID);
         },
       );
+
+      this.appSubscriptionsService.requestAllHSMvariables();
+
+      this.appSubscriptionsService.allHSMvariables().subscribe((hsmVariables: string[]) => {
+        this.availableHSMvariables = this.availableHSMvariables.concat(hsmVariables);
+      });
 
       this._createForm();
 

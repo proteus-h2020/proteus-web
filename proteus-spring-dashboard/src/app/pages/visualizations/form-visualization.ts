@@ -27,7 +27,7 @@ export class FormVisualization {
       coilID: [model ? model.coilID : ''],
       mode: [model ? model.mode : '', [<any>Validators.required]],
       coilIDs: model ? model.coilIDs : FormVisualization.fb.array([new FormControl('')]),
-      hsmVariables: model ? model.hsmVariables : FormVisualization.fb.array([new FormControl('')],
+      hsmVariables: model ? model.hsmVariables : FormVisualization.fb.array([new FormControl('')]),
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
