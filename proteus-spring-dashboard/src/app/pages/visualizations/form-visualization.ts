@@ -131,6 +131,11 @@ export class FormVisualization {
   public static changeValidation(mode: string, form: FormGroup) {
     if (mode == 'historical') {
       form.controls['coilID'].setValidators([<any>Validators.required]);
+    } else if (mode == 'hsm') {
+      let coilIDs = form.get('coilIDs') as FormArray,
+        hsmVariables = form.get('hsmVariables') as FormArray;
+        coilIDs.at(0).setValidators([<any>Validators.required]);
+        hsmVariables.at(0).setValidators([<any>Validators.required]);
     }
   }
 
