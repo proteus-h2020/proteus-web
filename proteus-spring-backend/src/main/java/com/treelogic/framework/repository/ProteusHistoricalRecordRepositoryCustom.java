@@ -18,9 +18,9 @@ public interface ProteusHistoricalRecordRepositoryCustom {
 	
 	List<ProteusRealtimeRecord> findProteusRealTimeByCoilIdVarId(int coilid, int varid);
 
-	List<ProteusHistoricalRecord.ProteusSimpleMoment> findProteusCalculationsByCoilId(int coilid);
+	List<ProteusHistoricalRecord.ProteusSimpleMoment> findProteusCalculationsByCoilIdVarId(int coilid, int varid);
 
-	List<Map<String, Object>> findProteusHSMByCoilId(int[] coilid);
+	List<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars);
 	
 	List<String> findAllHSMvars();
 

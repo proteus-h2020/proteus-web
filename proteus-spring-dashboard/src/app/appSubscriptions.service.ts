@@ -52,8 +52,14 @@ export class AppSubscriptionsService {
     this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestRealtime + coilId);
   }
 
-  public requestSimpleMomentsData(coilId: number) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestSimpleMoments + coilId);
+  public simpleMomentsData(): Observable<any> {
+    return this.websocketService
+      .subscribe(environment.websocketTopics.getters.batch.simpleMomentsData)
+      .map((data: any) => JSON.parse(data));
+  }
+
+  public requestSimpleMomentsData(coilId: number, varId: number) {
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestSimpleMoments + coilId + '/' + varId);
   }
 
   public allCoilIDs(): Observable<any> {
@@ -72,8 +78,8 @@ export class AppSubscriptionsService {
       .map((data: any) => JSON.parse(data));
   }
 
-  public requestHSMData(coilIds: number[]) {
-    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHSM + coilIds);
+  public requestHSMData(coilIds: number[], hsmVars: string[]) {
+    this.websocketService.subscribe(environment.websocketTopics.getters.batch.requestHSM + coilIds + '/' + hsmVars);
   }
 
   public allHSMvariables(): Observable<any> {

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -95,26 +94,27 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	}
 
 	@Override
-	public List<ProteusSimpleMoment> findProteusCalculationsByCoilId(int coilid) {
+	public List<ProteusSimpleMoment> findProteusCalculationsByCoilIdVarId(int coilid, int varid) {
 		String selectStr = "META(`proteus`).id AS _ID, META(`proteus`).cas AS _CAS, sm.x as x, sm.y as y, sm.varId as varId, " +
 				"sm.mean as mean, sm.stdDeviation as stdDeviation, sm.variance as variance, sm.counter as counter";
 
 		Statement query = select(selectStr)
 				.from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(String.valueOf(coilid))
-				.unnest("proteus.`simple-moments` sm");
+				.unnest("proteus.`simple-moments` sm")
+				.where(String.format("sm.varId = %d ", varid));
 
 		return template.findByN1QL(N1qlQuery.simple(query), ProteusHistoricalRecord.ProteusSimpleMoment.class);
 	}
 
 	@Override
-	public List<Map<String, Object>> findProteusHSMByCoilId(int[] coilid) {
+	public List<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars) {
 
         Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
                 .from(this.template.getCouchbaseBucket().name())
-				.useKeysValues(integerArrayToStringArray(coilid));
+				.useKeysValues(integerArrayToStringArray(coilids));
 
-        return template.getCouchbaseBucket()
+        List<Map<String, Object>> results = template.getCouchbaseBucket()
                 .async()
                 .query(N1qlQuery.simple(query))
                 .flatMap(new MapperQueryRows())
@@ -123,6 +123,9 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .timeout(10, TimeUnit.SECONDS)
                 .toBlocking()
                 .single();
+        
+        // TODO: filter results by hsmVars
+        return results;
 	}
 	
 	@Override

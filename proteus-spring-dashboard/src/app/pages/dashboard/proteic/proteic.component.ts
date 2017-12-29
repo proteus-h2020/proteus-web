@@ -19,7 +19,8 @@ import {
   Streamgraph,
   Sunburst,
   Swimlane,
-  Colors
+  Colors,
+  ParallelCoordinates,
 } from 'proteic';
 
 @Component({
@@ -114,6 +115,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'Swimlane':
         this.proteicChart = new Swimlane([], this.chart.configuration);
         break;
+      case 'ParallelCoordinates':
+        this.proteicChart = new ParallelCoordinates([], this.chart.configuration);
       default:
         break;
     }
@@ -141,19 +144,49 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         });
         this.subscriptions.push(subscription);
       }
-    } else if (this.chart.mode === 'historical'){ // hisorical
+
+    } else if (this.chart.mode === 'historical') {
       const coilID: number = +this.chart.coilID,
         varID: number = +this.chart.variable;
-      // TODO Improve: add for loop by endpoints (realtime by coil and var, moments by coil -> need to explore it more)
-      this.appSubscriptionsService.requestHistoricalData(coilID, varID);
-      const historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe((data: any) => {
-        const json = data.value;
-        if (json) {
-          json.key = '' + json.varId;
-          this.proteicChart.keepDrawing(json);
+      let historicalDataSubscription;
+      // TODO Improve: make this possble to draw raw and mean data at the same time
+      for (const calc of this.chart.calculations) {
+        if (calc == 'raw') {
+          this.appSubscriptionsService.requestHistoricalData(coilID, varID);
+          historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe((data: any) => {
+            const json = data.value;
+            if (json) {
+              json.key = '' + json.varId;
+              this.proteicChart.keepDrawing(json);
+            }
+          });
         }
-      });
-      this.subscriptions.push(historicalDataSubscription);
+        if (calc == 'mean' || calc == 'variance') {
+          this.appSubscriptionsService.requestSimpleMomentsData(coilID, varID);
+          historicalDataSubscription = this.appSubscriptionsService.simpleMomentsData().subscribe((data: any) => {
+            const json = data.value;
+            if (json) {
+              this.proteicChart.keepDrawing(json);
+            }
+          });
+        }
+
+        this.subscriptions.push(historicalDataSubscription);
+      }
+
+    } else if (this.chart.mode == 'hsm') {
+      const coilIDs: number[] = this.chart.coilIDs,
+        hsmVars: string[] = this.chart.hsmVariables;
+      let hsmDataSubscription;
+      for (const calc of this.chart.calculations) {
+        if (calc == 'raw') {
+          this.appSubscriptionsService.requestHSMData(coilIDs, hsmVars);
+          hsmDataSubscription = this.appSubscriptionsService.HSMData().subscribe((data: any) => {
+            // TODO implement drawing chart with hsm data
+          });
+        }
+      }
+      this.subscriptions.push(hsmDataSubscription);
     }
 
   }

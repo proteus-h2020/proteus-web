@@ -114,8 +114,8 @@ export class FormVisualization {
       case 'historical':
         FormVisualization.calculations = [
           new PairForm('raw', 'Raw'),
-          // new PairForm('mean', 'Mean'),
-          // new PairForm('variance', 'Variance'),
+          new PairForm('mean', 'Mean'),
+          new PairForm('variance', 'Variance'),
         ];
         break;
       case 'hsm':

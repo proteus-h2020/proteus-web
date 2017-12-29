@@ -40,7 +40,7 @@ public class ProteusHistoricalDataController {
 	public ProteusHistoricalDataController() {
 	}
 
-	@MessageMapping("/get/historical/coil/{coilID}/{varID}")
+	@MessageMapping("/get/historical/coil/var/{coilID}/{varID}")
 	public void getHistoricalData(@DestinationVariable int coilID, @DestinationVariable int varID) {
 		LOGGER.info("Received Coil Id: " + coilID+" and var " + varID);
 		this.sendHistoricalData(coilID, varID);
@@ -69,7 +69,7 @@ public class ProteusHistoricalDataController {
 				@Override
 				public void onNext(List<ProteusRealtimeRecord> proteusRealtimeRecords) {
 					for (ProteusRealtimeRecord record : proteusRealtimeRecords) {
-						simpMessagingTemplate.convertAndSend("/topic/get/historical/coil",
+						simpMessagingTemplate.convertAndSend("/topic/get/historical",
 								new Pair<Integer, ProteusRealtimeRecord>(coilID, record));
 					}
 				}
@@ -140,23 +140,24 @@ public class ProteusHistoricalDataController {
 		});
 	}
 
-	@MessageMapping("/get/simplemoments/coil/{coilID}")
-	public void getSimpleMomentsData(@DestinationVariable int coilID) {
-		LOGGER.info("Received Coil Id: " + coilID);
-		this.sendSimpleMomentsData(coilID);
+	@MessageMapping("/get/simplemoments/coil/var/{coilID}/{varID}")
+	public void getSimpleMomentsData(@DestinationVariable int coilID, @DestinationVariable int varID) {
+		LOGGER.info("[getSimpleMomentsData] Received Coil Id: " + coilID + " and Var Id: " + varID);
+		this.sendSimpleMomentsData(coilID, varID);
 
 	}
 
-	private void sendSimpleMomentsData(final int coilID) {
+	private void sendSimpleMomentsData(final int coilID, int varID) {
 
-		List<ProteusHistoricalRecord.ProteusSimpleMoment> simplemomentsrecords = this.proteusService.findSimpleMomentsByCoidId(coilID);
+		List<ProteusHistoricalRecord.ProteusSimpleMoment> simplemomentsrecords = this.proteusService.findSimpleMomentsByCoidIdVarId(coilID, varID);
 
-		LOGGER.info(String.format("Sending %1$s simple moments records by coilId: %2$s with buffer size: %3$s", simplemomentsrecords.size(), coilID, realTimeBufferSize));
+		LOGGER.info(String.format("Sending %1$s simple moments records by coilId: %2$s  and varId: %3$s with buffer size: %4$s", 
+				simplemomentsrecords.size(), coilID, varID, realTimeBufferSize));
 
 		Observable.from(simplemomentsrecords).buffer(realTimeBufferSize).subscribe(new Subscriber<List<ProteusHistoricalRecord.ProteusSimpleMoment>>() {
 			@Override
 			public void onCompleted() {
-				LOGGER.info("Simplemoment data Completed");
+				LOGGER.info("Simplemoments data Completed");
 			}
 
 			@Override
@@ -168,7 +169,7 @@ public class ProteusHistoricalDataController {
 			public void onNext(List<ProteusHistoricalRecord.ProteusSimpleMoment> proteusSimpleMomentRecord) {
 				
 				for (ProteusHistoricalRecord.ProteusSimpleMoment sm : proteusSimpleMomentRecord) {
-					simpMessagingTemplate.convertAndSend("/topic/get/simplemoments/coil",
+					simpMessagingTemplate.convertAndSend("/topic/get/simplemoments",
 							new Pair<Integer, ProteusHistoricalRecord.ProteusSimpleMoment>(coilID, sm));
 				}
 			}
@@ -176,16 +177,17 @@ public class ProteusHistoricalDataController {
 
 	}
 
-	@MessageMapping("/get/hsm/coil/{coils}")
-	public void getHSMData(@DestinationVariable int[] coils) {
-		LOGGER.info("Received Coil Id: " + coils);
-		this.sendHSMData(coils);
+	@MessageMapping("/get/hsm/coils/vars/{coilIDs}/{hsmVars}")
+	public void getHSMData(@DestinationVariable int[] coilIDs, @DestinationVariable String[] hsmVars) {
+		LOGGER.info("[getHSMData] Received Coil Ids: " + coilIDs + " and HSM variables: " + hsmVars);
+		this.sendHSMData(coilIDs, hsmVars);
 	}
 
-	private void sendHSMData(int[] coils) {
+	private void sendHSMData(int[] coilIDs, String[] hsmVars) {
 
-		List<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilId(coils);
-		LOGGER.info(String.format("Sending %1$s HSM records by coilId: %2$s with buffer size: %3$s", hsmrecords.size(), coils, realTimeBufferSize));
+		List<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
+		LOGGER.info(String.format("Sending %1$s HSM records by coilIds and hsmVars: %2$s  %3$s with buffer size: %4$s", 
+				hsmrecords.size(), coilIDs, hsmVars, realTimeBufferSize));
 
 		Observable.from(hsmrecords).subscribe(new Subscriber<Map<String, Object>>() {
 			@Override
@@ -200,11 +202,7 @@ public class ProteusHistoricalDataController {
 
 			@Override
 			public void onNext(Map<String, Object> proteusHSMRecord) {
-
-				simpMessagingTemplate.convertAndSend("/topic/get/hsm/coil",
-						proteusHSMRecord);
-
-
+				simpMessagingTemplate.convertAndSend("/topic/get/hsm", proteusHSMRecord);
 			}
 		});
 

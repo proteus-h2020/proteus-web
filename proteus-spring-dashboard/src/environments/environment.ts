@@ -14,18 +14,18 @@ export const environment = {
       coil: '/app/get/coil',
       messages: '/app/get/messages',
       batch: {
-        historicalData: '/topic/get/historical/coil',
-        requestHistorical: '/app/get/historical/coil/', // coil id and var id are concatenated here
+        historicalData: '/topic/get/historical',
+        requestHistorical: '/app/get/historical/coil/var/', // coil id and var id are concatenated here
         realtimeData: '/topic/get/realtime/coil',
         requestRealtime: '/app/get/realtime/coil/', // coil id is concatenated here
-        simpleMomentsData: '/topic/get/simplemoments/coil',
-        requestSimpleMoments: '/app/get/simplemoments/coil/', // coil id is concatenated here
+        simpleMomentsData: '/topic/get/simplemoments',
+        requestSimpleMoments: '/app/get/simplemoments/coil/var/', // coil id and var id are concatenated here
         allCoilIDs: '/topic/get/all/coilIDs',
         requestAllCoilIDs: '/app/get/all/coilIDs',
         allHSMvars: '/topic/get/all/hsmVars',
         requestAllHSMvars: '/app/get/all/hsmVars',
-        HSMData: '/topic/get/hsm/coil',
-        requestHSM: '/app/get/hsm/coil/', // coil id is concatenated here
+        HSMData: '/topic/get/hsm',
+        requestHSM: '/app/get/hsm/coils/vars/', // multiple coil id and hsm variables are concatenated here
         streamData: '/topic/get/stream/coil',
         requestStream: '/app/get/stream/coil/', // coil id is concatenated here
       },
