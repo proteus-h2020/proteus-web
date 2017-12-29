@@ -44,10 +44,13 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     let coilID = model.coilID;
     let mode = model.mode;
     let endpoints = new Array<string>();
+    let coilIDs = model.coilIDs;
+    let hsmVars = model.hsmVariables;
     this.submitted = true;
 
-    // TODO Improve: push endpoint of historical data
-    if (model.calculations) {
+
+    // TODO Improve: use endpoints in the case of historical and hsm
+    if (model.mode == 'streaming') {
       for (const calc of model.calculations) {
         if (calc == 'raw') {
           endpoints.push('/topic/realtime/var/' + model.variable);
@@ -76,6 +79,8 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
       model.alarms = alarms;
       model.coilID = coilID;
       model.mode = mode;
+      model.coilIDs = coilIDs;
+      model.hsmVariables = hsmVars;
 
       self.chartService.push(model);
       if (model.mode === 'streaming') {

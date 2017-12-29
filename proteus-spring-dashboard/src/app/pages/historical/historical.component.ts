@@ -46,7 +46,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   private _initializeSubscriptions() {
     const chartsSubscription = this.chartProteicService.getChartsSubscription().subscribe(
       // todo: filter with rxjs
-     (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.mode === 'historical'),
+     (charts: RealtimeChart[]) => this.charts = charts.filter((c: RealtimeChart) => c.mode !== 'streaming'),
     );
 
     this.subscriptions.push(

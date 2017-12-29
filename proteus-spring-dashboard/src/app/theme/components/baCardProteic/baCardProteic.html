@@ -1,7 +1,7 @@
 <div baCardBlur class="animated fadeIn card {{cardType}} {{baCardClass || ''}}" zoom-in>
     <div *ngIf="chart.title" class="card-header clearfix">
         <div class="d-inline">
-            <h3 *ngIf="chart.mode!='streaming'" class="d-inline card-title">Coil id: {{chart.coilID}}</h3>
+            <h3 *ngIf="chart.mode=='historical'" class="d-inline card-title">Coil id: {{chart.coilID}}</h3>
             <h3 class="d-inline card-title">{{chart.title}}</h3>
             <i (click)="remove()" class="d-inline pull-right fa fa-times" aria-hidden="true"></i>
             <i (click)="edit()" class="d-inline pull-right fa fa-pencil-square-o" aria-hidden="true"></i>
