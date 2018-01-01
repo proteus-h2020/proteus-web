@@ -13,10 +13,17 @@ export const environment = {
     getters: {
       coil: '/app/get/coil',
       messages: '/app/get/messages',
+      streaming: {
+        realtime: '/topic/realtime/var/',
+        flink: {
+          moments: '/topic/flink/var/',
+          sax: '/topic/flink/sax',
+        },
+      },
       batch: {
         historicalData: '/topic/get/historical',
         requestHistorical: '/app/get/historical/coil/var/', // coil id and var id are concatenated here
-        realtimeData: '/topic/get/realtime/coil',
+        realtimeData: '/topic/get/realtime',
         requestRealtime: '/app/get/realtime/coil/', // coil id is concatenated here
         simpleMomentsData: '/topic/get/simplemoments',
         requestSimpleMoments: '/app/get/simplemoments/coil/var/', // coil id and var id are concatenated here
@@ -26,7 +33,7 @@ export const environment = {
         requestAllHSMvars: '/app/get/all/hsmVars',
         HSMData: '/topic/get/hsm',
         requestHSM: '/app/get/hsm/coils/vars/', // multiple coil id and hsm variables are concatenated here
-        streamData: '/topic/get/stream/coil',
+        streamData: '/topic/get/stream',
         requestStream: '/app/get/stream/coil/', // coil id is concatenated here
       },
     },

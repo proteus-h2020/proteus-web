@@ -104,7 +104,7 @@ public class ProteusHistoricalDataController {
 				@Override
 				public void onNext(List<ProteusRealtimeRecord> proteusRealtimeRecords) {
 					for (ProteusRealtimeRecord record : proteusRealtimeRecords) {
-						simpMessagingTemplate.convertAndSend("/topic/get/realtime/coil",
+						simpMessagingTemplate.convertAndSend("/topic/get/realtime",
 								new Pair<Integer, ProteusRealtimeRecord>(coilID, record));
 					}
 				}
@@ -261,7 +261,7 @@ public class ProteusHistoricalDataController {
 			@Override
 			public void onNext(ProteusRealtimeRecord proteusRealtimeRecord) {
 				LOGGER.info("REAL Realtime data: " + proteusRealtimeRecord.toString());
-				simpMessagingTemplate.convertAndSend("/topic/get/realtime/stream/coil",
+				simpMessagingTemplate.convertAndSend("/topic/get/realtime/stream",
 						proteusRealtimeRecord);
 			}
 		});
