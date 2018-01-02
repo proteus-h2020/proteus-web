@@ -25,11 +25,9 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     variables: string[];
 
     // TODO use @angular-material if angular version of this project is updated
-    public availableCoilIDs: number[] = [];
     public matchingCoilIDs: number[] = [];
     public coilIDsIndex: number;
 
-    public availableHSMvariables: string[] = [];
     public matchingHSMvariables: string[] = [];
     public hsmVariablesIndex: number;
 
@@ -114,11 +112,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
           this.coilIDsIndex = index;
 
           if (inputCoilID !== '') {
-            this.matchingCoilIDs = this.availableCoilIDs.filter((availableCoilID) =>
+            this.matchingCoilIDs = FormVisualization.availableCoilIDs.filter((availableCoilID) =>
                                             availableCoilID.toString().indexOf(inputCoilID) > -1 &&
                                             availableCoilID.toString() != inputCoilID);
           } else {
-            this.matchingCoilIDs = this.availableCoilIDs;
+            this.matchingCoilIDs = FormVisualization.availableCoilIDs;
           }
           break;
         case 'hsmVariables':
@@ -126,11 +124,11 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
           this.hsmVariablesIndex = index;
 
           if (inputHSMvars !== '') {
-            this.matchingHSMvariables = this.availableHSMvariables.filter((hsmVariable) =>
+            this.matchingHSMvariables = FormVisualization.availableHSMvariables.filter((hsmVariable) =>
                                                 hsmVariable.toLowerCase().indexOf(inputHSMvars) > -1 &&
                                                 hsmVariable.toLowerCase() != inputHSMvars);
           } else {
-            this.matchingHSMvariables = this.availableHSMvariables;
+            this.matchingHSMvariables = FormVisualization.availableHSMvariables;
           }
           break;
         default:
@@ -183,19 +181,21 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-      this.appSubscriptionsService.requestAllCoilIDs();
+      if (FormVisualization.availableCoilIDs.length == 0) { // To avoid requesting available value frequently
+        this.appSubscriptionsService.requestAllCoilIDs();
 
-      this.appSubscriptionsService.allCoilIDs().subscribe(
-        (coilID: number[]) => {
-          this.availableCoilIDs = this.availableCoilIDs.concat(coilID);
-        },
-      );
+        this.appSubscriptionsService.allCoilIDs().subscribe((coilID: number[]) => {
+            FormVisualization.availableCoilIDs = FormVisualization.availableCoilIDs.concat(coilID);
+          });
+      }
 
-      this.appSubscriptionsService.requestAllHSMvariables();
+      if (FormVisualization.availableHSMvariables.length == 0) { // To avoid requesting available value frequently
+        this.appSubscriptionsService.requestAllHSMvariables();
 
-      this.appSubscriptionsService.allHSMvariables().subscribe((hsmVariables: string[]) => {
-        this.availableHSMvariables = this.availableHSMvariables.concat(hsmVariables);
-      });
+        this.appSubscriptionsService.allHSMvariables().subscribe((hsmVariables: string[]) => {
+          FormVisualization.availableHSMvariables = FormVisualization.availableHSMvariables.concat(hsmVariables);
+        });
+      }
 
       this._createForm();
 

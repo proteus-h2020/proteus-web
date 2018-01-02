@@ -10,6 +10,9 @@ export class FormVisualization {
   public static mode: PairForm[];
   public static calculations: PairForm[];
 
+  public static availableCoilIDs: number[] = [];
+  public static availableHSMvariables: string[] = [];
+
   public static valueKeysChange(keys: string[]) {
     this.keyValues = keys;
   }
