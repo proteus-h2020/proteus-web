@@ -54,8 +54,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
     const unpivot = this._calculateUnpivotArray(this.chart);
 
     const alertCallback: Function = (data: any) => {
-      this.notificationService.push(
-        { id: data.varId,
+      this.notificationService.push({
+          id: data.varId,
           label: 'Alarm',
           text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key,
         },
@@ -152,24 +152,36 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
    * @memberof Proteic
    */
   private _setChartConfiguration() {
+    this.chart.configuration.selector = '#' + this.id;
+
+    this.chart.configuration.marginTop = 35;
+    this.chart.configuration.marginBottom = 50;
+    // this.chart.configuration.marginLeft = 70;
+    this.chart.configuration.marginRight = 100;
+
+    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
+    this.chart.configuration.legendPosition = 'top';
+    this.chart.configuration.pauseButtonPosition = 'right';
+
     switch (this.chart.type) {
       case 'Heatmap':
       case 'Swimlane':
         this.chart.configuration.marginRight = 160;
         this.chart.configuration.marginLeft = 40;
         break;
-
+      case 'Barchart':
+        this.chart.configuration.height = 280;
+        this.chart.configuration.marginLeft = 80;
+        break;
+      case 'Gauge':
+        this.chart.configuration.height = 200;
+        this.chart.configuration.width = '100%';
+        this.chart.configuration.marginLeft = 150;
+        this.chart.configuration.marginTop = 80;
+        break;
       default:
-        this.chart.configuration.marginRight = 100;
         break;
     }
-    this.chart.configuration.marginBottom = 50;
-    // this.chart.configuration.marginLeft = 70;
-    this.chart.configuration.marginTop = 35;
-    this.chart.configuration.selector = '#' + this.id;
-    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
-    this.chart.configuration.legendPosition = 'top';
-    this.chart.configuration.pauseButtonPosition = 'right';
   }
 
   private _calculateUnpivotArray(chart: RealtimeChart): string[] {
