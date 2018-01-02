@@ -201,7 +201,6 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
       this.form.controls['type'].valueChanges.subscribe((type) => {
         FormVisualization.changeDefaultProperties(type, this.form);
-        FormVisualization.changeVisualizationMode(type, this.form);
       });
 
       this.form.controls['mode'].valueChanges.subscribe((mode) => {

@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col">
             <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
-            <select id="modeSelection" class="form-control" formControlName="mode">
+            <select id="modeSelection" class="form-control" formControlName="mode" ngDefaultControl>
               <option *ngFor="let mode of visualizationModes()" [value]="mode.value">{{mode.label}}</option>
             </select>
           </div>

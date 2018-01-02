@@ -25,12 +25,12 @@ export class FormVisualization {
       type: [model ? model.type : '', [<any>Validators.required]],
       configuration: FormVisualization._createConfigurationByChartProperties(model),
       variable: [model ? model.variable : null],
-      calculations: [model ? model.calculations : null, [<any>Validators.required]],
+      calculations: FormVisualization.createCalculationForm(model),
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : ''],
-      mode: [model ? model.mode : '', [<any>Validators.required]],
-      coilIDs: model ? model.coilIDs : FormVisualization.fb.array([new FormControl('')]),
-      hsmVariables: model ? model.hsmVariables : FormVisualization.fb.array([new FormControl('')]),
+      mode: FormVisualization.createVisualizationMode(model),
+      coilIDs: FormVisualization.createMutipleCoilIDSelectForm(model),
+      hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -82,30 +82,9 @@ export class FormVisualization {
     return FormVisualization.fb.group(form);
   }
 
-  public static changeDefaultProperties(chartType: string, form: FormGroup) {
-    FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
-    form.setControl('configuration', this._createConfigurationByChartProperties(null));
-  }
-
-  public static changeVisualizationMode(chartType: string, form: FormGroup) {
-    switch (chartType) {
-      case 'ParallelCoordinates':
-        FormVisualization.mode = [new PairForm('hsm', 'HSM DATA')];
-        break;
-      default:
-        FormVisualization.mode = [
-          new PairForm('streaming', 'REAL-TIME DATA'),
-          new PairForm('historical', 'HISTORICAL DATA'),
-        ];
-        break;
-    }
-
-    let defaultValue = FormVisualization.mode[0].value;
-    form.controls['mode'].setValue(defaultValue);
-  }
-
-  public static changeDataProperties(mode: string, form: FormGroup) {
-    switch (mode) {
+  public static createCalculationForm(model: RealtimeChart = null, mode: string = null) {
+    const visualizationMode: string = model ? model.mode : mode;
+    switch (visualizationMode) {
       case 'streaming':
         FormVisualization.calculations = [
           new PairForm('raw', 'Raw'),
@@ -129,6 +108,74 @@ export class FormVisualization {
       default:
         break;
     }
+
+    return [model ? model.calculations : null, [<any>Validators.required]];
+  }
+
+  public static createVisualizationMode(model: RealtimeChart = null, type: string = null) {
+    const chartType: string = model ? model.type : type;
+    let defaultMode: string = '';
+    let form;
+    if (chartType !== null) {
+      switch (chartType) {
+        case 'ParallelCoordinates':
+          FormVisualization.mode = [new PairForm('hsm', 'HSM DATA')];
+          break;
+        default:
+          FormVisualization.mode = [
+            new PairForm('streaming', 'REAL-TIME DATA'),
+            new PairForm('historical', 'HISTORICAL DATA'),
+          ];
+          break;
+      }
+
+      defaultMode = FormVisualization.mode[0].value;
+    }
+
+    if (type) { // To set default value
+      form = defaultMode;
+    } else { // To build form
+      form = [model ? model.mode : defaultMode, [<any>Validators.required]];
+    }
+
+    return form;
+  }
+
+  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null) {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      for (const coilID of model.coilIDs) {
+        formArray.push(new FormControl(coilID, <any>Validators.required));
+      }
+    } else {
+      formArray = [new FormControl('')];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
+  public static createHSMvariableSelectForm(model: RealtimeChart = null) {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      for (const hsmVariable of model.hsmVariables) {
+        formArray.push(new FormControl(hsmVariable, <any>Validators.required));
+      }
+    } else {
+      formArray = [new FormControl('')];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
+  public static changeDefaultProperties(chartType: string, form: FormGroup) {
+    FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
+    form.setControl('configuration', this._createConfigurationByChartProperties(null));
+
+    form.controls['mode'].setValue(FormVisualization.createVisualizationMode(null, chartType));
+  }
+
+  public static changeDataProperties(mode: string, form: FormGroup) {
+    FormVisualization.createCalculationForm(null, mode);
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
