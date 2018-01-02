@@ -4,6 +4,7 @@ import static com.couchbase.client.java.query.Select.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -124,7 +125,22 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .toBlocking()
                 .single();
         
-        // TODO: filter results by hsmVars
+        
+        for (Map<String, Object> r : results) {
+			Map<String, String> allHSMdata = (Map<String, String>)r.get("proteus-hsm");
+			r.remove("proteus-hsm");
+			
+			for (Map.Entry<String, String> hsmData : allHSMdata.entrySet()) {
+				for (String hsmVar: hsmVars) {
+					if (hsmData.getKey().equals(hsmVar)) {
+						if (!hsmData.getValue().equals("None")) {
+							r.put(hsmData.getKey(), hsmData.getValue());
+						}
+					} 				
+				}
+			}
+		}
+    
         return results;
 	}
 	
