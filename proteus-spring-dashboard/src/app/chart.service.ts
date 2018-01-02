@@ -440,6 +440,60 @@ export class ChartService {
         chart.mode = 'streaming';
 
         this.push(chart);
+
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        components = new ComponentSet();
+
+        endpoints = new Array<string>();
+
+        chart = new RealtimeChart(
+            'H0002 - Raw',
+            'Linechart',
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+                marginRight: 100,
+            },
+            components, // components config of annotations, statistics
+            '2',
+            calculations,
+            endpoints,
+        );
+        chart.coilID = 40304075;
+        chart.layout = '12';
+        chart.mode = 'historical';
+
+        this.charts.push(chart);
+
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        chart = new RealtimeChart(
+            'HSM DATA',
+            'ParallelCoordinates',
+            {
+                propertyKey: 'coilId',
+                marginRight: 100,
+                legend: true,
+                legendPosition: 'right',
+            },
+            components,
+            '',
+            calculations,
+            endpoints,
+        );
+        chart.layout = '12';
+        chart.mode = 'hsm';
+        chart.coilIDs = [40304075, 40304076, 40304078];
+        chart.hsmVariables = ['V1825', 'V1826', 'V1827', 'V1828', 'V1829'];
+
+        this.charts.push(chart);
     }
 
     getChart(id: number): RealtimeChart {

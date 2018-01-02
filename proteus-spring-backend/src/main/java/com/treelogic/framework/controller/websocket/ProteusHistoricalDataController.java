@@ -43,7 +43,7 @@ public class ProteusHistoricalDataController {
 
 	@MessageMapping("/get/historical/coil/var/{coilID}/{varID}")
 	public void getHistoricalData(@DestinationVariable int coilID, @DestinationVariable int varID) {
-		LOGGER.info("Received Coil Id: " + coilID+" and var " + varID);
+		LOGGER.info("[getHistoricalData] Received Coil Id: " + coilID+" and var " + varID);
 		this.sendHistoricalData(coilID, varID);
 	}
 
@@ -80,7 +80,7 @@ public class ProteusHistoricalDataController {
 	
 	@MessageMapping("/get/realtime/coil/{coilID}")
 	public void getRealtimeData(@DestinationVariable int coilID) {
-		LOGGER.info("Received Coil Id: " + coilID);
+		LOGGER.info("[getRealtimeData] Received Coil Id: " + coilID);
 		this.sendRealtimeData(coilID);
 		
 	}
@@ -115,7 +115,7 @@ public class ProteusHistoricalDataController {
 
 	@MessageMapping("/get/all/coilIDs")
 	public void getAllCoilIDs() {
-		LOGGER.info("Send All CoilIDs");
+		LOGGER.info("[getAllCoilIDs] Send All CoilIDs");
 		this.sendAllCoilIDs();
 	}
 
@@ -212,7 +212,7 @@ public class ProteusHistoricalDataController {
 	
 	@MessageMapping("/get/all/hsmVars")
 	public void getAllHSMVars() {
-		LOGGER.info("Send all HSM variables");
+		LOGGER.info("[getAllHSMVars] Send all HSM variables");
 		this.sendAllHSMvars();
 	}
 	
@@ -240,7 +240,7 @@ public class ProteusHistoricalDataController {
 
 	@MessageMapping("/get/realtime/stream/coil/{coilID}") 
 	public void getRealtimeStream (@DestinationVariable int coilID){
-		LOGGER.info("Received Coil Id: " + coilID);
+		LOGGER.info("[getRealtimeStream] Received Coil Id: " + coilID);
 		this.sendStreamRealTime(coilID);
 		
 	}
