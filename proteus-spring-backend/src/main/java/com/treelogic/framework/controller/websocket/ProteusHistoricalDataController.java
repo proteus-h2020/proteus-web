@@ -2,6 +2,7 @@ package com.treelogic.framework.controller.websocket;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,7 +180,8 @@ public class ProteusHistoricalDataController {
 
 	@MessageMapping("/get/hsm/coils/vars/{coilIDs}/{hsmVars}")
 	public void getHSMData(@DestinationVariable int[] coilIDs, @DestinationVariable String[] hsmVars) {
-		LOGGER.info("[getHSMData] Received Coil Ids: " + coilIDs + " and HSM variables: " + hsmVars);
+		LOGGER.info(String.format("[getHSMData] Received Coil Ids: %s and HSM variables: %s", 
+				Arrays.toString(coilIDs), Arrays.toString(hsmVars)));
 		this.sendHSMData(coilIDs, hsmVars);
 	}
 
@@ -187,7 +189,7 @@ public class ProteusHistoricalDataController {
 
 		List<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
 		LOGGER.info(String.format("Sending %1$s HSM records by coilIds and hsmVars: %2$s  %3$s with buffer size: %4$s", 
-				hsmrecords.size(), coilIDs, hsmVars, realTimeBufferSize));
+				hsmrecords.size(), Arrays.toString(coilIDs), Arrays.toString(hsmVars), realTimeBufferSize));
 
 		Observable.from(hsmrecords).subscribe(new Subscriber<Map<String, Object>>() {
 			@Override
