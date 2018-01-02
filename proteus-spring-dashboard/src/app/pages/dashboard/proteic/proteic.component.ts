@@ -178,11 +178,15 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       const coilIDs: number[] = this.chart.coilIDs,
         hsmVars: string[] = this.chart.hsmVariables;
       let hsmDataSubscription;
+      let json = [];
       for (const calc of this.chart.calculations) {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHSMData(coilIDs, hsmVars);
           hsmDataSubscription = this.appSubscriptionsService.HSMData().subscribe((data: any) => {
-            // TODO implement drawing chart with hsm data
+            if (data) {
+              json = json.concat(data);
+              this.proteicChart.keepDrawing(json);
+            }
           });
         }
       }
@@ -210,7 +214,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         this.chart.configuration.marginRight = 160;
         this.chart.configuration.marginLeft = 40;
         break;
-
+      case 'ParallelCoordinates':
+        this.chart.configuration.height = 250;
+        break;
       default:
         this.chart.configuration.marginRight = 100;
         break;
