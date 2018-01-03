@@ -82,16 +82,16 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       let title: string;
       switch (mode) {
         case 'streaming':
-          title = 'Real-time data';
+          title = 'realtime';
           break;
         case 'historical':
-          title = 'Historical data';
+          title = 'historical';
           break;
         case 'hsm':
-          title = 'Hsm data';
+          title = 'hsm';
           break;
         default:
-          title = 'Data property';
+          title = 'property';
           break;
       }
       return title;
