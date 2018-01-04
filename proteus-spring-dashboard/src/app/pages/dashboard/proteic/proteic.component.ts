@@ -153,7 +153,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       for (const calc of this.chart.calculations) {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHistoricalData(coilID, varID);
-          historicalDataSubscription = this.appSubscriptionsService.historicalData().subscribe((data: any) => {
+          historicalDataSubscription = this.appSubscriptionsService
+          .historicalData(coilID, varID)
+          .subscribe((data: any) => {
             const json = data.value;
             if (json) {
               json.key = '' + json.varId;
@@ -163,7 +165,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         }
         if (calc == 'mean' || calc == 'variance') {
           this.appSubscriptionsService.requestSimpleMomentsData(coilID, varID);
-          historicalDataSubscription = this.appSubscriptionsService.simpleMomentsData().subscribe((data: any) => {
+          historicalDataSubscription = this.appSubscriptionsService
+          .simpleMomentsData(coilID, varID)
+          .subscribe((data: any) => {
             const json = data.value;
             if (json) {
               this.proteicChart.keepDrawing(json);
@@ -182,7 +186,9 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       for (const calc of this.chart.calculations) {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHSMData(coilIDs, hsmVars);
-          hsmDataSubscription = this.appSubscriptionsService.HSMData().subscribe((data: any) => {
+          hsmDataSubscription = this.appSubscriptionsService
+          .HSMData(coilIDs, hsmVars)
+          .subscribe((data: any) => {
             if (data) {
               json = json.concat(data); // This is suitable data type for parallel coordinates
               this.proteicChart.keepDrawing(json);

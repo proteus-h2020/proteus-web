@@ -47,7 +47,7 @@ public class ProteusHistoricalDataController {
 		this.sendHistoricalData(coilID, varID);
 	}
 
-	private void sendHistoricalData(final int coilID, int varID) {	
+	private void sendHistoricalData(final int coilID, final int varID) {	
 		
 		List<ProteusRealtimeRecord> historicalRecords = this.proteusService.findRealtimeByCoilIdVarId(coilID, varID);		
 		LOGGER.info(String.format("Sending %1$s historical records by coilId: %2$s and varId: %3$s with buffer size: %4$s", historicalRecords.size(), coilID, varID, realTimeBufferSize));
@@ -70,7 +70,7 @@ public class ProteusHistoricalDataController {
 				@Override
 				public void onNext(List<ProteusRealtimeRecord> proteusRealtimeRecords) {
 					for (ProteusRealtimeRecord record : proteusRealtimeRecords) {
-						simpMessagingTemplate.convertAndSend("/topic/get/historical",
+						simpMessagingTemplate.convertAndSend("/topic/get/historical/" + coilID + "/" + varID,
 								new Pair<Integer, ProteusRealtimeRecord>(coilID, record));
 					}
 				}
@@ -148,7 +148,7 @@ public class ProteusHistoricalDataController {
 
 	}
 
-	private void sendSimpleMomentsData(final int coilID, int varID) {
+	private void sendSimpleMomentsData(final int coilID, final int varID) {
 
 		List<ProteusHistoricalRecord.ProteusSimpleMoment> simplemomentsrecords = this.proteusService.findSimpleMomentsByCoidIdVarId(coilID, varID);
 
@@ -170,7 +170,7 @@ public class ProteusHistoricalDataController {
 			public void onNext(List<ProteusHistoricalRecord.ProteusSimpleMoment> proteusSimpleMomentRecord) {
 				
 				for (ProteusHistoricalRecord.ProteusSimpleMoment sm : proteusSimpleMomentRecord) {
-					simpMessagingTemplate.convertAndSend("/topic/get/simplemoments",
+					simpMessagingTemplate.convertAndSend("/topic/get/simplemoments/" + coilID + "/" + varID,
 							new Pair<Integer, ProteusHistoricalRecord.ProteusSimpleMoment>(coilID, sm));
 				}
 			}
@@ -185,7 +185,7 @@ public class ProteusHistoricalDataController {
 		this.sendHSMData(coilIDs, hsmVars);
 	}
 
-	private void sendHSMData(int[] coilIDs, String[] hsmVars) {
+	private void sendHSMData(final int[] coilIDs, final String[] hsmVars) {
 
 		List<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
 		LOGGER.info(String.format("Sending %1$s HSM records by coilIds and hsmVars: %2$s  %3$s with buffer size: %4$s", 
@@ -204,7 +204,7 @@ public class ProteusHistoricalDataController {
 
 			@Override
 			public void onNext(Map<String, Object> proteusHSMRecord) {
-				simpMessagingTemplate.convertAndSend("/topic/get/hsm", proteusHSMRecord);
+				simpMessagingTemplate.convertAndSend("/topic/get/hsm/" + coilIDs + "/" + hsmVars, proteusHSMRecord);
 			}
 		});
 
