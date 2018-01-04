@@ -238,6 +238,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       case 'ParallelCoordinates':
         this.chart.configuration.height = 250;
         this.chart.configuration.legendPosition = 'right';
+        this.chart.configuration.marginRight = 160;
         break;
       default:
         break;
