@@ -451,7 +451,7 @@ export class ChartService {
         endpoints = new Array<string>();
 
         chart = new RealtimeChart(
-            'H0002 - Raw',
+            'H0002 - Raw / Mean',
             'Linechart',
             {
                 propertyX: 'x',

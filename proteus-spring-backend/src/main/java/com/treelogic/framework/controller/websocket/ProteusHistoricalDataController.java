@@ -204,7 +204,11 @@ public class ProteusHistoricalDataController {
 
 			@Override
 			public void onNext(Map<String, Object> proteusHSMRecord) {
-				simpMessagingTemplate.convertAndSend("/topic/get/hsm/" + coilIDs + "/" + hsmVars, proteusHSMRecord);
+				String endpoint = String.format("/topic/get/hsm/%1$s/%2$s",
+						Arrays.toString(coilIDs).replaceAll("[\\[\\]\\p{Z}]",""), 
+						Arrays.toString(hsmVars).replaceAll("[\\[\\]\\p{Z}]",""));
+
+				simpMessagingTemplate.convertAndSend(endpoint, proteusHSMRecord);
 			}
 		});
 
