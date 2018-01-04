@@ -184,7 +184,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
           this.appSubscriptionsService.requestHSMData(coilIDs, hsmVars);
           hsmDataSubscription = this.appSubscriptionsService.HSMData().subscribe((data: any) => {
             if (data) {
-              json = json.concat(data);
+              json = json.concat(data); // This is suitable data type for parallel coordinates
               this.proteicChart.keepDrawing(json);
             }
           });
