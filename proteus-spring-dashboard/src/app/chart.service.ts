@@ -444,6 +444,7 @@ export class ChartService {
 
         calculations = new Array<string>();
         calculations.push('raw');
+        calculations.push('mean');
 
         components = new ComponentSet();
 
@@ -470,7 +471,6 @@ export class ChartService {
 
         this.charts.push(chart);
 
-
         calculations = new Array<string>();
         calculations.push('raw');
 
@@ -490,10 +490,11 @@ export class ChartService {
         );
         chart.layout = '12';
         chart.mode = 'hsm';
-        chart.coilIDs = [40304075, 40304076, 40304078];
-        chart.hsmVariables = ['V1825', 'V1826', 'V1827', 'V1828', 'V1829'];
+        chart.coilIDs = [40304075, 40304076, 40304078, 40304079, 40304080];
+        chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
 
         this.charts.push(chart);
+
     }
 
     getChart(id: number): RealtimeChart {
