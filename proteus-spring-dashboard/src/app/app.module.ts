@@ -1,3 +1,6 @@
+import { NotificationsService } from './notifications.service';
+import { AppSubscriptionsService } from './appSubscriptions.service';
+import { WebsocketService } from './websocket.service';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,9 +20,7 @@ import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
 import { DashboardService } from './pages/dashboard/dashboard.service';
-import {DatasourceHintService} from "./pages/dashboard/proteic/datasourceHint.service";
-import {DatasourceService} from "./pages/dashboard/proteic/datasource.service";
-import {ChartService} from "./pages/dashboard/proteic/chart.service";
+import { ChartService } from "./chart.service";
 
 
 // Application wide providers
@@ -28,14 +29,15 @@ const APP_PROVIDERS = [
   GlobalState,
   DashboardService,
   ChartService,
-  DatasourceService,
-  DatasourceHintService
+  WebsocketService,
+  AppSubscriptionsService,
+  NotificationsService,
 ];
 
 export type StoreType = {
   state: InternalStateType,
   restoreInputValues: () => void,
-  disposeOldHosts: () => void
+  disposeOldHosts: () => void,
 };
 
 /**
@@ -44,7 +46,7 @@ export type StoreType = {
 @NgModule({
   bootstrap: [App],
   declarations: [
-    App
+    App,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -55,11 +57,11 @@ export type StoreType = {
     NgaModule.forRoot(),
     NgbModule.forRoot(),
     PagesModule,
-    routing
+    routing,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
-  ]
+    APP_PROVIDERS,
+  ],
 })
 
 export class AppModule {

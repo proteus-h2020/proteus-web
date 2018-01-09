@@ -1,3 +1,4 @@
+import { WebsocketService } from './websocket.service';
 import { Component, ViewContainerRef } from '@angular/core';
 import * as $ from 'jquery';
 
@@ -25,14 +26,15 @@ export class App {
   isMenuCollapsed: boolean = false;
 
   constructor(private _state: GlobalState,
-              private _imageLoader: BaImageLoaderService,
-              private _spinner: BaThemeSpinner,
-              private viewContainerRef: ViewContainerRef,
-              private themeConfig: BaThemeConfig) {
-
+    private _imageLoader: BaImageLoaderService,
+    private _spinner: BaThemeSpinner,
+    private viewContainerRef: ViewContainerRef,
+    private themeConfig: BaThemeConfig,
+    private wsService: WebsocketService,
+  ) {
     themeConfig.config();
 
-    this._loadImages();
+    this._registerLoaders();
 
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
@@ -46,9 +48,9 @@ export class App {
     });
   }
 
-  private _loadImages(): void {
-    // register some loaders
+  private _registerLoaders(): void {
     BaThemePreloader.registerLoader(this._imageLoader.load('/assets/img/sky-bg.jpg'));
+    BaThemePreloader.registerLoader(this.wsService.initialize());
   }
 
 }

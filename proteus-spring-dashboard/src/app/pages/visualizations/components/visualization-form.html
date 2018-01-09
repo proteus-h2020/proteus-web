@@ -1,0 +1,142 @@
+<form [formGroup]="form" novalidate (ngSubmit)="save(form.value, form.valid)" class="form-horizontal">
+
+  <div class="row">
+
+  </div>
+
+  <div class="row">
+    <ba-card class="col" title="visualization.type">
+      <label><strong>What kind of chart do you want to configure?:</strong></label>
+      <select formControlName="type" class="form-control">
+          <option value="Barchart"> Barchart</option>
+          <option value="Gauge"> Gauge</option>
+          <option value="Heatmap"> Heatmap</option>
+          <option value="Linechart"> Linechart</option>
+          <option value="Network"> Network</option>
+          <option value="Scatterplot"> Scatterplot</option>
+          <option value="StackedArea"> Stacked Area</option>
+          <option value="Streamgraph"> Streamgraph</option>
+          <option value="Sunburst"> Sunburst</option>
+          <option value="Swimlane"> Swimlane</option>
+        </select>
+    </ba-card>
+  </div>
+
+  <div class="row">
+      <ba-card class="col" title="visualization.mode">
+        <label for="coilSelection"><strong>Select your prefered coil ID:</strong></label>
+        <select id="coilSelection" class="form-control" formControlName="coilID">
+          <option value="current">Current coil (streaming)</option>
+          <option value="40101001">40101001</option>
+          <option value="40101002">40101002</option>
+          <option value="40101003">40101003</option>
+          <option value="40101006">40101006</option>
+        </select>
+      </ba-card>
+
+    <ba-card class="col"  title="Real-time data">
+      <div class="row">
+        <div class="col">
+          <label for="varSelect"><strong>Select your var ID:</strong></label>
+          <select id="varSelect" class="form-control" formControlName="variable" name="variable">
+            <option *ngFor="let v of variables" [value]="v">{{v}}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label><strong>Calculations:</strong></label>
+          <select multiple class="form-control" formControlName="calculations" name="calculations">
+            <option *ngFor="let c of calculations" [value]="c.value">{{c.label}}</option>
+          </select>
+        </div>
+      </div>
+    </ba-card>
+  </div>
+
+  <div class="row">
+    <ba-card class="col" title="visualization.configuration">
+
+      <div *ngIf="form.controls.type.value=='Linechart'" class="form-group">
+        <label for="chartAlarms">Do you want to configure alarms based on STD Deviation?:</label>
+        <input formControlName="alarms" type="checkbox" name="chartAlarms" id="chartAlarms">
+      </div>
+      <!--
+      <div *ngIf="form.controls.alarms.value" class="form-group">
+        <label for="chartAlarmsFactor">Factor for +/- STD Deviation:</label>
+        <input class="form-control col-xs-2 col-md-2 col-lg-2 col-xl-2" formControlName="alarmFactor" type="number" name="chartAlarmsFactor" id="chartAlarmsFactor">
+      </div>
+      -->
+
+      <div class="form-group">
+        <label for="chartTitle">Visualization title:</label>
+        <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
+        <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
+          class="help-block sub-little-text">The name should be at least 5 characters</span>
+      </div>
+
+      <div class="form-group" formGroupName="configuration" ngDefaultControl>
+        <!-- Default fields for the selected chart-->
+        <div *ngFor="let entry of defaults() | keys" class="form-group">
+          <div *ngIf="typeOfDefault(entry.key) === 'string'">
+            <label for="chartTitle">{{entry.key}}: </label>
+            <input [formControlName]="entry.key" type="text" class="form-control" name="chartTitle">
+          </div>
+          <div *ngIf="typeOfDefault(entry.key) === 'boolean'">
+            <label for="chartTitle">{{entry.key}}: </label>
+            <div class="radio-boolean">
+                <input [formControlName]="entry.key" type="radio" [value]="true"> true
+                <input [formControlName]="entry.key" type="radio" [value]="false"> false
+            </div>
+          </div>
+        </div>
+      </div>
+    </ba-card>
+
+    <div class="col">
+      <table class="form-group-table">
+          <tbody>
+              <tr *ngFor="let chart of chartsWithAnnotations()">
+                  <td *ngIf="form.controls.type.value == chart">
+                      <ba-card class="smart-table-container" title="visualization.annotations.title">
+                        <app-annotations></app-annotations>
+                      </ba-card>
+                  </td>
+              </tr>
+              <tr *ngFor="let chart of chartsWithStatistics()">
+                  <td *ngIf="form.controls.type.value == chart">
+                      <ba-card class="smart-table-container" title="visualization.statistics.title">
+                        <app-statistics></app-statistics>
+                      </ba-card>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
+  </div>
+
+
+  <!--Default fields for the selected chart-->
+  <!--<div *ngFor="let entry of defaults | keys" class="form-group row">
+    <label for="chartTitle">{{entry.key}}: </label>
+    <input type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
+  </div>-->
+
+
+
+  <!--<div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <ba-card baCardClass="popular-app medium-card" title='Dataset' baCardClass="popular-app medium-card">
+      <dataset [parentGroup]="form" (keyValuesEmitter)="valueKeysChange($event)"></dataset>
+    </ba-card>
+  </div>-->
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-success btn-with-icon btn-lg"><i class="ion-android-checkmark-circle"></i>Confirm</button>
+      </div>
+    </div>
+  </div>
+
+
+</form>

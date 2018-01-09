@@ -1,18 +1,25 @@
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {GlobalState} from '../../../global.state';
+import { GlobalState } from '../../../global.state';
 
 @Component({
   selector: 'ba-page-top',
   templateUrl: './baPageTop.html',
   styleUrls: ['./baPageTop.scss']
 })
-export class BaPageTop {
+export class BaPageTop implements OnInit {
 
-  public isScrolled:boolean = false;
-  public isMenuCollapsed:boolean = false;
+  public isScrolled: boolean = false;
+  public isMenuCollapsed: boolean = false;
+  
 
-  constructor(private _state:GlobalState) {
+  constructor(
+    private _state: GlobalState,
+  ) {}
+
+
+
+  public ngOnInit() {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
@@ -27,4 +34,5 @@ export class BaPageTop {
   public scrolledChanged(isScrolled) {
     this.isScrolled = isScrolled;
   }
+
 }

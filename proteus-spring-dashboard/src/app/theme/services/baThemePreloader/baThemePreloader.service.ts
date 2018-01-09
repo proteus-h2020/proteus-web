@@ -25,6 +25,7 @@ export class BaThemePreloader {
         done.call(null, values);
 
       }).catch((error) => {
+        window.alert(error);
         console.error(error);
       });
     });

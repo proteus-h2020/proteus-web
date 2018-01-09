@@ -61,14 +61,14 @@ a {
 
 .al-main {
   margin-left: $left-space;
-  padding: 66px 0 34px 0;
+  padding: 66px 0 76px 0;
   min-height: 500px;
   position: relative;
 }
 
 .al-footer {
-  height: 34px;
-  padding: 0 18px 0 ($left-space + 20px);
+  height: 80px;
+  padding: 0 18px 0 ($left-space + 39px);
   width: 100%;
   position: absolute;
   display: block;
@@ -105,7 +105,7 @@ a {
 }
 
 .al-share {
-  margin: -6px 0 0 12px;
+  margin: -6px 89px 0 12px;
   padding: 0;
   list-style: none;
   float: left;
@@ -227,3 +227,8 @@ a {
 .text-center {
   text-align: center;
 }
+
+.eu-flag {
+  margin-right: 10px;
+}
+

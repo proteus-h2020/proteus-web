@@ -1,0 +1,98 @@
+<div class="form-group">
+  <button (click)="showCreateForm(); false" [hidden]="newStatistics" class="btn btn-default">New statistics</button>
+</div>
+
+<div *ngIf="newStatistics">
+  <div class="form-group">
+    <h4>Create statistics</h4>
+  </div>
+  <div class="form-group row">
+    <label for="statisticsType" class="col-2 col-form-label">Type</label>
+    <div class="col-10">
+      <select id="statisticsType" class="formControl" [(ngModel)]="newStatistics.type">
+        <option value="confidenceBand">Confidence band</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Variable </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="newStatistics.variable">
+      <p class="form-text small-text">Variable that holds the value for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Confidence </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="newStatistics.confidence">
+      <p class="form-text small-text">Variable that holds the confidence interval for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="newStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Modifier </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="newStatistics.settings" type="number">
+      <p class="form-text small-text">Value that modifies the confidence interval for a confidence band.</p>
+      <p class="form-text small-text">ex)If you input 0.95, confidence = 0.95 * confidence</p>
+      <p class="form-text small-text">(Optional) If you don't want, leave it blank</p>
+    </div>
+  </div>
+
+  <div class="form-group right-row">
+    <button class="btn btn-col" (click)="add(newStatistics)">Save</button>
+    <button class="btn btn-col" (click)="cancel()">Cancel</button>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let stats of statistics">
+      <td>{{stats.type}}</td>
+      <td>
+        <a href="#" (click)="edit(stats); false">Edit</a>
+        <a href="#" (click)="delete(stats); false">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="selectedStatistics">
+  <div class="form-group">
+    <h3>Edit statistics</h3>
+  </div>
+
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Variable </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.variable">
+      <p class="form-text small-text">Variable that holds the value for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Confidence </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.confidence">
+      <p class="form-text small-text">Variable that holds the confidence interval for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Modifier </label>
+    <div class="col-10">
+      <input id="statisticsValue" class="form-control" [(ngModel)]="selectedStatistics.settings" type="number">
+      <p class="form-text small-text">Value that modifies the confidence interval for a confidence band.</p>
+      <p class="form-text small-text">ex)If you input 0.95, confidence = 0.95 * confidence</p>
+      <p class="form-text small-text">(Optional) If you don't want, leave it blank</p>
+    </div>
+  </div>
+
+  <div class="form-group right-row">
+    <button class="btn btn-col" (click)="update(selectedStatistics)">Save</button>
+    <button class="btn btn-col" (click)="cancel()">Cancel</button>
+  </div>
+</div>

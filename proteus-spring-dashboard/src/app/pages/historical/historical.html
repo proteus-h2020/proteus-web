@@ -1,0 +1,27 @@
+<div class="row">
+
+  <ba-card-proteic *ngFor="let chart of charts" class="col-xlg-12 col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12"
+    [chart]="chart" baCardClass="medium-card">
+    <proteic [chart]="chart"></proteic>
+  </ba-card-proteic>
+</div>
+
+
+<!--
+<div class="row">
+  <ba-card class="col-6" title="">
+    <p class="lead text-center">Number of messages : <strong>{{messageCounter}}</strong></p>
+  </ba-card>
+  <ba-card class="col-6" title="">
+    <p class="lead text-center">Current coil id: <strong>{{coilId}}</strong></p>
+  </ba-card>
+</div>
+
+<div class="row">
+  <ba-card-proteic *ngFor="let chart of charts" (removeChart)="removeChart($event)" (editChart)="editChart($event)" class="col-xlg-{{chart.layout}} col-xl-{{chart.layout}}  col-lg-{{chart.layout}}  col-md-{{chart.layout}}  col-sm-12 col-12"
+    [chart]="chart" baCardClass="medium-card">
+    <proteic [chart]="chart"></proteic>
+  </ba-card-proteic>
+</div>
+
+-->

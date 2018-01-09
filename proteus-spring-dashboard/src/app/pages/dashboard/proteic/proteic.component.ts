@@ -1,83 +1,195 @@
-import { RealtimeChart } from './../../../realtime-chart';
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { NotificationsService } from './../../../notifications.service';
+import { Subscription } from 'rxjs/Rx';
+import { WebsocketService } from './../../../websocket.service';
+import { AppSubscriptionsService } from './../../../appSubscriptions.service';
 
-import { Colors, Linechart, Scatterplot, Barchart, Heatmap, WebsocketDatasource } from 'proteic';
+import { RealtimeChart } from './../../../realtime-chart';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
+import {
+  Chart,
+  Barchart,
+  Gauge,
+  Heatmap,
+  Linechart,
+  Scatterplot,
+  StackedArea,
+  Streamgraph,
+  Sunburst,
+  Swimlane,
+  Colors
+} from 'proteic';
 
 @Component({
   selector: 'proteic',
   styleUrls: ['./proteic.scss'],
-  templateUrl: './proteic.html'
+  templateUrl: './proteic.html',
 })
-export class Proteic implements OnInit, AfterViewInit {
+export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
   private id: string;
   private element: any;
-  //@Input() private data: any;
-  //@Input() private conf: any;
-  //@Input() private type: string
+  private subscriptions: Subscription[] = new Array<Subscription>();
+
+  private lastCoilReceived: number = -1;
 
   @Input() private chart: RealtimeChart;
 
-  constructor() {
-  }
+  private proteicChart: Chart;
+
+  constructor(
+    private websocketService: WebsocketService,
+    private notificationService: NotificationsService,
+  ) { }
 
   ngOnInit() {
     this.id = 'proteic' + Date.now().toString();
-    this.chart.configuration.marginRight = 30;
-    this.chart.configuration.marginLeft = 50;
-    this.chart.configuration.selector = '#' + this.id;
-    this.chart.configuration.height = 250;
-    //this.chart.configuration.colorScale = Colors.category3();
-    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
-    // this.conf.propertyY = 'C0007';
-    // this.conf.propertyX = 'positionX';
-    // this.conf.xAxisLabel = 'X Axis Title';
-    // this.conf.yAxisLabel = 'Y Axis Title';
+    this._setChartConfiguration();
   }
 
   ngAfterViewInit(): void {
-    let c = null;
 
-    console.log('configuration', this.chart.configuration);
+    this._subscribeToCoilChange();
+
+    const unpivot = this._calculateUnpivotArray(this.chart);
+
+    const alertCallback: Function = (data: any) => {
+      this.notificationService.push(
+        { id: data.varId,
+          label: 'Alarm',
+          text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key,
+        },
+      );
+    };
+
+    const annotations = this.chart.components.annotations;
+    const statistics = this.chart.components.statistics;
+
     switch (this.chart.type) {
-      case 'Linechart':
-        c = new Linechart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
-        break;
       case 'Barchart':
-        c = new Barchart([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        this.proteicChart = new Barchart([], this.chart.configuration).unpivot(unpivot);
         break;
-      case 'Scatterplot':
-        c = new Scatterplot([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+      case 'Gauge':
+        this.proteicChart = new Gauge([], this.chart.configuration).unpivot(unpivot);
         break;
       case 'Heatmap':
-        c = new Heatmap([], this.chart.configuration).datasource(this.chart.websocketEndpoint);
+        this.proteicChart = new Heatmap([], this.chart.configuration);
         break;
-    }
-
-    this.chart.websocketEndpoint.start();
-
-    /*
-    console.log('WEBSOCKEEEET', this.chart.websocketEndpoint);
-    let ws = new WebsocketDatasource({endpoint: this.chart.websocketEndpoint});
-    let c = null;
-
-    switch (this.chart.type) {
       case 'Linechart':
-        c = new Linechart([], this.chart.conf).datasource(ws);
+        if (this.chart.alarms) {
+          this.proteicChart = new Linechart([], this.chart.configuration)
+            .annotations(annotations)
+            .statistics(statistics)
+            .unpivot(unpivot)
+            .alert(this.chart.variable, (value, events) => {
+              return value < events.get('mean') - events.get('stdDeviation') ||
+                value > events.get('mean') + events.get('stdDeviation');
+            }, alertCallback, {
+              click: (data: any) => window.alert(
+                'Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x,
+              ),
+            });
+        } else {
+            this.proteicChart = new Linechart([], this.chart.configuration)
+              .annotations(annotations)
+              .statistics(statistics)
+              .unpivot(unpivot);
+        }
         break;
-      case 'Barchart':
-        c = new Barchart([], this.chart.conf).datasource(ws);
+      case 'Network':
         break;
       case 'Scatterplot':
-        c = new Scatterplot([], this.chart.conf).datasource(ws);
+        this.proteicChart = new Scatterplot([], this.chart.configuration).unpivot(unpivot);
+        break;
+      case 'StackedArea':
+        this.proteicChart = new StackedArea([], this.chart.configuration).unpivot(unpivot);
+        break;
+      case 'Streamgraph':
+        break;
+      case 'Sunburst':
+        break;
+      case 'Swimlane':
+        this.proteicChart = new Swimlane([], this.chart.configuration);
+        break;
+      default:
         break;
     }
 
-    ws.start();
-    */
+    for (const websocketEndpoint of this.chart.endpoints) {
+      const subs = this.websocketService.subscribe(websocketEndpoint);
+      const subscription = subs.subscribe((data: any) => {
+        const json = JSON.parse(data);
+        if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
+          json.key = '' + json.varId;
+        }
+        if (typeof json.mean !== 'undefined') {
+          // TODO: add alarm factor
+        }
+        if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
+          this.proteicChart.clear();
+          this.notificationService.clear();
+          this.proteicChart.keepDrawing(json);
+        } else {
+          this.proteicChart.keepDrawing(json);
+        }
 
+        this.lastCoilReceived = json.coilId;
+      });
+      this.subscriptions.push(subscription);
+    }
   }
 
+  ngOnDestroy() {
+    for (const s of this.subscriptions) {
+      s.unsubscribe();
+    }
+    this.proteicChart.erase();
+  }
 
+  /**
+   * It assigns some chart configurations that user can't set
+   * @private
+   * @memberof Proteic
+   */
+  private _setChartConfiguration() {
+    switch (this.chart.type) {
+      case 'Heatmap':
+      case 'Swimlane':
+        this.chart.configuration.marginRight = 160;
+        this.chart.configuration.marginLeft = 40;
+        break;
+
+      default:
+        this.chart.configuration.marginRight = 100;
+        break;
+    }
+    this.chart.configuration.marginBottom = 50;
+    // this.chart.configuration.marginLeft = 70;
+    this.chart.configuration.marginTop = 35;
+    this.chart.configuration.selector = '#' + this.id;
+    this.chart.configuration.nullValues = ['NULL', 'NUL', '\\N', NaN, null, 'NaN'];
+    this.chart.configuration.legendPosition = 'top';
+    this.chart.configuration.pauseButtonPosition = 'right';
+  }
+
+  private _calculateUnpivotArray(chart: RealtimeChart): string[] {
+    const unpivot = new Array<string>();
+    for (const calculation of this.chart.calculations) {
+      if (calculation !== 'raw') {
+        unpivot.push(calculation);
+      }
+    }
+    return unpivot;
+  }
+
+  private _subscribeToCoilChange() {
+    /*
+    const coilSubscription = this.appSubscriptionService.coilChange().subscribe(
+      (data: any) => {
+        this.notificationService.clear();
+      },
+    );
+    this.subscriptions.push(coilSubscription);
+    */
+  }
 }
-
