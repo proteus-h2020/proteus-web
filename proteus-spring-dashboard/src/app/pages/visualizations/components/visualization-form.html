@@ -42,15 +42,15 @@
           <div class="col" *ngIf="form.controls.mode.value=='hsm'">
             <label for="coilSelection"><strong>Search your coil ID:</strong></label>
             <div class="form-group" formArrayName="coilIDs">
-              <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx">
+              <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
                 <div class="row">
                   <div class="col-9">
                     <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
                   </div>
-                  <div class="col-3" *ngIf="idx==0">
+                  <div class="col-3" *ngIf="last">
                     <button class="form-control" (click)="addForm('coilIDs')">+</button>
                   </div>
-                  <div class="col-3" *ngIf="idx!=0">
+                  <div class="col-3" *ngIf="!last">
                     <button class="form-control" (click)="deleteForm(idx, 'coilIDs')">-</button>
                   </div>
                 </div>
@@ -81,15 +81,15 @@
         <div class="col" *ngIf="form.controls.mode.value=='hsm'">
           <label for="varSelect"><strong>Search your HSM variable:</strong></label>
           <div class="form-group" formArrayName="hsmVariables">
-            <div class="form-group" *ngFor="let hsmVar of hsmVariables.controls; index as idx">
+            <div class="form-group" *ngFor="let hsmVar of hsmVariables.controls; index as idx; let last=last">
               <div class="row">
                 <div class="col-9">
                   <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'hsmVariables')" (keyup)="search(idx,'hsmVariables')">
                 </div>
-                <div class="col-3" *ngIf="idx==0">
+                <div class="col-3" *ngIf="last">
                   <button class="form-control" (click)="addForm('hsmVariables')">+</button>
                 </div>
-                <div class="col-3" *ngIf="idx!=0">
+                <div class="col-3" *ngIf="!last">
                   <button class="form-control" (click)="deleteForm(idx, 'hsmVariables')">-</button>
                 </div>
               </div>
