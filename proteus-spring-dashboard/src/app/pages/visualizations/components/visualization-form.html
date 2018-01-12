@@ -45,7 +45,8 @@
               <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
                 <div class="row">
                   <div class="col-9">
-                    <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+                    <input *ngIf="last" class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+                    <li *ngIf="!last" class="form-list">{{getCoilID(idx)}}</li>
                   </div>
                   <div class="col-3" *ngIf="last">
                     <button class="form-control" (click)="addForm('coilIDs')">+</button>
@@ -84,7 +85,8 @@
             <div class="form-group" *ngFor="let hsmVar of hsmVariables.controls; index as idx; let last=last">
               <div class="row">
                 <div class="col-9">
-                  <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'hsmVariables')" (keyup)="search(idx,'hsmVariables')">
+                  <input *ngIf="last" class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'hsmVariables')" (keyup)="search(idx,'hsmVariables')">
+                  <li *ngIf="!last" class="form-list">{{getHSMvariable(idx)}}</li>
                 </div>
                 <div class="col-3" *ngIf="last">
                   <button class="form-control" (click)="addForm('hsmVariables')">+</button>
