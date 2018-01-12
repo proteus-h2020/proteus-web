@@ -42,7 +42,6 @@ export class EditOneVisualizationComponent extends VisualizationForm {
 
         // update model
         this.chart.configuration = model.configuration;
-        this.chart.type = model.type;
         this.chart.title = model.title;
         this.chart.alarms = model.alarms;
 

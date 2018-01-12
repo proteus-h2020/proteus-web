@@ -17,7 +17,7 @@ export class FormVisualization {
 
     return FormVisualization.fb.group({
       title: [model ? model.title : 'untitled'],
-      type: [model ? model.type : '', [<any>Validators.required]],
+      type: [model ? { value: model.type, disabled: true } : '', [<any>Validators.required]],
       configuration: FormVisualization._createConfigurationByChartProperties(model),
       variable: [model ? model.variable : null],
       calculations: [model ? model.calculations : null, [<any>Validators.required]],
