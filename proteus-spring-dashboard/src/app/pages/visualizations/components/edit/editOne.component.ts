@@ -10,14 +10,12 @@ import { AppSubscriptionsService } from './../../../../appSubscriptions.service'
 import { environment } from './../../../../../environments/environment';
 import { onlyUnique } from '../../../../utils/Array';
 
-import 'style-loader!./editOne.scss';
-
 
 @Component({
   selector: 'edit-one-visualization',
   templateUrl: '../visualization-form.html',
+  styleUrls: ['./editOne.scss'],
 })
-
 export class EditOneVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
 
   private chart: RealtimeChart;

@@ -5,25 +5,19 @@ import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Chart } from '../../../../chart.interface';
-import 'style-loader!./new.scss';
 import { VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
 import { ComponentsService } from '../../components/components.service';
 import { ComponentSet } from '../../components/componentSet';
 import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
 import { environment } from './../../../../../environments/environment';
-
-import { getAvailableVisualizations, Heatmap } from 'proteic';
-
 import { onlyUnique } from '../../../../utils/Array';
 
 @Component({
   selector: 'create-visualization',
   templateUrl: '../visualization-form.html',
+  styleUrls: ['./new.scss'],
 })
-
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
-
-  private events: any[] = [];
 
   constructor(
     private chartService: ChartService,

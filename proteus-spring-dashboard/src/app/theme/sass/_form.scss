@@ -37,18 +37,6 @@
     font-weight: $font-normal;
     font-size: 13px;
   }
-  label.on-select {
-      line-height: 22px;
-      margin-right: 15px;
-  }
-  #chartAlarms {
-      margin-left: 10px;
-      vertical-align: text-bottom;
-  }
-}
-
-.form-group.right-row {
-  float: right;
 }
 
 .form-control {
@@ -67,22 +55,6 @@
   }
 }
 
-.radio-boolean input:not(:first-child) {
-    margin-left: 100px;
-}
-
-button.form-control {
-  cursor: pointer;
-  &:active, &:target {
-    background-color: rgba(0, 0, 0, 0.2);
-    color: $default-text;
-  }
-}
-
-table.form-group-table{
-    width: 100%;
-}
-
 select.form-control {
   padding-left: 8px;
 }
@@ -99,6 +71,18 @@ textarea.form-control {
   height: 96px;
 }
 
+/* It is used for visualization form
+   TODO Move it to new and editOne scss*/
+button.form-control {
+  cursor: pointer;
+  &:active, &:target {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: $default-text;
+  }
+}
+
+/* It is used for visualization form
+   TODO Move it to new and editOne scss*/
 ol.auto-complete {
   padding: 0px;
   overflow-y:auto;
@@ -108,10 +92,8 @@ ol.auto-complete {
   border-top: 0px;
 }
 
-li.form-list {
-  margin-top: 10px;
-}
-
+/* It is used for visualization form
+   TODO Move it to new and editOne scss*/
 li.form-control.auto-complete {
   border-radius: 0px;
   border: 0px;

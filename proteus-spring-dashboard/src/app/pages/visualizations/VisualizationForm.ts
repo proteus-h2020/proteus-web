@@ -21,14 +21,26 @@ export class PairForm {
 export abstract class VisualizationForm implements OnInit, OnDestroy {
   public form: FormGroup;
   public submitted: boolean;
-  private cancellableSubscriptions: Subscription[];
   public variables: string[];
 
   // TODO use @angular-material if angular version of this project is updated
   public matchingCoilIDs: number[] = [];
+  public matchingHSMvariables: string[] = [];
+
+  /**
+  * An index of form-array of coilIDs
+  * It's assigned in @see search() and used in @see select() to set value of coilIDs form-array
+  * @public
+  * @memberof VisualizationForm
+  */
   public coilIDsIndex: number;
 
-  public matchingHSMvariables: string[] = [];
+  /**
+  * An index of form-array of hsmVariables
+  * It's assigned in @see search() and used in @see select() to set value of hsmVariables form-array
+  * @public
+  * @memberof VisualizationForm
+  */
   public hsmVariablesIndex: number;
 
   constructor(
@@ -39,26 +51,12 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
   abstract save(model: RealtimeChart, isValid: boolean);
 
-
-  protected keyValues() {
-    return FormVisualization.keyValues;
-  }
-
-
-  protected isDynamicKey(key: string) {
-    return FormVisualization.isDynamicKey(key);
-  }
-
   protected defaults() {
     return FormVisualization.defaults;
   }
 
   protected typeOfDefault(key: string) {
     return typeof FormVisualization.defaults[key];
-  }
-
-  protected valueKeysChange(keys: string[]) {
-    FormVisualization.valueKeysChange(keys);
   }
 
   protected chartsWithAnnotations() {

@@ -58,7 +58,7 @@
 
                 <div class="row">
                   <div class="col-9">
-                    <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
+                    <ol *ngIf="matchingCoilIDs.length > 0 && last" class="auto-complete">
                       <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
                         <a>{{coilID}}</a>
                       </li>
@@ -98,7 +98,7 @@
 
               <div class="row">
                 <div class="col-9">
-                  <ol *ngIf="matchingHSMvariables.length > 0 && hsmVariablesIndex==idx" class="auto-complete">
+                  <ol *ngIf="matchingHSMvariables.length > 0 && last" class="auto-complete">
                     <li class="form-control auto-complete" *ngFor="let hsmVar of matchingHSMvariables" (click)="select(hsmVar, 'hsmVariables')">
                       <a>{{hsmVar}}</a>
                     </li>
@@ -180,21 +180,6 @@
     </div>
 
   </div>
-
-
-  <!--Default fields for the selected chart-->
-  <!--<div *ngFor="let entry of defaults | keys" class="form-group row">
-    <label for="chartTitle">{{entry.key}}: </label>
-    <input type="text" class="form-control" name="chartTitle" value="{{entry.value}}">
-  </div>-->
-
-
-
-  <!--<div class="col-xlg-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <ba-card baCardClass="popular-app medium-card" title='Dataset' baCardClass="popular-app medium-card">
-      <dataset [parentGroup]="form" (keyValuesEmitter)="valueKeysChange($event)"></dataset>
-    </ba-card>
-  </div>-->
 
   <div class="row">
     <div class="col">

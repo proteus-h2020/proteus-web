@@ -1,1 +1,17 @@
 /** SCSS **/
+#chartAlarms {
+    margin-left: 10px;
+    vertical-align: text-bottom;
+}
+
+.radio-boolean input:not(:first-child) {
+    margin-left: 100px;
+}
+
+table.form-group-table{
+    width: 100%;
+}
+
+li.form-list {
+  margin-top: 10px;
+}
