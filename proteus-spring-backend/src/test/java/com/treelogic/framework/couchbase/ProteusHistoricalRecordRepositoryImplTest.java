@@ -27,7 +27,7 @@ public class ProteusHistoricalRecordRepositoryImplTest {
 
     @Test
     public void getKeys() {
-        List<Integer> keys = proteusRepo.findKeys();
+        List<Integer> keys = proteusRepo.findAllCoilIDs();
         
         assertTrue(keys.size() > 0);
     }
@@ -55,8 +55,9 @@ public class ProteusHistoricalRecordRepositoryImplTest {
 
     @Test
     public void findProteusCalculationsByCoilId() {
-        int coilid= 40304075;
-        List<ProteusHistoricalRecord.ProteusSimpleMoment> list = proteusRepo.findProteusCalculationsByCoilId(coilid);
+        int coilid = 40304075;
+        int varid = 2;
+        List<ProteusHistoricalRecord.ProteusSimpleMoment> list = proteusRepo.findProteusCalculationsByCoilIdVarId(coilid, varid);
         
         assertTrue(list.size() > 0);
         
@@ -65,12 +66,13 @@ public class ProteusHistoricalRecordRepositoryImplTest {
     @Test
     public void findHSM() {
         int[] coilid = new int[] {40304075, 40304076, 40304078};
-        List<Map<String, Object>> list = proteusRepo.findProteusHSMByCoilId(coilid);
+        String[] hsmVars = new String[] {"V1893"};
+        List<Map<String, Object>> list = proteusRepo.findProteusHSMByCoilIdsVars(coilid, hsmVars);
         
         assertTrue(list.size() > 0);
 
         int[] uniqcoil = new int[] {40304075};
-        list = proteusRepo.findProteusHSMByCoilId(uniqcoil);
+        list = proteusRepo.findProteusHSMByCoilIdsVars(uniqcoil, hsmVars);
         
         list.size();
         

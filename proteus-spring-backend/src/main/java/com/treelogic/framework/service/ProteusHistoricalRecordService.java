@@ -26,8 +26,8 @@ public class ProteusHistoricalRecordService {
 		return proteusRepository.findOne(id);
 	}
 
-	public List<Integer> findKeys() {
-		return proteusRepository.findKeys();
+	public List<Integer> findAllCoilIDs() {
+		return proteusRepository.findAllCoilIDs();
 	}
 	
 	public List<ProteusHistoricalRecord> findByCoilIdAndProteusRealtimeVarId(int coilid, int varid){
@@ -38,12 +38,16 @@ public class ProteusHistoricalRecordService {
 		return this.proteusRepository.findProteusRealTimeByCoilId(coilid);
 	}
 
-	public List<ProteusHistoricalRecord.ProteusSimpleMoment> findSimpleMomentsByCoidId(int coilid) {
-		return this.proteusRepository.findProteusCalculationsByCoilId(coilid);
+	public List<ProteusHistoricalRecord.ProteusSimpleMoment> findSimpleMomentsByCoidIdVarId(int coilid, int varid) {
+		return this.proteusRepository.findProteusCalculationsByCoilIdVarId(coilid, varid);
 	}
 
-	public List<Map<String, Object>> findHSMByCoilId(int[] coils) {
-		return this.proteusRepository.findProteusHSMByCoilId(coils);
+	public List<Map<String, Object>> findHSMByCoilIdsVars(int[] coilIDs, String[] hsmVars) {
+		return this.proteusRepository.findProteusHSMByCoilIdsVars(coilIDs, hsmVars);
+	}
+	
+	public List<String> findAllHSMvars() {
+		return this.proteusRepository.findAllHSMvars();
 	}
 
 	public Observable<ProteusRealtimeRecord> findRealtimeStream(int coilid) {

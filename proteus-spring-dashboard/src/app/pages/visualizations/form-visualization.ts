@@ -1,12 +1,17 @@
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
 import { getDefaultOptions } from 'proteic';
+import { PairForm } from './VisualizationForm';
 
 export class FormVisualization {
   public static defaults = {};
   private static fb: FormBuilder = new FormBuilder();
   public static keyValues: string[] = [];
+  public static mode: PairForm[];
+  public static calculations: PairForm[];
 
+  public static availableCoilIDs: number[] = [];
+  public static availableHSMvariables: string[] = [];
 
   public static valueKeysChange(keys: string[]) {
     this.keyValues = keys;
@@ -20,9 +25,12 @@ export class FormVisualization {
       type: [model ? model.type : '', [<any>Validators.required]],
       configuration: FormVisualization._createConfigurationByChartProperties(model),
       variable: [model ? model.variable : null],
-      calculations: [model ? model.calculations : null, [<any>Validators.required]],
+      calculations: FormVisualization.createCalculationForm(model),
       alarms: [model ? model.alarms : null],
-      coilID: [model ? model.coilID : 'current'],
+      coilID: [model ? model.coilID : ''],
+      mode: FormVisualization.createVisualizationMode(model),
+      coilIDs: FormVisualization.createMutipleCoilIDSelectForm(model),
+      hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -74,9 +82,115 @@ export class FormVisualization {
     return FormVisualization.fb.group(form);
   }
 
+  public static createCalculationForm(model: RealtimeChart = null, mode: string = null) {
+    const visualizationMode: string = model ? model.mode : mode;
+    switch (visualizationMode) {
+      case 'streaming':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+          new PairForm('mean', 'Mean'),
+          new PairForm('variance', 'Variance'),
+          new PairForm('sax_vsm', 'SAX/VSM'),
+        ];
+        break;
+      case 'historical':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+          new PairForm('mean', 'Mean'),
+          new PairForm('variance', 'Variance'),
+        ];
+        break;
+      case 'hsm':
+        FormVisualization.calculations = [
+          new PairForm('raw', 'Raw'),
+        ];
+        break;
+      default:
+        break;
+    }
+
+    return [model ? model.calculations : null, [<any>Validators.required]];
+  }
+
+  public static createVisualizationMode(model: RealtimeChart = null, type: string = null) {
+    const chartType: string = model ? model.type : type;
+    let defaultMode: string = '';
+    let form;
+    if (chartType !== null) {
+      switch (chartType) {
+        case 'ParallelCoordinates':
+          FormVisualization.mode = [new PairForm('hsm', 'HSM DATA')];
+          break;
+        default:
+          FormVisualization.mode = [
+            new PairForm('streaming', 'REAL-TIME DATA'),
+            new PairForm('historical', 'HISTORICAL DATA'),
+          ];
+          break;
+      }
+
+      defaultMode = FormVisualization.mode[0].value;
+    }
+
+    if (type) { // To set default value
+      form = defaultMode;
+    } else { // To build form
+      form = [model ? model.mode : defaultMode, [<any>Validators.required]];
+    }
+
+    return form;
+  }
+
+  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null) {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      for (const coilID of model.coilIDs) {
+        formArray.push(new FormControl(coilID, <any>Validators.required));
+      }
+    } else {
+      formArray = [new FormControl('')];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
+  public static createHSMvariableSelectForm(model: RealtimeChart = null) {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      for (const hsmVariable of model.hsmVariables) {
+        formArray.push(new FormControl(hsmVariable, <any>Validators.required));
+      }
+    } else {
+      formArray = [new FormControl('')];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
   public static changeDefaultProperties(chartType: string, form: FormGroup) {
     FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
     form.setControl('configuration', this._createConfigurationByChartProperties(null));
+
+    form.controls['mode'].setValue(FormVisualization.createVisualizationMode(null, chartType));
+  }
+
+  public static changeDataProperties(mode: string, form: FormGroup) {
+    FormVisualization.createCalculationForm(null, mode);
+  }
+
+  public static changeValidation(mode: string, form: FormGroup) {
+    if (mode == 'historical') {
+      form.controls['coilID'].setValidators([<any>Validators.required]);
+    } else if (mode == 'hsm') {
+      let coilIDs = form.get('coilIDs') as FormArray,
+        hsmVariables = form.get('hsmVariables') as FormArray;
+        coilIDs.at(0).setValidators([<any>Validators.required]);
+        hsmVariables.at(0).setValidators([<any>Validators.required]);
+    }
+  }
+
+  public static changeCoilID(coilID: number, form: FormGroup) {
+    form.controls['coilID'].setValue(coilID);
   }
 
   public static isDynamicKey(key: string) {

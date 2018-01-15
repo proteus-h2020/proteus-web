@@ -121,6 +121,12 @@
     "statistics": {
       "title": "Statistics"
     },
-    "submit": "Confirm"
+    "submit": "Confirm",
+    "data": {
+      "property": "Data property",
+      "realtime": "Real-time data",
+      "historical": "Historical data",
+      "hsm": "HSM data"
+    }
   }
 }

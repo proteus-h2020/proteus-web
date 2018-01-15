@@ -13,23 +13,32 @@ export const environment = {
     getters: {
       coil: '/app/get/coil',
       messages: '/app/get/messages',
+      streaming: {
+        realtime: '/topic/realtime/var/',
+        flink: {
+          moments: '/topic/flink/var/',
+          sax: '/topic/flink/sax',
+        },
+      },
       batch: {
-        dataNotification: '/topic/get/data/coil',
-        coilData: '/app/get/data/coil/', // coil id is concatenated here
-        realtimeNotification: '/topic/get/realtime/coil',
-        realtimeData: '/app/get/realtime/coil/', //coil id is concatenated here
-        simpleMomentsNotification: '/topic/get/simplemoments/coil/', //coil id is concatenated here
-        simpleMomentsData: '/app/get/simplemoments/coil/', //coil id is concatenated here
-        getKeysNotification: '/topic/get/keys',
-        getKeys: '/app/get/keys',
-        HSMNotification: '/topic/get/hsm/coil', //coil id is concatenated here
-        HSMData: '/app/get/hsm/coil/', //coil id is concatenated here
-        streamNotification: '/topic/get/stream/coil/',
-        streamData: '/app/get/stream/coil/',
+        historicalData: '/topic/get/historical/',
+        requestHistorical: '/app/get/historical/coil/var/', // coil id and var id are concatenated here
+        realtimeData: '/topic/get/realtime',
+        requestRealtime: '/app/get/realtime/coil/', // coil id is concatenated here
+        simpleMomentsData: '/topic/get/simplemoments/',
+        requestSimpleMoments: '/app/get/simplemoments/coil/var/', // coil id and var id are concatenated here
+        allCoilIDs: '/topic/get/all/coilIDs',
+        requestAllCoilIDs: '/app/get/all/coilIDs',
+        allHSMvars: '/topic/get/all/hsmVars',
+        requestAllHSMvars: '/app/get/all/hsmVars',
+        HSMData: '/topic/get/hsm/',
+        requestHSM: '/app/get/hsm/coils/vars/', // multiple coil id and hsm variables are concatenated here
+        streamData: '/topic/get/stream',
+        requestStream: '/app/get/stream/coil/', // coil id is concatenated here
       },
     },
   },
 };
 
-//wsEndpoint: 'http://localhost:8080/wsEndpoint
-//  wsEndpoint: 'http://192.168.3.31:8081/wsEndpoint',
+// wsEndpoint: 'http://localhost:8080/wsEndpoint
+// wsEndpoint: 'http://192.168.3.31:8081/wsEndpoint',
