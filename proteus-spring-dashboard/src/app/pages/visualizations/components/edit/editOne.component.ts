@@ -72,8 +72,8 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
           model.endpoints.push(environment.websocketTopics.getters.streaming.flink.sax);
         }
       }
+      model.endpoints = model.endpoints.filter(onlyUnique);
     }
-    model.endpoints = model.endpoints.filter(onlyUnique);
 
     this.chart.endpoints = model.endpoints;
 
