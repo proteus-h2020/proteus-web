@@ -39,10 +39,6 @@
   }
 }
 
-.form-group.right-row {
-  float: right;
-}
-
 .form-control {
   color: $content-text;
   @include placeholderStyle($content-text, 0.7);
