@@ -4,6 +4,7 @@ import static com.couchbase.client.java.query.Select.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -109,12 +110,23 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 
 	@Override
 	public List<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars) {
-
-        Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
+		String queryStatement = "META(`proteus`).id AS coilId, "
+				+ "ARRAY hsm FOR hsm IN OBJECT_PAIRS(proteus.`proteus-hsm`) WHEN ";
+		
+		for (int i = 0; i < hsmVars.length; i++) {
+			if (i != hsmVars.length -1) {
+				queryStatement += "hsm.name = " + "'" + hsmVars[i] + "'" + " OR ";
+			} else {
+				queryStatement += "hsm.name = " + "'" + hsmVars[i] + "'" + " END AS hsm";
+			}
+		}
+		
+		
+		Statement query = select(queryStatement)
                 .from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(integerArrayToStringArray(coilids));
-
-        List<Map<String, Object>> results = template.getCouchbaseBucket()
+		
+		List<Map<String, Object>> results = template.getCouchbaseBucket()
                 .async()
                 .query(N1qlQuery.simple(query))
                 .flatMap(new MapperQueryRows())
@@ -123,21 +135,15 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .timeout(10, TimeUnit.SECONDS)
                 .toBlocking()
                 .single();
+		
+		for (Map<String, Object> r : results) {
+        	List<Map<String, String>> allHSMdata = (List<Map<String, String>>)r.get("hsm");
+        	r.remove("hsm");
         
-        
-        for (Map<String, Object> r : results) {
-			Map<String, String> allHSMdata = (Map<String, String>)r.get("proteus-hsm");
-			r.remove("proteus-hsm");
+        	for (Map<String, String>hsmData : allHSMdata) {
+        		r.put(hsmData.get("name"), hsmData.get("value"));
+        	}
 			
-			for (Map.Entry<String, String> hsmData : allHSMdata.entrySet()) {
-				for (String hsmVar: hsmVars) {
-					if (hsmData.getKey().equals(hsmVar)) {
-						if (!hsmData.getValue().equals("None")) {
-							r.put(hsmData.getKey(), hsmData.getValue());
-						}
-					} 				
-				}
-			}
 		}
     
         return results;
@@ -145,7 +151,7 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	
 	@Override
 	public List<String> findAllHSMvars() {
-		int coilid = 40304075;
+		int coilid = 40304076;
 		Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
                 .from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(String.valueOf(coilid));

@@ -465,7 +465,7 @@ export class ChartService {
             calculations,
             endpoints,
         );
-        chart.coilID = 40304075;
+        chart.coilID = 40304076;
         chart.layout = '12';
         chart.mode = 'historical';
 
@@ -490,7 +490,7 @@ export class ChartService {
         );
         chart.layout = '12';
         chart.mode = 'hsm';
-        chart.coilIDs = [40304075, 40304076, 40304078, 40304079, 40304080];
+        chart.coilIDs = [40304076, 40304079, 40304080, 40304082, 40304085];
         chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
 
         this.charts.push(chart);
