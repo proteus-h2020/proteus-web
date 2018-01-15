@@ -151,7 +151,7 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	
 	@Override
 	public List<String> findAllHSMvars() {
-		int coilid = 40304075;
+		int coilid = 40304076;
 		Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
                 .from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(String.valueOf(coilid));
