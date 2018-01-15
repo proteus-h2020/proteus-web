@@ -23,7 +23,7 @@
       <ba-card class="col" title="visualization.mode">
         <div class="row">
           <div class="col">
-            <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
+            <label for="modeSelection"><strong>Select a dataset:</strong></label>
             <select id="modeSelection" class="form-control" formControlName="mode" ngDefaultControl>
               <option *ngFor="let mode of visualizationModes()" [value]="mode.value">{{mode.label}}</option>
             </select>
@@ -40,29 +40,29 @@
           </div>
 
           <div class="col" *ngIf="form.controls.mode.value=='hsm'">
-            <label for="coilSelection"><strong>Search your coil ID:</strong></label>
-            <div class="form-group" formArrayName="coilIDs">
-              <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
-                <div class="row">
-                  <div class="col-9">
-                    <input *ngIf="last" class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
-                    <li *ngIf="!last" class="form-list">{{getCoilID(idx)}}</li>
+            <label for="coilSelection"><strong>Add coils to visualize:</strong></label>
+            <div class="list-group" formArrayName="coilIDs">
+              <div class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
+                <div class="d-flex w-100 justify-content-between">
+                  <div class="">
+                    <input *ngIf="last" class="form-control dropdown" type="text" placeholder="Search coil IDs" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+                    <div *ngIf="!last">{{getCoilID(idx)}}</div>
                   </div>
-                  <div class="col-3" *ngIf="last">
-                    <button class="form-control" (click)="addForm('coilIDs')">+</button>
-                  </div>
-                  <div class="col-3" *ngIf="!last">
-                    <button class="form-control" (click)="deleteForm(idx, 'coilIDs')">-</button>
-                  </div>
+                  <button class="btn btn-default btn-xs" *ngIf="last" (click)="addForm('coilIDs')">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                  <button class="btn btn-default btn-xs" *ngIf="!last" (click)="deleteForm(idx, 'coilIDs')">
+                    <i class="fas fa-minus"></i>
+                  </button>
                 </div>
 
-                <div class="row">
-                  <div class="col-9">
-                    <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
-                      <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
-                        <a>{{coilID}}</a>
-                      </li>
-                    </ol>
+                <div class="">
+                  <div class="autocomplete-container">
+                    <div *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="autocomplete">
+                      <div class="autocomplete-item" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
+                        {{coilID}}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
