@@ -81,11 +81,6 @@ button.btn.btn-default {
   }
 }
 
-button.btn.btn-col {
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
 button.btn.btn-success {
   @include buttonColor($success, $success);
   &:active, &:target {
