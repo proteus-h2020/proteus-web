@@ -145,45 +145,6 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
         	}
 			
 		}
-
-		// small frequent query
-		/*List<Map<String, Object>>results = new ArrayList<>();
-		for (int coilid : coilids) {
-			Statement query = select(queryStatement)
-	                .from(this.template.getCouchbaseBucket().name())
-					.useKeysValues(String.valueOf(coilid));
-			try {
-				Thread.sleep(1000);
-				
-				List<Map<String, Object>> result = template.getCouchbaseBucket()
-		                .async()
-		                .query(N1qlQuery.simple(query))
-		                .flatMap(new MapperQueryRows())
-		                .map(new MapperHashMap())
-		                .toList()
-		                .timeout(10, TimeUnit.SECONDS)
-		                .toBlocking()
-		                .single();
-				
-
-		        for (Map<String, Object> r : result) {
-		        	List<Map<String, String>> allHSMdata = (List<Map<String, String>>)r.get("hsm");
-		        	r.remove("hsm");
-		        
-		        	for (Map<String, String>hsmData : allHSMdata) {
-		        		r.put(hsmData.get("name"), hsmData.get("value"));
-		        	}
-					
-				}
-				
-				results.addAll(result);
-				
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}*/
     
         return results;
 	}
