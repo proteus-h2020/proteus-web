@@ -8,7 +8,10 @@ export class RealtimeChart {
   public alarms: boolean = false;
   public alarmFactor: number = 1;
   public layout: string = '6';
-  public coilID: string = 'current';
+  public coilID: number;
+  public mode: string = 'streaming';
+  public coilIDs: number[];
+  public hsmVariables: string[];
 
   constructor(
     public title: string,

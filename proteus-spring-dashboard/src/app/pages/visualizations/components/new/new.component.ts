@@ -3,17 +3,15 @@ import { FormVisualization } from './../../form-visualization';
 import { ChartService } from './../../../../chart.service';
 import { RealtimeChart } from './../../../../realtime-chart';
 import { Router } from '@angular/router';
-// import { BatchChart } from './../../../../batch-chart';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Chart } from '../../../../chart.interface';
 import 'style-loader!./new.scss';
-import { Annotation } from '../../components/annotations/annotation';
-import { AnnotationsService } from '../../components/annotations/annotations.service';
 import { VisualizationForm } from 'app/pages/visualizations/VisualizationForm';
-import { Statistics } from '../../components/statistics/statistics';
 import { ComponentsService } from '../../components/components.service';
 import { ComponentSet } from '../../components/componentSet';
+import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
+import { environment } from './../../../../../environments/environment';
 
 import { getAvailableVisualizations, Heatmap } from 'proteic';
 
@@ -22,7 +20,6 @@ import { onlyUnique } from '../../../../utils/Array';
 @Component({
   selector: 'create-visualization',
   templateUrl: '../visualization-form.html',
-  providers: []
 })
 
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
@@ -33,29 +30,39 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     private chartService: ChartService,
     private router: Router,
     private componentsService: ComponentsService,
+    public appSubscriptionsService: AppSubscriptionsService,
   ) {
-    super();
+    super(appSubscriptionsService);
   }
 
   public save(model: RealtimeChart, isValid: boolean) {
     let self = this;
     let alarms = model.alarms;
+    let coilID = model.coilID;
+    let mode = model.mode;
     let endpoints = new Array<string>();
+    let coilIDs = model.coilIDs;
+    let hsmVars = model.hsmVariables;
     this.submitted = true;
 
-    if (model.calculations) {
+
+    // TODO Improve: use endpoints in the case of historical and hsm
+    if (model.mode == 'streaming') {
       for (const calc of model.calculations) {
         if (calc == 'raw') {
-          endpoints.push('/topic/realtime/var/' + model.variable);
+          endpoints.push(environment.websocketTopics.getters.streaming.realtime + model.variable);
         }
         if (calc == 'mean' || calc == 'variance') {
-          endpoints.push('/topic/flink/var/' + model.variable);
+          endpoints.push(environment.websocketTopics.getters.streaming.flink.moments + model.variable);
+        }
+        if (calc == 'sax_vsm') {
+          endpoints.push(environment.websocketTopics.getters.streaming.flink.sax);
         }
       }
     }
 
     endpoints = endpoints.filter(onlyUnique);
-    let coilID = model.coilID;
+
     function createChart(components: ComponentSet) {
       model = new RealtimeChart(
         model.title,
@@ -68,9 +75,12 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
       );
       model.alarms = alarms;
       model.coilID = coilID;
+      model.mode = mode;
+      model.coilIDs = coilIDs;
+      model.hsmVariables = hsmVars;
 
       self.chartService.push(model);
-      if (model.coilID === 'current') {
+      if (model.mode === 'streaming') {
         self.router.navigate(['pages/dashboard']);
       } else {
         self.router.navigate(['pages/historical']);

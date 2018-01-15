@@ -43,6 +43,8 @@ export class ChartService {
         endpoints.push('/topic/realtime/var/2');
         endpoints.push('/topic/flink/var/2');
 
+        let mode = 'streaming'; // default value is 'streaming', it also can be set to 'historical', 'hsm'
+
         let chart = new RealtimeChart(
             'C0002 - Raw / Mean',
             'Linechart',
@@ -60,6 +62,7 @@ export class ChartService {
         );
         chart.alarms = true;
         chart.layout = '12';
+        chart.mode = 'streaming';
 
         this.charts.push(chart);
 
@@ -114,6 +117,8 @@ export class ChartService {
             endpoints,
         );
         chart.layout = '12';
+        chart.mode = 'streaming';
+
         this.push(chart);
 
 
@@ -144,6 +149,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -174,6 +180,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -211,7 +218,9 @@ export class ChartService {
                 // '#0c1e47',
                 '#0b1a3c',
             ]),
-            onClick: (data: any) => window.alert('Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y),
+            onClick: (data: any) => window.alert(
+              'Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y
+              ),
             }, // config
             components,
             '8',
@@ -219,6 +228,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -250,6 +260,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -281,6 +292,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -312,6 +324,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -343,6 +356,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -381,7 +395,9 @@ export class ChartService {
                 // '#0c1e47',
                 '#0b1a3c',
             ]),
-            onClick: (data: any) => window.alert('Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y),
+            onClick: (data: any) => window.alert(
+              'Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y
+              ),
             }, // config
             components,
             '25',
@@ -389,6 +405,7 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
 
@@ -420,8 +437,64 @@ export class ChartService {
             endpoints,
         );
         chart.alarms = true;
+        chart.mode = 'streaming';
 
         this.push(chart);
+
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+        calculations.push('mean');
+
+        components = new ComponentSet();
+
+        endpoints = new Array<string>();
+
+        chart = new RealtimeChart(
+            'H0002 - Raw / Mean',
+            'Linechart',
+            {
+                propertyX: 'x',
+                propertyY: 'value',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+                marginRight: 100,
+            },
+            components, // components config of annotations, statistics
+            '2',
+            calculations,
+            endpoints,
+        );
+        chart.coilID = 40304075;
+        chart.layout = '12';
+        chart.mode = 'historical';
+
+        this.charts.push(chart);
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        chart = new RealtimeChart(
+            'HSM DATA',
+            'ParallelCoordinates',
+            {
+                propertyKey: 'coilId',
+                marginRight: 100,
+                legend: true,
+                legendPosition: 'right',
+            },
+            components,
+            '',
+            calculations,
+            endpoints,
+        );
+        chart.layout = '12';
+        chart.mode = 'hsm';
+        chart.coilIDs = [40304075, 40304076, 40304078, 40304079, 40304080];
+        chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
+
+        this.charts.push(chart);
+
     }
 
     getChart(id: number): RealtimeChart {

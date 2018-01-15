@@ -18,12 +18,12 @@ public class ProteusHistoricalDataControllerTest {
     private ProteusHistoricalDataController controller;
 
     @Test
-    public void getCoilData() {
+    public void getHistoricalData() {
 
         int coilid = 40304075;
         int varid = 4;
 
-        controller.getCoilData(coilid,varid);
+        controller.getHistoricalData(coilid,varid);
 
     }
 

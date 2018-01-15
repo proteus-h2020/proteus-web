@@ -34,12 +34,12 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 
 	
 	@Override
-	public List<Integer> findKeys() {
+	public List<Integer> findAllCoilIDs() {
 		String bucketName = this.template.getCouchbaseBucket().name();
 
 		String query = String.format("select META(`%1$s`).id AS _ID from `%1$s`", bucketName);
 		
-		List<Integer> keys = new ArrayList<>();
+		List<Integer> allCoilIDs = new ArrayList<>();
 
 		List<Map<String, Object>> results = template.getCouchbaseBucket()
 				.async()
@@ -52,10 +52,10 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 				.single();
 
 		for (Map<String, Object> r : results) {
-			keys.add(Integer.valueOf(r.get("_ID").toString()));
+			allCoilIDs.add(Integer.valueOf(r.get("_ID").toString()));
 		}
 
-		return keys;
+		return allCoilIDs;
 	}
 
 	@Override
@@ -94,26 +94,27 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	}
 
 	@Override
-	public List<ProteusSimpleMoment> findProteusCalculationsByCoilId(int coilid) {
+	public List<ProteusSimpleMoment> findProteusCalculationsByCoilIdVarId(int coilid, int varid) {
 		String selectStr = "META(`proteus`).id AS _ID, META(`proteus`).cas AS _CAS, sm.x as x, sm.y as y, sm.varId as varId, " +
 				"sm.mean as mean, sm.stdDeviation as stdDeviation, sm.variance as variance, sm.counter as counter";
 
 		Statement query = select(selectStr)
 				.from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(String.valueOf(coilid))
-				.unnest("proteus.`simple-moments` sm");
+				.unnest("proteus.`simple-moments` sm")
+				.where(String.format("sm.varId = %d ", varid));
 
 		return template.findByN1QL(N1qlQuery.simple(query), ProteusHistoricalRecord.ProteusSimpleMoment.class);
 	}
 
 	@Override
-	public List<Map<String, Object>> findProteusHSMByCoilId(int[] coilid) {
+	public List<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars) {
 
         Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
                 .from(this.template.getCouchbaseBucket().name())
-				.useKeysValues(integerArrayToStringArray(coilid));
+				.useKeysValues(integerArrayToStringArray(coilids));
 
-        return template.getCouchbaseBucket()
+        List<Map<String, Object>> results = template.getCouchbaseBucket()
                 .async()
                 .query(N1qlQuery.simple(query))
                 .flatMap(new MapperQueryRows())
@@ -122,6 +123,51 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .timeout(10, TimeUnit.SECONDS)
                 .toBlocking()
                 .single();
+        
+        
+        for (Map<String, Object> r : results) {
+			Map<String, String> allHSMdata = (Map<String, String>)r.get("proteus-hsm");
+			r.remove("proteus-hsm");
+			
+			for (Map.Entry<String, String> hsmData : allHSMdata.entrySet()) {
+				for (String hsmVar: hsmVars) {
+					if (hsmData.getKey().equals(hsmVar)) {
+						if (!hsmData.getValue().equals("None")) {
+							r.put(hsmData.getKey(), hsmData.getValue());
+						}
+					} 				
+				}
+			}
+		}
+    
+        return results;
+	}
+	
+	@Override
+	public List<String> findAllHSMvars() {
+		int coilid = 40304075;
+		Statement query = select("META(`proteus`).id AS coilId ,proteus.`proteus-hsm`")
+                .from(this.template.getCouchbaseBucket().name())
+				.useKeysValues(String.valueOf(coilid));
+		
+		List<String> allHSMvars = new ArrayList<>();
+
+		List<Map<String, Object>> results = template.getCouchbaseBucket()
+				.async()
+				.query(N1qlQuery.simple(query))
+				.flatMap(new MapperQueryRows())
+				.map(new MapperHashMap())
+				.toList()
+				.timeout(10, TimeUnit.SECONDS)
+				.toBlocking()
+				.single();
+		
+		for (Map<String, Object> r : results) {
+			Map<String, String> hsmData = (Map<String, String>)r.get("proteus-hsm");	
+			allHSMvars.addAll(hsmData.keySet());
+		}
+
+		return allHSMvars;
 	}
 
 	@Override
