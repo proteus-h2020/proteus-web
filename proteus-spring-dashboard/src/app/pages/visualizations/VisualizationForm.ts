@@ -26,9 +26,22 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
 
     // TODO use @angular-material if angular version of this project is updated
     public matchingCoilIDs: number[] = [];
-    public coilIDsIndex: number;
-
     public matchingHSMvariables: string[] = [];
+
+    /**
+     * An index of form-array of coilIDs
+     * It's assigned in @see search() and used in @see select() to set value of coilIDs form-array
+     * @public
+     * @memberof VisualizationForm
+     */
+    public coilIDsIndex: number; //
+
+    /**
+     * An index of form-array of hsmVariables
+     * It's assigned in @see search() and used in @see select() to set value of hsmVariables form-array
+     * @public
+     * @memberof VisualizationForm
+     */
     public hsmVariablesIndex: number;
 
     constructor(

@@ -58,7 +58,7 @@
 
                 <div class="row">
                   <div class="col-9">
-                    <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
+                    <ol *ngIf="matchingCoilIDs.length > 0 && last" class="auto-complete">
                       <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
                         <a>{{coilID}}</a>
                       </li>
@@ -98,7 +98,7 @@
 
               <div class="row">
                 <div class="col-9">
-                  <ol *ngIf="matchingHSMvariables.length > 0 && hsmVariablesIndex==idx" class="auto-complete">
+                  <ol *ngIf="matchingHSMvariables.length > 0 && last" class="auto-complete">
                     <li class="form-control auto-complete" *ngFor="let hsmVar of matchingHSMvariables" (click)="select(hsmVar, 'hsmVariables')">
                       <a>{{hsmVar}}</a>
                     </li>
