@@ -7,6 +7,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { VisualizationForm } from './../../VisualizationForm';
 import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
+import { environment } from './../../../../../environments/environment';
+import { onlyUnique } from '../../../../utils/Array';
 
 import 'style-loader!./editOne.scss';
 
@@ -48,6 +50,32 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
         this.chart.configuration = model.configuration;
         this.chart.title = model.title;
         this.chart.alarms = model.alarms;
+        this.chart.calculations = model.calculations;
+        this.chart.variable = model.variable;
+
+        this.chart.coilID = model.coilID;
+        this.chart.mode = model.mode;
+        this.chart.coilIDs = model.coilIDs;
+        this.chart.hsmVariables = model.hsmVariables;
+
+        // TODO Improve: use endpoints in the case of historical and hsm
+        if (model.mode == 'streaming') {
+          model.endpoints = new Array<string>();
+          for (const calc of model.calculations) {
+            if (calc == 'raw') {
+              model.endpoints.push(environment.websocketTopics.getters.streaming.realtime + model.variable);
+            }
+            if (calc == 'mean' || calc == 'variance') {
+              model.endpoints.push(environment.websocketTopics.getters.streaming.flink.moments + model.variable);
+            }
+            if (calc == 'sax_vsm') {
+              model.endpoints.push(environment.websocketTopics.getters.streaming.flink.sax);
+            }
+          }
+        }
+        model.endpoints = model.endpoints.filter(onlyUnique);
+
+        this.chart.endpoints = model.endpoints;
 
         if (isValid) {
             this.chartService.update(model);
