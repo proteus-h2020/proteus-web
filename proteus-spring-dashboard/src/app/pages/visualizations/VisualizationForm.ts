@@ -105,6 +105,14 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       return this.form.get('hsmVariables') as FormArray;
     }
 
+    protected getCoilID(index: number) {
+      return this.coilIDs.at(index).value;
+    }
+
+    protected getHSMvariable(index: number) {
+      return this.hsmVariables.at(index).value;
+    }
+
     protected search(index: number = null, target: string) {
       switch (target) {
         case 'coilIDs':
