@@ -12,9 +12,6 @@ import { ComponentsService } from '../../components/components.service';
 import { ComponentSet } from '../../components/componentSet';
 import { AppSubscriptionsService } from './../../../../appSubscriptions.service';
 import { environment } from './../../../../../environments/environment';
-
-import { getAvailableVisualizations, Heatmap } from 'proteic';
-
 import { onlyUnique } from '../../../../utils/Array';
 
 @Component({
@@ -23,8 +20,6 @@ import { onlyUnique } from '../../../../utils/Array';
 })
 
 export class CreateVisualizationComponent extends VisualizationForm implements OnInit, OnDestroy {
-
-  private events: any[] = [];
 
   constructor(
     private chartService: ChartService,

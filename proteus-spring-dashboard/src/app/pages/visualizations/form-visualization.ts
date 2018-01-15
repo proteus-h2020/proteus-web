@@ -4,22 +4,17 @@ import { getDefaultOptions } from 'proteic';
 import { PairForm } from './VisualizationForm';
 
 export class FormVisualization {
-  public static defaults = {};
   private static fb: FormBuilder = new FormBuilder();
-  public static keyValues: string[] = [];
+
+  public static defaults = {};
   public static mode: PairForm[];
   public static calculations: PairForm[];
 
   public static availableCoilIDs: number[] = [];
   public static availableHSMvariables: string[] = [];
 
-  public static valueKeysChange(keys: string[]) {
-    this.keyValues = keys;
-  }
 
   public static createForm(model: RealtimeChart = null): FormGroup {
-    this.keyValues = ['positionX', 'positionY', 'key', 'value'];
-
     return FormVisualization.fb.group({
       title: [model ? model.title : 'untitled'],
       type: [model ? model.type : '', [<any>Validators.required]],
@@ -193,10 +188,4 @@ export class FormVisualization {
     form.controls['coilID'].setValue(coilID);
   }
 
-  public static isDynamicKey(key: string) {
-    return key == 'propertyKey' ||
-      key == 'propertyX' ||
-      key == 'propertyY' ||
-      key == 'propertyZ';
-  }
 }
