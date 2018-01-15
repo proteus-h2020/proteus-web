@@ -1,4 +1,3 @@
-
 import { FormVisualization } from './../../form-visualization';
 import { ChartService } from './../../../../chart.service';
 import { RealtimeChart } from './../../../../realtime-chart';
