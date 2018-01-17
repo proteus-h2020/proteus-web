@@ -4,7 +4,6 @@ import static com.couchbase.client.java.query.Select.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.couchbase.core.CouchbaseOperations;
 import org.springframework.data.couchbase.core.CouchbaseTemplate;
 import org.springframework.data.couchbase.repository.query.support.N1qlUtils;
 
@@ -23,7 +21,6 @@ import com.couchbase.client.java.query.Statement;
 import com.treelogic.framework.domain.batch.ProteusHistoricalRecord;
 import com.treelogic.framework.domain.batch.ProteusHistoricalRecord.ProteusSimpleMoment;
 import com.treelogic.framework.domain.batch.ProteusRealtimeRecord;
-import com.treelogic.framework.domain.batch.ProteusHSMRecord;
 
 import rx.Observable;
 import rx.functions.Func1;
