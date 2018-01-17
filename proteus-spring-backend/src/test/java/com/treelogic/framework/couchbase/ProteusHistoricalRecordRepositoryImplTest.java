@@ -16,6 +16,8 @@ import com.treelogic.framework.domain.batch.ProteusHistoricalRecord;
 import com.treelogic.framework.domain.batch.ProteusRealtimeRecord;
 import com.treelogic.framework.repository.ProteusHistoricalRecordRepository;
 
+import rx.Observable;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles(value="prod")
@@ -63,19 +65,4 @@ public class ProteusHistoricalRecordRepositoryImplTest {
         
     }
 
-    @Test
-    public void findHSM() {
-        int[] coilid = new int[] {40304075, 40304076, 40304078};
-        String[] hsmVars = new String[] {"V1893"};
-        List<Map<String, Object>> list = proteusRepo.findProteusHSMByCoilIdsVars(coilid, hsmVars);
-        
-        assertTrue(list.size() > 0);
-
-        int[] uniqcoil = new int[] {40304075};
-        list = proteusRepo.findProteusHSMByCoilIdsVars(uniqcoil, hsmVars);
-        
-        list.size();
-        
-        assertTrue(list.size() > 0);
-    }
 }

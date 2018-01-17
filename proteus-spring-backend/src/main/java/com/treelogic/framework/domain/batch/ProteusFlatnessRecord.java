@@ -1,4 +1,6 @@
 package com.treelogic.framework.domain.batch;
+
+
 public class ProteusFlatnessRecord {
 	private double value;
 	private int varId;
