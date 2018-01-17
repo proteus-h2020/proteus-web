@@ -24,7 +24,8 @@ export class FormVisualization {
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : ''],
       mode: FormVisualization.createVisualizationMode(model),
-      coilIDs: FormVisualization.createMutipleCoilIDSelectForm(model),
+      coilSelectOption: [model ? model.coilSelectOption : null, [<any>Validators.required]],
+      coilIDs: FormVisualization.createCoilIDsForm(model),
       hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
@@ -136,7 +137,39 @@ export class FormVisualization {
     return form;
   }
 
-  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null) {
+  public static createCoilIDsForm(model: RealtimeChart = null, option: string = null): FormArray {
+    let form: FormArray;
+    const formOption = model ? model.coilSelectOption : option;
+    switch (formOption) {
+      case 'add':
+        form = FormVisualization.createMutipleCoilIDSelectForm(model);
+        break;
+      case 'interval':
+        form = FormVisualization.createCoilIDIntervalForm(model);
+        break;
+      default:
+        break;
+    }
+
+    return form;
+  }
+
+  public static createCoilIDIntervalForm(model: RealtimeChart = null): FormArray {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      const min = model.coilIDs[0];
+      const max = model.coilIDs[model.coilIDs.length - 1];
+      formArray.push(new FormControl(min, <any>Validators.required));
+      formArray.push(new FormControl(max, <any>Validators.required));
+
+    } else {
+      formArray = [new FormControl(''), new FormControl('')];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
+  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null): FormArray {
     let formArray = [];
     if (model && model.mode == 'hsm') {
       for (const coilID of model.coilIDs) {
@@ -177,15 +210,28 @@ export class FormVisualization {
     if (mode == 'historical') {
       form.controls['coilID'].setValidators([<any>Validators.required]);
     } else if (mode == 'hsm') {
-      let coilIDs = form.get('coilIDs') as FormArray,
-        hsmVariables = form.get('hsmVariables') as FormArray;
-        coilIDs.at(0).setValidators([<any>Validators.required]);
+        const hsmVariables = form.get('hsmVariables') as FormArray;
         hsmVariables.at(0).setValidators([<any>Validators.required]);
     }
   }
 
   public static changeCoilID(coilID: number, form: FormGroup) {
     form.controls['coilID'].setValue(coilID);
+  }
+
+  public static changeCoilIDsform(option: string, form: FormGroup) {
+    form.setControl('coilIDs', FormVisualization.createCoilIDsForm(null, option));
+
+    const coilIDs = form.get('coilIDs') as FormArray;
+    switch (option) {
+      case 'add':
+        coilIDs.at(0).setValidators([<any>Validators.required]);
+        break;
+      case 'interval':
+        coilIDs.at(0).setValidators([<any>Validators.required]);
+        coilIDs.at(1).setValidators([<any>Validators.required]);
+        break;
+    }
   }
 
 }
