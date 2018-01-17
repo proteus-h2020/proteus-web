@@ -53,8 +53,9 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
 
     this.chart.coilID = model.coilID;
     this.chart.mode = model.mode;
-    this.chart.coilIDs = model.coilIDs;
-    this.chart.hsmVariables = model.hsmVariables;
+    this.chart.coilSelectOption = model.coilSelectOption;
+    this.chart.coilIDs = model.coilIDs.filter(onlyUnique);
+    this.chart.hsmVariables = model.hsmVariables.filter(onlyUnique);
 
     // TODO Improve: use endpoints in the case of historical and hsm
     if (model.mode == 'streaming') {
@@ -74,6 +75,16 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
     }
 
     this.chart.endpoints = model.endpoints;
+
+    if (model.coilSelectOption == 'interval') {
+      const min = +model.coilIDs[0];
+      const max = +model.coilIDs[1];
+      model.coilIDs.pop();
+      for (let i = min + 1; i < max + 1; i++) {
+        model.coilIDs.push(i);
+      }
+      this.chart.coilIDs = model.coilIDs;
+    }
 
     if (isValid) {
       this.chartService.update(model);
