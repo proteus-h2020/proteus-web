@@ -59,12 +59,10 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     if (coilSelectOption == 'interval') {
       const min = +coilIDs[0];
       const max = +coilIDs[1];
-      coilIDs.pop();
-      for (let i = min + 1; i < max + 1; i++) {
-        if (FormVisualization.availableCoilIDs.indexOf(i) > -1) {
-          coilIDs.push(i);
-        }
-      }
+      coilIDs = FormVisualization.availableCoilIDs
+                  .filter((availableCoilID) => {
+                    return availableCoilID >= min && availableCoilID <= max;
+                  });
     }
 
     function createChart(components: ComponentSet) {

@@ -79,12 +79,10 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
     if (model.coilSelectOption == 'interval') {
       const min = +model.coilIDs[0];
       const max = +model.coilIDs[1];
-      model.coilIDs.pop();
-      for (let i = min + 1; i < max + 1; i++) {
-        if (FormVisualization.availableCoilIDs.indexOf(i) > -1) {
-          model.coilIDs.push(i);
-        }
-      }
+      model.coilIDs = FormVisualization.availableCoilIDs
+                        .filter((availableCoilID) => {
+                          return availableCoilID >= min && availableCoilID <= max;
+                        });
       this.chart.coilIDs = model.coilIDs;
     }
 
