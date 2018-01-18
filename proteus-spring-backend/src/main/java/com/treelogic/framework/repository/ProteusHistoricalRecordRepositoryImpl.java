@@ -214,13 +214,15 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 	 
 		@Override
 		public Map<String, Object> call(AsyncN1qlQueryRow asyncN1qlQueryRow) {
-			List<Map<String, String>> allHSMdata = (List<Map<String, String>>) asyncN1qlQueryRow.value().toMap().get("hsm");
-			asyncN1qlQueryRow.value().removeKey("hsm");
-	        
-        	for (Map<String, String> hsmData : allHSMdata) {
-        		asyncN1qlQueryRow.value().put(hsmData.get("name"), hsmData.get("value"));
-        	}
-        	
+			if (asyncN1qlQueryRow.value().toMap().get("hsm") != null) {
+				List<Map<String, String>> allHSMdata = (List<Map<String, String>>) asyncN1qlQueryRow.value().toMap().get("hsm");
+				asyncN1qlQueryRow.value().removeKey("hsm");
+		        
+	        	for (Map<String, String> hsmData : allHSMdata) {
+	        		asyncN1qlQueryRow.value().put(hsmData.get("name"), hsmData.get("value"));
+	        	}
+			}
+			
 			return asyncN1qlQueryRow.value().toMap();
 		
 		}
