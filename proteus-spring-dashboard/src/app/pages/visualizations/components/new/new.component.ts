@@ -61,7 +61,9 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
       const max = +coilIDs[1];
       coilIDs.pop();
       for (let i = min + 1; i < max + 1; i++) {
-        coilIDs.push(i);
+        if (FormVisualization.availableCoilIDs.indexOf(i) > -1) {
+          coilIDs.push(i);
+        }
       }
     }
 

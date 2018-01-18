@@ -81,7 +81,9 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
       const max = +model.coilIDs[1];
       model.coilIDs.pop();
       for (let i = min + 1; i < max + 1; i++) {
-        model.coilIDs.push(i);
+        if (FormVisualization.availableCoilIDs.indexOf(i) > -1) {
+          model.coilIDs.push(i);
+        }
       }
       this.chart.coilIDs = model.coilIDs;
     }
