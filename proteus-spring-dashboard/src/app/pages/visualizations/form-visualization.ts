@@ -24,7 +24,7 @@ export class FormVisualization {
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : ''],
       mode: FormVisualization.createVisualizationMode(model),
-      coilSelectOption: [model ? model.coilSelectOption : null, [<any>Validators.required]],
+      coilSelectOption: [model ? model.coilSelectOption : null],
       coilIDs: FormVisualization.createCoilIDsForm(model),
       hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
      // alarmFactor: [model ? model.alarmFactor : 1]
@@ -223,6 +223,7 @@ export class FormVisualization {
     } else if (mode == 'hsm') {
         const hsmVariables = form.get('hsmVariables') as FormArray;
         hsmVariables.at(0).setValidators([<any>Validators.required]);
+        form.controls['coilSelectOption'].setValidators([<any>Validators.required]);
     }
   }
 
