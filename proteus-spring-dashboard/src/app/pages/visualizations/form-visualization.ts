@@ -174,7 +174,7 @@ export class FormVisualization {
       formArray.push(new FormControl(max, <any>Validators.required));
 
     } else {
-      formArray = [new FormControl(''), new FormControl('')];
+      formArray = [new FormControl('', <any>Validators.required), new FormControl('', <any>Validators.required)];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -187,7 +187,7 @@ export class FormVisualization {
         formArray.push(new FormControl(coilID, <any>Validators.required));
       }
     } else {
-      formArray = [new FormControl('')];
+      formArray = [new FormControl('', <any>Validators.required)];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -218,12 +218,19 @@ export class FormVisualization {
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
-    if (mode == 'historical') {
-      form.controls['coilID'].setValidators([<any>Validators.required]);
-    } else if (mode == 'hsm') {
+    switch (mode) {
+      case 'streaming':
+        form.controls['variable'].setValidators([<any>Validators.required]);
+        break;
+      case 'historical':
+        form.controls['coilID'].setValidators([<any>Validators.required]);
+        form.controls['variable'].setValidators([<any>Validators.required]);
+        break;
+      case 'hsm':
         const hsmVariables = form.get('hsmVariables') as FormArray;
         hsmVariables.at(0).setValidators([<any>Validators.required]);
         form.controls['coilSelectOption'].setValidators([<any>Validators.required]);
+        break;
     }
   }
 
@@ -233,17 +240,6 @@ export class FormVisualization {
 
   public static changeCoilIDsform(option: string, form: FormGroup) {
     form.setControl('coilIDs', FormVisualization.createCoilIDsForm(null, option));
-
-    const coilIDs = form.get('coilIDs') as FormArray;
-    switch (option) {
-      case 'add':
-        coilIDs.at(0).setValidators([<any>Validators.required]);
-        break;
-      case 'interval':
-        coilIDs.at(0).setValidators([<any>Validators.required]);
-        coilIDs.at(1).setValidators([<any>Validators.required]);
-        break;
-    }
   }
 
 }
