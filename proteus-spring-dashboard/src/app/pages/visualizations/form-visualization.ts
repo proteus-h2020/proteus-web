@@ -193,13 +193,13 @@ export class FormVisualization {
     return FormVisualization.fb.array(formArray);
   }
 
-  public static createHSMvariableSelectForm(model: RealtimeChart = null) {
+  private static createHSMvariableSelectForm(model: RealtimeChart = null, mode: string = null) {
     let formArray = [];
     if (model && model.mode == 'hsm') {
       for (const hsmVariable of model.hsmVariables) {
         formArray.push(new FormControl(hsmVariable, <any>Validators.required));
       }
-    } else {
+    } else if (mode == 'hsm') {
       formArray = [new FormControl('')];
     }
 
@@ -216,6 +216,7 @@ export class FormVisualization {
 
   public static changeDataProperties(mode: string, form: FormGroup) {
     FormVisualization.createCalculationForm(null, mode);
+    form.setControl('hsmVariables', FormVisualization.createHSMvariableSelectForm(null, mode));
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
