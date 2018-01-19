@@ -34,8 +34,9 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     let coilID = model.coilID;
     let mode = model.mode;
     let endpoints = new Array<string>();
-    let coilIDs = model.coilIDs.filter(onlyUnique);
-    let hsmVars = model.hsmVariables.filter(onlyUnique);
+    // TODO improve form validation by checking unique value
+    let coilIDs = model.coilIDs ? model.coilIDs.filter(onlyUnique) : null;
+    let hsmVars = model.hsmVariables? model.hsmVariables.filter(onlyUnique) : null;
     let coilSelectOption = model.coilSelectOption;
     this.submitted = true;
 
