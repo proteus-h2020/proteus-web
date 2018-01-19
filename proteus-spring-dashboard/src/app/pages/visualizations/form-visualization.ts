@@ -13,7 +13,23 @@ export class FormVisualization {
   public static availableCoilIDs: number[] = [];
   public static availableHSMvariables: string[] = [];
 
-
+  /**
+   * @method
+   * Create Visualization Form Group
+   *
+   * Custom Form Property:
+   * -On visualization type: (configuration, mode)
+   *  - @see changeDefaultProperties
+   * -On visualization mode: (variable, calculations, coilID, coilSelectOption, hsmVariables)
+   *  - @see changeDataProperties @see changeValidation
+   * -On coilSelectOption: (coilIDs)
+   *  - @see changeCoilIDsFormAndValidation
+   *
+   * @param {RealtimeChart} model -If model exists, creating form on edit-visualization, else new-visualization
+   *
+   * @public {static}
+   * @memberof FormVisualization
+   */
   public static createForm(model: RealtimeChart = null): FormGroup {
     return FormVisualization.fb.group({
       title: [model ? model.title : 'untitled'],
@@ -37,8 +53,9 @@ export class FormVisualization {
    * (New-visualization): Basically, default config values get from proteic defaults configuration
    * (Edit-visualization): Create configuration form with user-input config values. If no user-input values,
    * config values get from only proteic defaults
-   * @param {model} If model exists, it creates configuration on edit-visualization, else new-visualization
-   * @param {chartType} If chartType exists, default configuration is set for chart type
+   * @param {RealtimeChart} model -If model exists, creating form on edit-visualization, else new-visualization
+   * @param {string} chartType If chartType exists, default configuration is set for chart type
+   *
    * @private {static}
    * @memberof FormVisualization
    */
@@ -89,7 +106,18 @@ export class FormVisualization {
     return FormVisualization.fb.group(form);
   }
 
-  public static createCalculationForm(model: RealtimeChart = null, mode: string = null) {
+  /**
+   * @method
+   * Create Calculations Form on visualization mode ('streaming', 'historical', 'hsm')
+   * by assinging @see FormVisualization.calculations
+   *
+   * @param {RealtimeChart} model -If model exists, creating form on edit-visualization, else new-visualization
+   * @param {string} mode -When visualization mode is changed, mode exists @see changeDataProperties()
+   *
+   * @private {static}
+   * @memberof FormVisualization
+   */
+  private static createCalculationForm(model: RealtimeChart = null, mode: string = null) {
     const visualizationMode: string = model ? model.mode : mode;
     switch (visualizationMode) {
       case 'streaming':
@@ -119,7 +147,19 @@ export class FormVisualization {
     return [model ? model.calculations : null, [<any>Validators.required]];
   }
 
-  public static createVisualizationMode(model: RealtimeChart = null, type: string = null) {
+  /**
+   * @method
+   * Create Visualization Mode Form on visualization type
+   * by assinging @see FormVisualization.mode
+   * It also returns default mode when visualization type is changed @see changeDefaultProperties()
+   *
+   * @param {RealtimeChart} model -If model exists, creating form on edit-visualization, else new-visualization
+   * @param {string} type
+   *
+   * @private {static}
+   * @memberof FormVisualization
+   */
+  private static createVisualizationMode(model: RealtimeChart = null, type: string = null) {
     const chartType: string = model ? model.type : type;
     let defaultMode: string = '';
     let form;
@@ -148,7 +188,19 @@ export class FormVisualization {
     return form;
   }
 
-  public static createCoilIDsForm(model: RealtimeChart = null, option: string = null): FormArray {
+  /**
+   * @method
+   * Create coilIDs Form on coil select option
+   * ('add', 'interval') -> (@see createMutipleCoilIDSelectForm, @see createCoilIDIntervalForm)
+   * When option is changed, It is called in @see changeCoilIDsFormAndValidation()
+   *
+   * @param {RealtimeChart} model -If model exists, creating form on edit-visualization, else new-visualization
+   * @param {string} option
+   *
+   * @private {static}
+   * @memberof FormVisualization
+   */
+  private static createCoilIDsForm(model: RealtimeChart = null, option: string = null): FormArray {
     let form: FormArray;
     const formOption = model ? model.coilSelectOption : option;
     switch (formOption) {
@@ -158,14 +210,14 @@ export class FormVisualization {
       case 'interval':
         form = FormVisualization.createCoilIDIntervalForm(model);
         break;
-      default:
+      default: // To build coilIDs form at initial time, called in createForm()
         break;
     }
 
     return form;
   }
 
-  public static createCoilIDIntervalForm(model: RealtimeChart = null): FormArray {
+  private static createCoilIDIntervalForm(model: RealtimeChart = null): FormArray {
     let formArray = [];
     if (model && model.mode == 'hsm') {
       const min = model.coilIDs[0];
@@ -180,7 +232,7 @@ export class FormVisualization {
     return FormVisualization.fb.array(formArray);
   }
 
-  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null): FormArray {
+  private static createMutipleCoilIDSelectForm(model: RealtimeChart = null): FormArray {
     let formArray = [];
     if (model && model.mode == 'hsm') {
       for (const coilID of model.coilIDs) {
@@ -206,37 +258,7 @@ export class FormVisualization {
     return FormVisualization.fb.array(formArray);
   }
 
-  public static changeDefaultProperties(chartType: string, form: FormGroup) {
-    FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
-    form.setControl('configuration', this._createConfigurationByChartProperties(null, chartType));
-
-    let defaultMode = FormVisualization.createVisualizationMode(null, chartType);
-    form.controls['mode'].setValue(defaultMode);
-  }
-
-  public static changeDataProperties(mode: string, form: FormGroup) {
-    FormVisualization.createCalculationForm(null, mode);
-    form.setControl('hsmVariables', FormVisualization.createHSMvariableSelectForm(null, mode));
-  }
-
-  public static changeValidation(mode: string, form: FormGroup) {
-    FormVisualization.initializeValidators(form);
-    switch (mode) {
-      case 'streaming':
-        FormVisualization.setAndUpdateValidators('variable', form);
-        break;
-      case 'historical':
-        FormVisualization.setAndUpdateValidators('coilID', form);
-        FormVisualization.setAndUpdateValidators('variable', form);
-        break;
-      case 'hsm':
-        FormVisualization.setAndUpdateValidators('coilSelectOption', form);
-        FormVisualization.setAndUpdateValidators('hsmVariables', form);
-        break;
-    }
-  }
-
-  public static setAndUpdateValidators(property: string, form: FormGroup) {
+  private static setAndUpdateValidators(property: string, form: FormGroup) {
     if (property == 'coilIDs' || property == 'hsmVariables') {
       const formArray = form.get(property) as FormArray;
       if (formArray) {
@@ -251,7 +273,7 @@ export class FormVisualization {
     }
   }
 
-  public static initializeValidators(form: FormGroup) {
+  private static initializeValidators(form: FormGroup) {
     const customFormProperty = ['variable', 'coilID', 'coilSelectOption', 'coilIDs', 'hsmVariables'];
     for (const property of customFormProperty) {
       if (property == 'coilIDs' || property == 'hsmVariables') {
@@ -266,6 +288,38 @@ export class FormVisualization {
         form.controls[property].clearValidators();
         form.controls[property].updateValueAndValidity();
       }
+    }
+  }
+
+
+  public static changeDefaultProperties(chartType: string, form: FormGroup) {
+    FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
+    form.setControl('configuration', this._createConfigurationByChartProperties(null, chartType));
+
+    let defaultMode = FormVisualization.createVisualizationMode(null, chartType);
+    form.controls['mode'].setValue(defaultMode);
+  }
+
+  public static changeDataProperties(mode: string, form: FormGroup) {
+    FormVisualization.createCalculationForm(null, mode);
+    form.setControl('hsmVariables', FormVisualization.createHSMvariableSelectForm(null, mode));
+  }
+
+  public static changeValidation(mode: string, form: FormGroup) {
+    FormVisualization.initializeValidators(form); // To prevent validators error by chaning visualization mode
+
+    switch (mode) {
+      case 'streaming':
+        FormVisualization.setAndUpdateValidators('variable', form);
+        break;
+      case 'historical':
+        FormVisualization.setAndUpdateValidators('coilID', form);
+        FormVisualization.setAndUpdateValidators('variable', form);
+        break;
+      case 'hsm':
+        FormVisualization.setAndUpdateValidators('coilSelectOption', form);
+        FormVisualization.setAndUpdateValidators('hsmVariables', form);
+        break;
     }
   }
 
