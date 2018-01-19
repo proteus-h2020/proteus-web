@@ -210,7 +210,8 @@ export class FormVisualization {
     FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
     form.setControl('configuration', this._createConfigurationByChartProperties(null, chartType));
 
-    form.controls['mode'].setValue(FormVisualization.createVisualizationMode(null, chartType));
+    let defaultMode = FormVisualization.createVisualizationMode(null, chartType);
+    form.controls['mode'].setValue(defaultMode);
   }
 
   public static changeDataProperties(mode: string, form: FormGroup) {
@@ -220,18 +221,23 @@ export class FormVisualization {
   public static changeValidation(mode: string, form: FormGroup) {
     switch (mode) {
       case 'streaming':
-        form.controls['variable'].setValidators([<any>Validators.required]);
+        FormVisualization.setAndUpdateValidators('variable', form);
         break;
       case 'historical':
-        form.controls['coilID'].setValidators([<any>Validators.required]);
-        form.controls['variable'].setValidators([<any>Validators.required]);
+        FormVisualization.setAndUpdateValidators('coilID', form);
+        FormVisualization.setAndUpdateValidators('variable', form);
         break;
       case 'hsm':
+        FormVisualization.setAndUpdateValidators('coilSelectOption', form);
         const hsmVariables = form.get('hsmVariables') as FormArray;
         hsmVariables.at(0).setValidators([<any>Validators.required]);
-        form.controls['coilSelectOption'].setValidators([<any>Validators.required]);
         break;
     }
+  }
+
+  public static setAndUpdateValidators(property: string, form: FormGroup) {
+    form.controls[property].setValidators([<any>Validators.required]);
+    form.controls[property].updateValueAndValidity();
   }
 
   public static changeCoilID(coilID: number, form: FormGroup) {
