@@ -174,7 +174,7 @@ export class FormVisualization {
       formArray.push(new FormControl(max, <any>Validators.required));
 
     } else {
-      formArray = [new FormControl('', <any>Validators.required), new FormControl('', <any>Validators.required)];
+      formArray = [new FormControl(''), new FormControl('')];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -187,7 +187,7 @@ export class FormVisualization {
         formArray.push(new FormControl(coilID, <any>Validators.required));
       }
     } else {
-      formArray = [new FormControl('', <any>Validators.required)];
+      formArray = [new FormControl('')];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -219,6 +219,7 @@ export class FormVisualization {
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
+    FormVisualization.initializeValidators(form);
     switch (mode) {
       case 'streaming':
         FormVisualization.setAndUpdateValidators('variable', form);
@@ -229,23 +230,51 @@ export class FormVisualization {
         break;
       case 'hsm':
         FormVisualization.setAndUpdateValidators('coilSelectOption', form);
-        const hsmVariables = form.get('hsmVariables') as FormArray;
-        hsmVariables.at(0).setValidators([<any>Validators.required]);
+        FormVisualization.setAndUpdateValidators('hsmVariables', form);
         break;
     }
   }
 
   public static setAndUpdateValidators(property: string, form: FormGroup) {
-    form.controls[property].setValidators([<any>Validators.required]);
-    form.controls[property].updateValueAndValidity();
+    if (property == 'coilIDs' || property == 'hsmVariables') {
+      const formArray = form.get(property) as FormArray;
+      if (formArray) {
+        for (let formControl of formArray.controls) {
+          formControl.setValidators([<any>Validators.required]);
+          formControl.updateValueAndValidity();
+        }
+      }
+    } else {
+      form.controls[property].setValidators([<any>Validators.required]);
+      form.controls[property].updateValueAndValidity();
+    }
+  }
+
+  public static initializeValidators(form: FormGroup) {
+    const customFormProperty = ['variable', 'coilID', 'coilSelectOption', 'coilIDs', 'hsmVariables'];
+    for (const property of customFormProperty) {
+      if (property == 'coilIDs' || property == 'hsmVariables') {
+        const formArray = form.get(property) as FormArray;
+        if (formArray) {
+          for (let formControl of formArray.controls) {
+            formControl.clearValidators();
+            formControl.updateValueAndValidity();
+          }
+        }
+      } else {
+        form.controls[property].clearValidators();
+        form.controls[property].updateValueAndValidity();
+      }
+    }
   }
 
   public static changeCoilID(coilID: number, form: FormGroup) {
     form.controls['coilID'].setValue(coilID);
   }
 
-  public static changeCoilIDsform(option: string, form: FormGroup) {
+  public static changeCoilIDsFormAndValidation(option: string, form: FormGroup) {
     form.setControl('coilIDs', FormVisualization.createCoilIDsForm(null, option));
+    FormVisualization.setAndUpdateValidators('coilIDs', form);
   }
 
 }

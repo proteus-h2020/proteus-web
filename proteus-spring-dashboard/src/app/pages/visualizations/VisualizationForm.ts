@@ -214,7 +214,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     });
 
     this.form.controls['coilSelectOption'].valueChanges.subscribe((option) => {
-      FormVisualization.changeCoilIDsform(option, this.form);
+      FormVisualization.changeCoilIDsFormAndValidation(option, this.form);
     });
 
     this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
