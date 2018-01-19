@@ -42,7 +42,7 @@ public class ProteusHistoricalRecordService {
 		return this.proteusRepository.findProteusCalculationsByCoilIdVarId(coilid, varid);
 	}
 
-	public List<Map<String, Object>> findHSMByCoilIdsVars(int[] coilIDs, String[] hsmVars) {
+	public Observable<Map<String, Object>> findHSMByCoilIdsVars(int[] coilIDs, String[] hsmVars) {
 		return this.proteusRepository.findProteusHSMByCoilIdsVars(coilIDs, hsmVars);
 	}
 	

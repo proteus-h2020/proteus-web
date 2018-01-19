@@ -34,10 +34,10 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
     let coilID = model.coilID;
     let mode = model.mode;
     let endpoints = new Array<string>();
-    let coilIDs = model.coilIDs;
-    let hsmVars = model.hsmVariables;
+    let coilIDs = model.coilIDs.filter(onlyUnique);
+    let hsmVars = model.hsmVariables.filter(onlyUnique);
+    let coilSelectOption = model.coilSelectOption;
     this.submitted = true;
-
 
     // TODO Improve: use endpoints in the case of historical and hsm
     if (model.mode == 'streaming') {
@@ -56,6 +56,15 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
 
     endpoints = endpoints.filter(onlyUnique);
 
+    if (coilSelectOption == 'interval') {
+      const min = +coilIDs[0];
+      const max = +coilIDs[1];
+      coilIDs = FormVisualization.availableCoilIDs
+                  .filter((availableCoilID) => {
+                    return availableCoilID >= min && availableCoilID <= max;
+                  });
+    }
+
     function createChart(components: ComponentSet) {
       model = new RealtimeChart(
         model.title,
@@ -69,6 +78,7 @@ export class CreateVisualizationComponent extends VisualizationForm implements O
       model.alarms = alarms;
       model.coilID = coilID;
       model.mode = mode;
+      model.coilSelectOption = coilSelectOption;
       model.coilIDs = coilIDs;
       model.hsmVariables = hsmVars;
 

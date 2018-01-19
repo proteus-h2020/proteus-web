@@ -40,33 +40,64 @@
           </div>
 
           <div class="col" *ngIf="form.controls.mode.value=='hsm'">
-            <label for="coilSelection"><strong>Search your coil ID:</strong></label>
-            <div class="form-group" formArrayName="coilIDs">
-              <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
-                <div class="row">
-                  <div class="col-9">
-                    <input *ngIf="last" class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
-                    <li *ngIf="!last" class="form-list">{{getCoilID(idx)}}</li>
-                  </div>
-                  <div class="col-3" *ngIf="last">
-                    <button class="form-control" (click)="addForm('coilIDs')">+</button>
-                  </div>
-                  <div class="col-3" *ngIf="!last">
-                    <button class="form-control" (click)="deleteForm(idx, 'coilIDs')">-</button>
-                  </div>
-                </div>
+            <!--div *ngIf="!form.controls.coilSelectOption.value"-->
+            <div>
+              <label for="coilSelection"><strong>Choose option to select your coil ID:</strong></label>
+              <select class="form-control" formControlName="coilSelectOption">
+                  <option value="add">Add</option>
+                  <option value="interval">Interval</option>
+              </select>
+            </div>
 
-                <div class="row">
-                  <div class="col-9">
-                    <ol *ngIf="matchingCoilIDs.length > 0 && last" class="auto-complete">
-                      <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
-                        <a>{{coilID}}</a>
-                      </li>
-                    </ol>
+            <div *ngIf="form.controls.coilSelectOption.value=='add'">
+              <label for="coilSelection"><strong>Add your coil ID:</strong></label>
+              <div class="form-group" formArrayName="coilIDs">
+                <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx; let last=last">
+                  <div class="row">
+                    <div class="col-9">
+                      <input *ngIf="last" class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+                      <li *ngIf="!last" class="form-list">{{getCoilID(idx)}}</li>
+                    </div>
+                    <div class="col-3" *ngIf="last">
+                      <button class="form-control" (click)="addForm('coilIDs')">+</button>
+                    </div>
+                    <div class="col-3" *ngIf="!last">
+                      <button class="form-control" (click)="deleteForm(idx, 'coilIDs')">-</button>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-9">
+                      <ol *ngIf="matchingCoilIDs.length > 0 && last" class="auto-complete">
+                        <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
+                          <a>{{coilID}}</a>
+                        </li>
+                      </ol>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div *ngIf="form.controls.coilSelectOption.value=='interval'">
+              <label for="coilSelection"><strong>Interval for your coil ID:</strong></label>
+              <div class="row" formArrayName="coilIDs">
+                <div class="col" *ngFor="let coilID of coilIDs.controls; index as idx;">
+                  <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+
+                  <div class="row">
+                    <div class="col">
+                      <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
+                        <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
+                          <a>{{coilID}}</a>
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </ba-card>

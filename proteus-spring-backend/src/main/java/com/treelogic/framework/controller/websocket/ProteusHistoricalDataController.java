@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 
 import com.treelogic.framework.domain.batch.ProteusHistoricalRecord;
 import com.treelogic.framework.domain.batch.ProteusRealtimeRecord;
-import com.treelogic.framework.domain.tuples.Tuple2;
 import com.treelogic.framework.service.ProteusHistoricalRecordService;
 import com.treelogic.framework.domain.Pair;
 
@@ -187,11 +186,9 @@ public class ProteusHistoricalDataController {
 
 	private void sendHSMData(final int[] coilIDs, final String[] hsmVars) {
 
-		List<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
-		LOGGER.info(String.format("Sending %1$s HSM records by coilIds and hsmVars: %2$s  %3$s with buffer size: %4$s", 
-				hsmrecords.size(), Arrays.toString(coilIDs), Arrays.toString(hsmVars), realTimeBufferSize));
+		Observable<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
 
-		Observable.from(hsmrecords).subscribe(new Subscriber<Map<String, Object>>() {
+		hsmrecords.subscribe(new Subscriber<Map<String, Object>>() {
 			@Override
 			public void onCompleted() {
 				LOGGER.info("HSM data Completed");

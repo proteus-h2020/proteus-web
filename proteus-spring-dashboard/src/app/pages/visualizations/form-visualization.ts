@@ -24,7 +24,8 @@ export class FormVisualization {
       alarms: [model ? model.alarms : null],
       coilID: [model ? model.coilID : ''],
       mode: FormVisualization.createVisualizationMode(model),
-      coilIDs: FormVisualization.createMutipleCoilIDSelectForm(model),
+      coilSelectOption: [model ? model.coilSelectOption : null],
+      coilIDs: FormVisualization.createCoilIDsForm(model),
       hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
@@ -37,19 +38,30 @@ export class FormVisualization {
    * (Edit-visualization): Create configuration form with user-input config values. If no user-input values,
    * config values get from only proteic defaults
    * @param {model} If model exists, it creates configuration on edit-visualization, else new-visualization
+   * @param {chartType} If chartType exists, default configuration is set for chart type
    * @private {static}
    * @memberof FormVisualization
    */
-  private static _createConfigurationByChartProperties(model: RealtimeChart): FormGroup {
-    let form = {},
-      conf = null,
-      defaults,
-      // default values for new-visualization (different from its value in proteic)
-      proteusWebDefaults = { 'propertyY': 'value' };
+  private static _createConfigurationByChartProperties(model: RealtimeChart, chartType: string = null): FormGroup {
+    let form = {};
+    let conf = null;
+    let defaults;
+    // Specific default configuration for new-visualization on proteus-web (different from its value in proteic)
+    let proteusWebDefaults = { 'propertyY': 'value' };
 
     if (FormVisualization.defaults.hasOwnProperty('propertyZ')) {
       proteusWebDefaults['propertyZ'] = proteusWebDefaults.propertyY;
       delete proteusWebDefaults.propertyY;
+    }
+
+    switch (chartType) {
+      case 'ParallelCoordinates':
+        proteusWebDefaults['legend'] = true;
+        proteusWebDefaults['propertyKey'] = 'coilId';
+        delete proteusWebDefaults.propertyY;
+        break;
+      default:
+        break;
     }
 
     if (model) {
@@ -136,14 +148,46 @@ export class FormVisualization {
     return form;
   }
 
-  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null) {
+  public static createCoilIDsForm(model: RealtimeChart = null, option: string = null): FormArray {
+    let form: FormArray;
+    const formOption = model ? model.coilSelectOption : option;
+    switch (formOption) {
+      case 'add':
+        form = FormVisualization.createMutipleCoilIDSelectForm(model);
+        break;
+      case 'interval':
+        form = FormVisualization.createCoilIDIntervalForm(model);
+        break;
+      default:
+        break;
+    }
+
+    return form;
+  }
+
+  public static createCoilIDIntervalForm(model: RealtimeChart = null): FormArray {
+    let formArray = [];
+    if (model && model.mode == 'hsm') {
+      const min = model.coilIDs[0];
+      const max = model.coilIDs[model.coilIDs.length - 1];
+      formArray.push(new FormControl(min, <any>Validators.required));
+      formArray.push(new FormControl(max, <any>Validators.required));
+
+    } else {
+      formArray = [new FormControl('', <any>Validators.required), new FormControl('', <any>Validators.required)];
+    }
+
+    return FormVisualization.fb.array(formArray);
+  }
+
+  public static createMutipleCoilIDSelectForm(model: RealtimeChart = null): FormArray {
     let formArray = [];
     if (model && model.mode == 'hsm') {
       for (const coilID of model.coilIDs) {
         formArray.push(new FormControl(coilID, <any>Validators.required));
       }
     } else {
-      formArray = [new FormControl('')];
+      formArray = [new FormControl('', <any>Validators.required)];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -164,7 +208,7 @@ export class FormVisualization {
 
   public static changeDefaultProperties(chartType: string, form: FormGroup) {
     FormVisualization.defaults = getDefaultOptions(chartType.toLowerCase());
-    form.setControl('configuration', this._createConfigurationByChartProperties(null));
+    form.setControl('configuration', this._createConfigurationByChartProperties(null, chartType));
 
     form.controls['mode'].setValue(FormVisualization.createVisualizationMode(null, chartType));
   }
@@ -174,18 +218,28 @@ export class FormVisualization {
   }
 
   public static changeValidation(mode: string, form: FormGroup) {
-    if (mode == 'historical') {
-      form.controls['coilID'].setValidators([<any>Validators.required]);
-    } else if (mode == 'hsm') {
-      let coilIDs = form.get('coilIDs') as FormArray,
-        hsmVariables = form.get('hsmVariables') as FormArray;
-        coilIDs.at(0).setValidators([<any>Validators.required]);
+    switch (mode) {
+      case 'streaming':
+        form.controls['variable'].setValidators([<any>Validators.required]);
+        break;
+      case 'historical':
+        form.controls['coilID'].setValidators([<any>Validators.required]);
+        form.controls['variable'].setValidators([<any>Validators.required]);
+        break;
+      case 'hsm':
+        const hsmVariables = form.get('hsmVariables') as FormArray;
         hsmVariables.at(0).setValidators([<any>Validators.required]);
+        form.controls['coilSelectOption'].setValidators([<any>Validators.required]);
+        break;
     }
   }
 
   public static changeCoilID(coilID: number, form: FormGroup) {
     form.controls['coilID'].setValue(coilID);
+  }
+
+  public static changeCoilIDsform(option: string, form: FormGroup) {
+    form.setControl('coilIDs', FormVisualization.createCoilIDsForm(null, option));
   }
 
 }

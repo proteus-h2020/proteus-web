@@ -490,7 +490,39 @@ export class ChartService {
         );
         chart.layout = '12';
         chart.mode = 'hsm';
+        chart.coilSelectOption = 'add';
         chart.coilIDs = [40304076, 40304079, 40304080, 40304082, 40304085];
+        chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
+
+        this.charts.push(chart);
+
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        let coilIDs = [];
+        for (let i = 40304076; i < 40304140; i++) {
+          coilIDs.push(i);
+        }
+
+        chart = new RealtimeChart(
+            'HSM DATA - 2',
+            'ParallelCoordinates',
+            {
+                propertyKey: 'coilId',
+                marginRight: 100,
+                // legend: true,
+                legendPosition: 'right',
+            },
+            components,
+            '',
+            calculations,
+            endpoints,
+        );
+        chart.layout = '12';
+        chart.mode = 'hsm';
+        chart.coilSelectOption = 'interval';
+        chart.coilIDs = coilIDs;
         chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
 
         this.charts.push(chart);

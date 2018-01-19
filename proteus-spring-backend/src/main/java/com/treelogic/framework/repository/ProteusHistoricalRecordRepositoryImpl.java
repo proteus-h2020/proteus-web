@@ -4,7 +4,6 @@ import static com.couchbase.client.java.query.Select.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -107,9 +106,9 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 
 		return template.findByN1QL(N1qlQuery.simple(query), ProteusHistoricalRecord.ProteusSimpleMoment.class);
 	}
-
+	
 	@Override
-	public List<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars) {
+	public Observable<Map<String, Object>> findProteusHSMByCoilIdsVars(int[] coilids, String[] hsmVars) {
 		String queryStatement = "META(`proteus`).id AS coilId, "
 				+ "ARRAY hsm FOR hsm IN OBJECT_PAIRS(proteus.`proteus-hsm`) WHEN ";
 		
@@ -126,25 +125,11 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
                 .from(this.template.getCouchbaseBucket().name())
 				.useKeysValues(integerArrayToStringArray(coilids));
 		
-		List<Map<String, Object>> results = template.getCouchbaseBucket()
+		Observable<Map<String, Object>> results = template.getCouchbaseBucket()
                 .async()
                 .query(N1qlQuery.simple(query))
                 .flatMap(new MapperQueryRows())
-                .map(new MapperHashMap())
-                .toList()
-                .timeout(10, TimeUnit.SECONDS)
-                .toBlocking()
-                .single();
-		
-		for (Map<String, Object> r : results) {
-        	List<Map<String, String>> allHSMdata = (List<Map<String, String>>)r.get("hsm");
-        	r.remove("hsm");
-        
-        	for (Map<String, String>hsmData : allHSMdata) {
-        		r.put(hsmData.get("name"), hsmData.get("value"));
-        	}
-			
-		}
+                .map(new ProteusHSMRecordMapper());
     
         return results;
 	}
@@ -224,6 +209,26 @@ public class ProteusHistoricalRecordRepositoryImpl implements ProteusHistoricalR
 			return new ProteusRealtimeRecord(x,y, varId, value);
 		}
 	}
+	
+	private class ProteusHSMRecordMapper implements Func1<AsyncN1qlQueryRow, Map<String, Object>> {
+	 
+		@Override
+		public Map<String, Object> call(AsyncN1qlQueryRow asyncN1qlQueryRow) {
+			if (asyncN1qlQueryRow.value().toMap().get("hsm") != null) {
+				List<Map<String, String>> allHSMdata = (List<Map<String, String>>) asyncN1qlQueryRow.value().toMap().get("hsm");
+				asyncN1qlQueryRow.value().removeKey("hsm");
+		        
+	        	for (Map<String, String> hsmData : allHSMdata) {
+	        		asyncN1qlQueryRow.value().put(hsmData.get("name"), hsmData.get("value"));
+	        	}
+			}
+			
+			return asyncN1qlQueryRow.value().toMap();
+		
+		}
+	 
+	}
+	
 	private class MapperHashMap implements Func1<AsyncN1qlQueryRow, Map<String, Object>> {
 
 		@Override
