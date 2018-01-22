@@ -54,9 +54,8 @@ export class EditOneVisualizationComponent extends VisualizationForm implements 
     this.chart.coilID = model.coilID;
     this.chart.mode = model.mode;
     this.chart.coilSelectOption = model.coilSelectOption;
-    // TODO improve form validation by checking unique value
-    this.chart.coilIDs = model.coilIDs ? model.coilIDs.filter(onlyUnique) : null;
-    this.chart.hsmVariables = model.hsmVariables ? model.hsmVariables.filter(onlyUnique) : null;
+    this.chart.coilIDs = model.coilIDs;
+    this.chart.hsmVariables = model.hsmVariables;
 
     // TODO Improve: use endpoints in the case of historical and hsm
     if (model.mode == 'streaming') {

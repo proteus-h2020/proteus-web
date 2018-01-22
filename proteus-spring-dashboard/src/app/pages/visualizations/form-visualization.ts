@@ -43,6 +43,8 @@ export class FormVisualization {
       coilSelectOption: [model ? model.coilSelectOption : null],
       coilIDs: FormVisualization.createCoilIDsForm(model),
       hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
+      newCoilIDs: ['', <any>Validators.pattern('^\s*$')],
+      newHSMvariables: ['', <any>Validators.pattern('^\s*$')],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -238,8 +240,6 @@ export class FormVisualization {
       for (const coilID of model.coilIDs) {
         formArray.push(new FormControl(coilID, <any>Validators.required));
       }
-    } else {
-      formArray = [new FormControl('')];
     }
 
     return FormVisualization.fb.array(formArray);
@@ -251,8 +251,6 @@ export class FormVisualization {
       for (const hsmVariable of model.hsmVariables) {
         formArray.push(new FormControl(hsmVariable, <any>Validators.required));
       }
-    } else if (mode == 'hsm') {
-      formArray = [new FormControl('')];
     }
 
     return FormVisualization.fb.array(formArray);
