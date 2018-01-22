@@ -187,7 +187,9 @@ public class ProteusHistoricalDataController {
 	private void sendHSMData(final int[] coilIDs, final String[] hsmVars) {
 
 		Observable<Map<String, Object>> hsmrecords = this.proteusService.findHSMByCoilIdsVars(coilIDs, hsmVars);
-
+		LOGGER.info(String.format("Sending HSM data with Coil Ids: %s and HSM variables: %s", 
+				Arrays.toString(coilIDs), Arrays.toString(hsmVars)));
+		
 		hsmrecords.subscribe(new Subscriber<Map<String, Object>>() {
 			@Override
 			public void onCompleted() {
