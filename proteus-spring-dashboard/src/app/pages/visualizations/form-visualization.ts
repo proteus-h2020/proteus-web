@@ -43,8 +43,8 @@ export class FormVisualization {
       coilSelectOption: [model ? model.coilSelectOption : null],
       coilIDs: FormVisualization.createCoilIDsForm(model),
       hsmVariables: FormVisualization.createHSMvariableSelectForm(model),
-      newCoilIDs: ['', <any>Validators.pattern('^\s*$')],
-      newHSMvariables: ['', <any>Validators.pattern('^\s*$')],
+      newCoilIDs: [''],
+      newHSMvariables: [''],
      // alarmFactor: [model ? model.alarmFactor : 1]
     });
   }
@@ -265,6 +265,9 @@ export class FormVisualization {
           formControl.updateValueAndValidity();
         }
       }
+    } else if (property == 'newCoilIDs' || property == 'newHSMvariables') {
+      form.controls[property].setValidators([<any>Validators.pattern('^\s*$')]); // require blank
+      form.controls[property].updateValueAndValidity();
     } else {
       form.controls[property].setValidators([<any>Validators.required]);
       form.controls[property].updateValueAndValidity();
@@ -272,7 +275,8 @@ export class FormVisualization {
   }
 
   private static initializeValidators(form: FormGroup) {
-    const customFormProperty = ['variable', 'coilID', 'coilSelectOption', 'coilIDs', 'hsmVariables'];
+    const customFormProperty = ['variable', 'coilID', 'coilSelectOption', 'coilIDs', 'hsmVariables',
+                                'newCoilIDs', 'newHSMvariables'];
     for (const property of customFormProperty) {
       if (property == 'coilIDs' || property == 'hsmVariables') {
         const formArray = form.get(property) as FormArray;
@@ -317,6 +321,7 @@ export class FormVisualization {
       case 'hsm':
         FormVisualization.setAndUpdateValidators('coilSelectOption', form);
         FormVisualization.setAndUpdateValidators('hsmVariables', form);
+        FormVisualization.setAndUpdateValidators('newHSMvariables', form);
         break;
     }
   }
@@ -328,6 +333,7 @@ export class FormVisualization {
   public static changeCoilIDsFormAndValidation(option: string, form: FormGroup) {
     form.setControl('coilIDs', FormVisualization.createCoilIDsForm(null, option));
     FormVisualization.setAndUpdateValidators('coilIDs', form);
+    FormVisualization.setAndUpdateValidators('newCoilIDs', form);
   }
 
 }
