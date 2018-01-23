@@ -149,7 +149,7 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       const coilID: number = +this.chart.coilID,
         varID: number = +this.chart.variable;
       let historicalDataSubscription;
-      // TODO Improve: make this possble to draw raw and mean data at the same time
+
       for (const calc of this.chart.calculations) {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHistoricalData(coilID, varID);

@@ -11,10 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
 
-  selectedStatistics: Statistics;
-  newStatistics: Statistics;
-  statistics: Statistics[];
-  statisticsId: number = 1;
+  private selectedStatistics: Statistics; // selected statistics for edit
+  private newStatistics: Statistics;
+  private statistics: Statistics[];
+  private statisticsId: number = 1;
 
   private id: number = null;
 
@@ -37,7 +37,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   add(statistics: Statistics): void {
-    let modifier = statistics.settings ? statistics.settings : 1;
+    const modifier = statistics.settings ? statistics.settings : 1;
     statistics.modifier = (confidence) => modifier * confidence;
 
     this.statisticsId = this.componentsService.getComponentLastId(statistics);
@@ -64,7 +64,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   update(statistics: Statistics): void {
-    let modifier = statistics.settings ? statistics.settings : 1;
+    const modifier = statistics.settings ? statistics.settings : 1;
     statistics.modifier = (confidence) => modifier * confidence;
 
     this.componentsService.update(statistics);
