@@ -179,8 +179,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       }
 
     } else if (this.chart.mode == 'hsm') {
-      const coilIDs: number[] = this.chart.coilIDs,
-        hsmVars: string[] = this.chart.hsmVariables;
+      const coilIDs: number[] = this.chart.coilIDs.sort((a, b) => a - b),
+        hsmVars: string[] = this.chart.hsmVariables.sort();
       let hsmDataSubscription;
       let json = [];
       for (const calc of this.chart.calculations) {

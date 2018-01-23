@@ -28,7 +28,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
   public matchingHSMvariables: string[] = [];
 
   /**
-  * An index of form-array of coilIDs
+  * An index of form-array of coilIDs for interval
   * It's assigned in @see search() and used in @see select() to set value of coilIDs form-array
   * @public
   * @memberof VisualizationForm
@@ -36,7 +36,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
   public coilIDsIndex: number;
 
   /**
-  * An index of form-array of hsmVariables
+  * An index of form-array of hsmVariables for interval (no use now)
   * It's assigned in @see search() and used in @see select() to set value of hsmVariables form-array
   * @public
   * @memberof VisualizationForm
@@ -110,49 +110,69 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     return this.hsmVariables.at(index).value;
   }
 
-  protected search(index: number = null, target: string) {
+  private searchMethod(input: string, target: string) {
     switch (target) {
-      case 'coilIDs':
-        let inputCoilID = index !== null ? this.coilIDs.at(index).value : this.form.controls['coilID'].value;
-        this.coilIDsIndex = index;
-
-        if (inputCoilID !== '') {
+      case 'coil':
+        if (input !== '') {
           this.matchingCoilIDs = FormVisualization.availableCoilIDs.filter((availableCoilID) =>
-                                          availableCoilID.toString().indexOf(inputCoilID) > -1 &&
-                                          availableCoilID.toString() != inputCoilID);
+                                          availableCoilID.toString().indexOf(input) > -1 &&
+                                          availableCoilID.toString() != input);
         } else {
           this.matchingCoilIDs = FormVisualization.availableCoilIDs;
         }
         break;
       case 'hsmVariables':
-        let inputHSMvars = this.hsmVariables.at(index).value;
-        this.hsmVariablesIndex = index;
-
-        if (inputHSMvars !== '') {
+        if (input !== '') {
           this.matchingHSMvariables = FormVisualization.availableHSMvariables.filter((hsmVariable) =>
-                                              hsmVariable.toLowerCase().indexOf(inputHSMvars) > -1 &&
-                                              hsmVariable.toLowerCase() != inputHSMvars);
+                                              hsmVariable.toLowerCase().indexOf(input) > -1 &&
+                                              hsmVariable.toLowerCase() != input);
         } else {
           this.matchingHSMvariables = FormVisualization.availableHSMvariables;
         }
+        break;
+    }
+  }
+
+  protected search(index: number = null, target: string) {
+    let input;
+    switch (target) {
+      case 'coilID':
+        input = this.form.controls['coilID'].value;
+        this.searchMethod(input, 'coil');
+        break;
+      case 'coilIDs':
+        input = (index !== null) ? this.coilIDs.at(index).value : this.form.controls['newCoilIDs'].value;
+        this.coilIDsIndex = index;
+        this.searchMethod(input, 'coil');
+        break;
+      case 'hsmVariables':
+        input = (index !== null) ? this.hsmVariables.at(index).value : this.form.controls['newHSMvariables'].value;
+        this.hsmVariablesIndex = index;
+        this.searchMethod(input, 'hsmVariables');
         break;
       default:
         break;
     }
   }
 
-  protected select(value: number | string, target: string) {
+  protected select(value: string, target: string) {
     switch (target) {
+      case 'coilID':
+        FormVisualization.changeCoilID(+value, this.form);
+        this.matchingCoilIDs = [];
+        break;
       case 'coilIDs':
-        if (this.coilIDsIndex === null) { // single coil ID
-          FormVisualization.changeCoilID(+value, this.form);
-        } else {
+        if (this.coilIDsIndex === null) {
+          this.form.controls['newCoilIDs'].setValue(value);
+        } else { // interval
           this.coilIDs.at(this.coilIDsIndex).setValue(value);
         }
         this.matchingCoilIDs = [];
         break;
       case 'hsmVariables':
-        if (this.hsmVariablesIndex !== null) {
+        if (this.hsmVariablesIndex === null) {
+          this.form.controls['newHSMvariables'].setValue(value);
+        } else {
           this.hsmVariables.at(this.hsmVariablesIndex).setValue(value);
         }
         this.matchingHSMvariables = [];
@@ -160,16 +180,42 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
 
+  private checkAddValidation(target: string, value: any): boolean {
+    let valid: boolean = false;
+    let regex;
+    switch (target) {
+      case 'coilIDs':
+        regex = new RegExp ('^[0-9]+$');
+        if (regex.test(value.toString()) && !(this.coilIDs.value.find((v) => v == value))) {
+          valid = true;
+        }
+        break;
+      case 'hsmVariables':
+        regex = new RegExp ('^V[0-9]+$');
+        if (regex.test(value) && !(this.hsmVariables.value.find((v) => v == value))) {
+          valid = true;
+        }
+        break;
+    }
+
+    return valid;
   }
 
   protected addForm(target: string) {
     switch (target) {
       case 'coilIDs':
-        this.coilIDs.push(new FormControl('', <any>Validators.required));
+        if (this.checkAddValidation(target, this.form.controls['newCoilIDs'].value) === true) {
+          this.coilIDs.push(new FormControl(this.form.controls['newCoilIDs'].value));
+          this.form.controls['newCoilIDs'].setValue('');
+        }
         break;
       case 'hsmVariables':
-        this.hsmVariables.push(new FormControl('', <any>Validators.required));
+        if (this.checkAddValidation(target, this.form.controls['newHSMvariables'].value) === true) {
+          this.hsmVariables.push(new FormControl(this.form.controls['newHSMvariables'].value));
+          this.form.controls['newHSMvariables'].setValue('');
+        }
         break;
     }
   }
@@ -214,7 +260,7 @@ export abstract class VisualizationForm implements OnInit, OnDestroy {
     });
 
     this.form.controls['coilSelectOption'].valueChanges.subscribe((option) => {
-      FormVisualization.changeCoilIDsform(option, this.form);
+      FormVisualization.changeCoilIDsFormAndValidation(option, this.form);
     });
 
     this.variables = Array.from(Array(56), (_, i) => 1 + i).map((v) => v.toString()); // "1" to "56"
