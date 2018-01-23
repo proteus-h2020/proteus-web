@@ -21,7 +21,7 @@ export class WebsocketService {
         console.debug('Initializing socksjs and stom connection to the server');
     }
 
-    public send(endpoint: string, message?: string){
+    public send(endpoint: string, message?: string) {
         this.connectionPromise.then(() => {
             this.stomp.send(endpoint, {}, {});
         });
@@ -41,7 +41,7 @@ export class WebsocketService {
 
     private onConnect() {
         console.log('Connected to the PROTEUS websocket', this);
-        //subscribe to the PROTEUS app notifications
+        // subscribe to the PROTEUS app notifications
         this.connected = true;
     }
 
@@ -66,12 +66,11 @@ export class WebsocketService {
                         resolve('Connection  to ' + this.socket + ' has been successful');
                     },
                     (e: any ) => {
-                        this.onError('Error connecting to the ws '+ e);
+                        this.onError('Error connecting to the ws ' + e);
                         reject('Error connecting to ' + environment.wsEndpoint);
                     });
             });
-        }
-        else {
+        } else {
             return null;
         }
     }

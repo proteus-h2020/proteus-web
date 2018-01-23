@@ -7,7 +7,6 @@ import { WebsocketService } from './../../../websocket.service';
 import { AppSubscriptionsService } from './../../../appSubscriptions.service';
 import { RealtimeChart } from './../../../realtime-chart';
 
-
 import {
   Chart,
   Barchart,

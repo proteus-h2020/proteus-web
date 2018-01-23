@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Router, Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 import * as _ from 'lodash';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -94,7 +94,9 @@ export class BaMenuService {
       item.route.paths = item.route.path;
     } else {
       item.route.paths = parent && parent.route && parent.route.paths ? parent.route.paths.slice(0) : ['/'];
-      if (!!item.route.path) item.route.paths.push(item.route.path);
+      if (item.route.path) {
+        item.route.paths.push(item.route.path);
+      }
     }
 
     if (object.children && object.children.length > 0) {
@@ -126,7 +128,7 @@ export class BaMenuService {
    * @memberof BaMenuService
    */
   protected _selectItemByRoute(object: any): any {
-    let exact: boolean = object.pathMatch === 'full';
+    const exact: boolean = (object.pathMatch === 'full');
     object.selected = this._router.isActive(this._router.createUrlTree(object.route.paths), exact);
     return object;
   }

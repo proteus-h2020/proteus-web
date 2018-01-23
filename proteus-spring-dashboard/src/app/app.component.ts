@@ -1,5 +1,5 @@
 import { WebsocketService } from './websocket.service';
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, AfterViewInit, ViewContainerRef } from '@angular/core';
 import * as $ from 'jquery';
 
 import { GlobalState } from './global.state';
@@ -21,7 +21,7 @@ import { layoutPaths } from './theme/theme.constants';
     </main>
   `
 })
-export class App {
+export class App implements AfterViewInit {
 
   isMenuCollapsed: boolean = false;
 
