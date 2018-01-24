@@ -72,13 +72,13 @@ export class ComponentsService {
   private cleanComponents() {
     let charts = this.chartService.getCharts();
     let chartIDlist = [];
-    for (let i in charts) {
+    for (const i in charts) {
       chartIDlist.push(charts[i].id);
     }
 
-    for (let i in this.components) {
+    for (const i in this.components) {
       if (this.components[i].chartId) {
-        let id = this.components[i].chartId;
+        const id = this.components[i].chartId;
         if (chartIDlist.indexOf(id) == -1) {
           this.components = this.components.filter((component) => component.chartId != id);
         }
@@ -126,8 +126,9 @@ export class ComponentsService {
     if (this.chartId) { // edit
       let component = this.injectComponent(config);
       // check component is already configurated
-      let lastId = component.length >= 1 ? ++component[component.length - 1].id : 1;
+      lastId = component.length >= 1 ? ++component[component.length - 1].id : 1;
     }
+
     return lastId;
   }
 

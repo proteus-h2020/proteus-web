@@ -12,10 +12,10 @@ import { deepCopy } from '../../../../utils/DeepCopy';
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
 
-  selectedAnnotation: Annotation; // selected Annotation for edit
-  newAnnotation: Annotation;
-  annotations: Annotation[];
-  annotationId: number = 1;
+  private selectedAnnotation: Annotation; // selected Annotation for edit
+  private newAnnotation: Annotation;
+  private annotations: Annotation[];
+  private annotationId: number = 1;
 
   private id: number = null;
 
