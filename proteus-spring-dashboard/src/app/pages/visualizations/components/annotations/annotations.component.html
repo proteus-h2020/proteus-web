@@ -19,7 +19,9 @@
       <option value="threshold">Threshold</option>
       <option value="band">Band</option>
     </select>
-      <p class="form-text small-text" *ngIf="newAnnotation.type == 'band'">Band annotation can be used in Linechart.</p>
+    </div>
+    <div class="col-7">
+      <p id="bandNotice" class="form-text small-text" *ngIf="newAnnotation.type == 'band'">Band annotation can be used in Linechart.</p>
     </div>
   </div>
   <div class="form-group row" *ngIf="newAnnotation.type == 'threshold'">
@@ -63,6 +65,7 @@
     <tr>
       <th>Text</th>
       <th>Type</th>
+      <th>Detail</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -71,6 +74,9 @@
       <td>{{annotation.text}}</td>
       <td>{{annotation.type}}</td>
       <td>
+        <a href="#" (click)="showConfiguration(annotation); false">Show</a>
+      </td>
+      <td>
         <a href="#" (click)="edit(annotation); false">Edit</a>
         <a href="#" (click)="delete(annotation); false">Delete</a>
       </td>
@@ -78,7 +84,7 @@
   </tbody>
 </table>
 
-<div *ngIf="selectedAnnotation">
+<div *ngIf="selectedAnnotation && editConfig==true">
   <div class="form-group">
     <h3>Edit annotation</h3>
   </div>
@@ -123,5 +129,58 @@
   <div class="form-group right-col">
     <button class="btn btn-col" (click)="update(selectedAnnotation)">Save</button>
     <button class="btn btn-col" (click)="cancel()">Cancel</button>
+  </div>
+</div>
+
+<div *ngIf="selectedAnnotation && editConfig==false">
+  <div class="form-group">
+    <h3>Configuration</h3>
+  </div>
+
+  <div class="form-group row">
+    <label for="annotationText" class="col-2 col-form-label">Text</label>
+    <div class="col-10">
+      <div class="form-control">{{selectedAnnotation.text}}</div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="annotationType" class="col-2 col-form-label">Type</label>
+    <div class="col-3">
+      <div class="form-control">{{selectedAnnotation.type}}</div>
+    </div>
+    <div class="col-7">
+      <p id="bandNotice" class="form-text small-text" *ngIf="selectedAnnotation.type == 'band'">Band annotation can be used in Linechart.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'threshold'">
+    <label for="annotationAxis" class="col-2  col-form-label">Axis</label>
+    <div class="col-2">
+      <div class="form-control" id="annotationAxis">{{selectedAnnotation.axis}}</div>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'threshold' && !selectedAnnotation.variable">
+    <label class="col-2  col-form-label" for="annotationValue">Value </label>
+    <div class="col-9">
+      <div class="form-control">{{selectedAnnotation.value}}</div>
+      <p class="form-text small-text">Value for a static annotation.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type && !selectedAnnotation.value">
+    <label class="col-2  col-form-label" for="annotationValue">Variable </label>
+    <div class="col-10">
+      <div class="form-control">{{selectedAnnotation.variable}}</div>
+      <p class="form-text small-text">Variable that holds the value for a dynamic annotation.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedAnnotation.type == 'band'">
+    <label class="col-2  col-form-label" for="annotationValue">Width </label>
+    <div class="col-10">
+      <div class="form-control">{{selectedAnnotation.width}}</div>
+      <p class="form-text small-text">Variable that holds the whidth for a band annotation.</p>
+    </div>
+  </div>
+
+  <div class="form-group right-col">
+    <button class="btn btn-col" (click)="cancel()">Close</button>
   </div>
 </div>
