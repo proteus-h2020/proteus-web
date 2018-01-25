@@ -12,10 +12,11 @@ import { deepCopy } from '../../../../utils/DeepCopy';
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
 
-  private selectedAnnotation: Annotation; // selected Annotation for edit
+  private selectedAnnotation: Annotation; // configurated annotation selected by user
   private newAnnotation: Annotation;
   private annotations: Annotation[];
   private annotationId: number = 1;
+  private editConfig: boolean = false; // If false, configuration is shown without edit function
 
   private id: number = null;
 
@@ -62,6 +63,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     if (annotation.variable) {
       annotation.value = undefined;
     }
+    this.editConfig = true;
+    // To prevent it from updating without clicking save button in window
     this.selectedAnnotation = deepCopy(annotation);
   }
 
@@ -69,6 +72,14 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     annotation.width = Number(annotation.width) ? +annotation.width : annotation.width;
     this.componentsService.update(annotation);
     this.selectedAnnotation = null;
+  }
+
+  showConfiguration(annotation: Annotation): void {
+    if (annotation.variable) {
+      annotation.value = undefined;
+    }
+    this.editConfig = false;
+    this.selectedAnnotation = annotation;
   }
 
   showCreateForm() {
