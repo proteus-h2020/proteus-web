@@ -48,12 +48,16 @@
   <thead>
     <tr>
       <th>Type</th>
+      <th>Detail</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let stats of statistics">
       <td>{{stats.type}}</td>
+      <td>
+        <a href="#" (click)="showConfiguration(stats); false">Show</a>
+      </td>
       <td>
         <a href="#" (click)="edit(stats); false">Edit</a>
         <a href="#" (click)="delete(stats); false">Delete</a>
@@ -62,7 +66,7 @@
   </tbody>
 </table>
 
-<div *ngIf="selectedStatistics">
+<div *ngIf="selectedStatistics && editConfig==true">
   <div class="form-group">
     <h3>Edit statistics</h3>
   </div>
@@ -94,5 +98,39 @@
   <div class="form-group right-col">
     <button class="btn btn-col" (click)="update(selectedStatistics)">Save</button>
     <button class="btn btn-col" (click)="cancel()">Cancel</button>
+  </div>
+</div>
+
+<div *ngIf="selectedStatistics && editConfig==false">
+  <div class="form-group">
+    <h3>Configuration</h3>
+  </div>
+
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Variable </label>
+    <div class="col-10">
+      <div id="statisticsValue" class="form-control">{{selectedStatistics.variable}}</div>
+      <p class="form-text small-text">Variable that holds the value for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Confidence </label>
+    <div class="col-10">
+      <div id="statisticsValue" class="form-control">{{selectedStatistics.confidence}}</div>
+      <p class="form-text small-text">Variable that holds the confidence interval for a confidence band.</p>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="selectedStatistics.type == 'confidenceBand'">
+    <label class="col-2  col-form-label" for="statisticsValue">Modifier </label>
+    <div class="col-10">
+      <div id="statisticsValue" class="form-control">{{selectedStatistics.settings}}</div>
+      <p class="form-text small-text">Value that modifies the confidence interval for a confidence band.</p>
+      <p class="form-text small-text">ex)If you input 0.95, confidence = 0.95 * confidence</p>
+      <p class="form-text small-text">(Optional) If you don't want, leave it blank</p>
+    </div>
+  </div>
+
+  <div class="form-group right-col">
+    <button class="btn btn-col" (click)="cancel()">Close</button>
   </div>
 </div>

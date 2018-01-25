@@ -3,6 +3,7 @@ import { Statistics, StatisticsTypes } from './statistics';
 import { ComponentsService } from '../components.service';
 import { ComponentSet } from '../componentSet';
 import { ActivatedRoute } from '@angular/router';
+import { deepCopy } from '../../../../utils/DeepCopy';
 
 @Component({
   selector: 'app-statistics',
@@ -11,10 +12,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
 
-  private selectedStatistics: Statistics; // selected statistics for edit
+  private selectedStatistics: Statistics; // configurated statistics selected by user
   private newStatistics: Statistics;
   private statistics: Statistics[];
   private statisticsId: number = 1;
+  private editConfig: boolean = false; // If false, configuration is shown without edit function
 
   private id: number = null;
 
@@ -60,7 +62,9 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   edit(statistics: Statistics): void {
-    this.selectedStatistics = statistics;
+    this.editConfig = true;
+    // To prevent it from updating without clicking save button in window
+    this.selectedStatistics = deepCopy(statistics);
   }
 
   update(statistics: Statistics): void {
@@ -69,6 +73,11 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     this.componentsService.update(statistics);
     this.selectedStatistics = null;
+  }
+
+  showConfiguration(statistics: Statistics): void {
+    this.editConfig = false;
+    this.selectedStatistics = statistics;
   }
 
   showCreateForm() {
