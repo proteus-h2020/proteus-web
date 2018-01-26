@@ -20,134 +20,127 @@
   </div>
 
   <div class="row">
-      <ba-card class="col" title="visualization.mode">
-        <div class="row">
-          <div class="col">
-            <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
-            <select id="modeSelection" class="form-control" formControlName="mode" ngDefaultControl>
+    <ba-card class="col" title="visualization.mode">
+      <div class="row">
+
+        <div class="col">
+          <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
+          <select id="modeSelection" class="form-control" formControlName="mode" ngDefaultControl>
               <option *ngFor="let mode of visualizationModes()" [value]="mode.value">{{mode.label}}</option>
             </select>
-          </div>
+        </div>
 
-          <div class="col" *ngIf="form.controls.mode.value=='historical'">
-            <label for="coilSelection"><strong>Search your coil ID:</strong></label>
-            <input class="form-control" type="text"
-            formControlName="coilID"
-            (focus)="search(null, 'coilID')"
-            (keyup)="search(null, 'coilID')"
-            >
-            <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
-              <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilID')">
-                <a>{{coilID}}</a>
-              </li>
-            </ol>
-          </div>
+        <div class="col" *ngIf="form.controls.mode.value=='historical'">
+          <label for="coilSelection"><strong>Search your coil ID:</strong></label>
+          <input class="form-control" type="text" formControlName="coilID" (focus)="search(null, 'coilID')" (keyup)="search(null, 'coilID')">
+          <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
+            <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilID')">
+              <a>{{coilID}}</a>
+            </li>
+          </ol>
+        </div>
 
-          <div class="col" *ngIf="form.controls.mode.value=='hsm'">
-            <!--div *ngIf="!form.controls.coilSelectOption.value"-->
-            <div>
-              <label for="coilSelection"><strong>Choose option to select your coil ID:</strong></label>
-              <select class="form-control" formControlName="coilSelectOption">
+        <div class="col" *ngIf="form.controls.mode.value=='hsm'">
+          <!--div *ngIf="!form.controls.coilSelectOption.value"-->
+          <div>
+            <label for="coilSelection"><strong>Choose option to select your coil ID:</strong></label>
+            <select class="form-control" formControlName="coilSelectOption">
                   <option value="add">Add</option>
                   <option value="interval">Interval</option>
               </select>
-            </div>
-
-            <div *ngIf="form.controls.coilSelectOption.value=='add'">
-              <label for="coilSelection"><strong>Add your coil ID:</strong></label>
-              <div class="form-group">
-                <div class="form-group" *ngFor="let coilID of coilIDs.controls; index as idx;" formArrayName="coilIDs">
-                  <div class="row">
-                    <div class="col-9">
-                      <li class="form-list">{{getCoilID(idx)}}</li>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="form-control" (click)="deleteForm(idx, 'coilIDs')">-</button>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div class="row">
-                    <div class="col-9">
-                      <input class="form-control" type="text"
-                      formControlName="newCoilIDs"
-                      (keyup)="search(null, 'coilIDs')"
-                      (focus)="search(null, 'coilIDs')"
-                      >
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="form-control" (click)="addForm('coilIDs')">+</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-9">
-                      <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
-                        <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
-                          <a>{{coilID}}</a>
-                        </li>
-                      </ol>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="form.controls.coilSelectOption.value=='interval'">
-              <label for="coilSelection"><strong>Interval for your coil ID:</strong></label>
-              <div class="row" formArrayName="coilIDs">
-                <div class="col" *ngFor="let coilID of coilIDs.controls; index as idx;">
-                  <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
-
-                  <div class="row">
-                    <div class="col">
-                      <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
-                        <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
-                          <a>{{coilID}}</a>
-                        </li>
-                      </ol>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
-        </div>
-      </ba-card>
 
-    <ba-card class="col"  title="visualization.data.{{dataPropertyTitle(form.controls.mode.value)}}">
+          <div *ngIf="form.controls.coilSelectOption.value=='add'">
+
+            <label for="coilSelection"><strong>Add your coil ID:</strong></label>
+            <div class="list-group">
+
+              <div class="list-group-item flex-column align-items-start" *ngFor="let coilID of coilIDs.controls; index as idx;" formArrayName="coilIDs">
+                <div class="d-flex w-100 justify-content-between">
+                  <div class="">{{getCoilID(idx)}}</div>
+                  <button class="btn btn-default btn-xs" (click)="deleteForm(idx, 'coilIDs')">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <input class="form-control" type="text" formControlName="newCoilIDs" (keyup)="search(null, 'coilIDs')" (focus)="search(null, 'coilIDs')">
+                    <button type="button" class="btn btn-default btn-xs" (click)="addForm('coilIDs')">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-9">
+                    <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
+                      <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
+                        <a>{{coilID}}</a>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="form.controls.coilSelectOption.value=='interval'">
+            <label for="coilSelection"><strong>Interval for your coil ID:</strong></label>
+            <div class="row" formArrayName="coilIDs">
+              <div class="col" *ngFor="let coilID of coilIDs.controls; index as idx;">
+                <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
+
+                <div class="row">
+                  <div class="col">
+                    <ol *ngIf="matchingCoilIDs.length > 0 && coilIDsIndex==idx" class="auto-complete">
+                      <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilIDs')">
+                        <a>{{coilID}}</a>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ba-card>
+
+    <ba-card class="col" title="visualization.data.{{dataPropertyTitle(form.controls.mode.value)}}">
       <div class="row">
+
         <div class="col" *ngIf="form.controls.mode.value!='hsm'">
           <label for="varSelect"><strong>Select your var ID:</strong></label>
           <select id="varSelect" class="form-control" formControlName="variable" name="variable">
             <option *ngFor="let v of variables" [value]="v">{{v}}</option>
           </select>
         </div>
+
         <div class="col" *ngIf="form.controls.mode.value=='hsm'">
+
           <label for="varSelect"><strong>Search your HSM variable:</strong></label>
-          <div class="form-group">
-            <div class="form-group" *ngFor="let hsmVar of hsmVariables.controls; index as idx;" formArrayName="hsmVariables">
-              <div class="row">
-                <div class="col-9">
-                  <li class="form-list">{{getHSMvariable(idx)}}</li>
-                </div>
-                <div class="col-3">
-                  <button type="button" class="form-control" (click)="deleteForm(idx, 'hsmVariables')">-</button>
-                </div>
+          <div class="list-group">
+
+            <div class="list-group-item flex-column align-items-start" *ngFor="let hsmVar of hsmVariables.controls; index as idx;" formArrayName="hsmVariables">
+              <div class="d-flex w-100 justify-content-between">
+                <div class="">{{getHSMvariable(idx)}}</div>
+                <button type="btn btn-default btn-xs" class="btn btn-default btn-xs" (click)="deleteForm(idx, 'hsmVariables')">
+                  <i class="fas fa-minus"></i>
+                </button>
               </div>
             </div>
 
             <div>
-              <div class="row">
-                <div class="col-9">
-                  <input class="form-control" type="text"
-                  formControlName="newHSMvariables"
-                  (keyup)="search(null, 'hsmVariables')"
-                  (focus)="search(null, 'hsmVariables')"
-                  >
-                </div>
-                <div class="col-3">
-                  <button type="button" class="form-control" (click)="addForm('hsmVariables')">+</button>
+              <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                  <input class="form-control" type="text" formControlName="newHSMvariables" (keyup)="search(null, 'hsmVariables')" (focus)="search(null, 'hsmVariables')">
+                  <button type="button" class="btn btn-default btn-xs" (click)="addForm('hsmVariables')">
+                    <i class="fas fa-plus"></i>
+                  </button>
                 </div>
               </div>
               <div class="row">
@@ -160,6 +153,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -190,8 +184,7 @@
       <div class="form-group">
         <label for="chartTitle">Visualization title:</label>
         <input formControlName="title" type="text" class="form-control" placeholder="Title..." name="title">
-        <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;"
-          class="help-block sub-little-text">The name should be at least 5 characters</span>
+        <span [hidden]="form.controls.title.valid || (form.controls.title.pristine && !submitted)" style="color: red!important; font-weight:bolt;" class="help-block sub-little-text">The name should be at least 5 characters</span>
       </div>
 
       <div class="form-group" formGroupName="configuration" ngDefaultControl>
@@ -204,8 +197,8 @@
           <div *ngIf="typeOfDefault(entry.key) === 'boolean'">
             <label for="chartTitle">{{entry.key}}: </label>
             <div class="radio-boolean">
-                <input [formControlName]="entry.key" type="radio" [value]="true"> true
-                <input [formControlName]="entry.key" type="radio" [value]="false"> false
+              <input [formControlName]="entry.key" type="radio" [value]="true"> true
+              <input [formControlName]="entry.key" type="radio" [value]="false"> false
             </div>
           </div>
         </div>
@@ -214,22 +207,22 @@
 
     <div class="col">
       <table class="form-group-table">
-          <tbody>
-              <tr *ngFor="let chart of chartsWithAnnotations()">
-                  <td *ngIf="form.controls.type.value == chart">
-                      <ba-card class="smart-table-container" title="visualization.annotations.title">
-                        <app-annotations></app-annotations>
-                      </ba-card>
-                  </td>
-              </tr>
-              <tr *ngFor="let chart of chartsWithStatistics()">
-                  <td *ngIf="form.controls.type.value == chart">
-                      <ba-card class="smart-table-container" title="visualization.statistics.title">
-                        <app-statistics></app-statistics>
-                      </ba-card>
-                  </td>
-              </tr>
-          </tbody>
+        <tbody>
+          <tr *ngFor="let chart of chartsWithAnnotations()">
+            <td *ngIf="form.controls.type.value == chart">
+              <ba-card class="smart-table-container" title="visualization.annotations.title">
+                <app-annotations></app-annotations>
+              </ba-card>
+            </td>
+          </tr>
+          <tr *ngFor="let chart of chartsWithStatistics()">
+            <td *ngIf="form.controls.type.value == chart">
+              <ba-card class="smart-table-container" title="visualization.statistics.title">
+                <app-statistics></app-statistics>
+              </ba-card>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
