@@ -24,14 +24,14 @@
       <div class="row">
 
         <div class="col">
-          <label for="modeSelection"><strong>Select your visualization mode:</strong></label>
+          <label for="modeSelection"><strong>Select a dataset:</strong></label>
           <select id="modeSelection" class="form-control" formControlName="mode" ngDefaultControl>
               <option *ngFor="let mode of visualizationModes()" [value]="mode.value">{{mode.label}}</option>
             </select>
         </div>
 
         <div class="col" *ngIf="form.controls.mode.value=='historical'">
-          <label for="coilSelection"><strong>Search your coil ID:</strong></label>
+          <label for="coilSelection"><strong>Add coils to visualize:</strong></label>
           <input class="form-control" type="text" formControlName="coilID" (focus)="search(null, 'coilID')" (keyup)="search(null, 'coilID')">
           <ol *ngIf="matchingCoilIDs.length > 0" class="auto-complete">
             <li class="form-control auto-complete" *ngFor="let coilID of matchingCoilIDs" (click)="select(coilID, 'coilID')">
@@ -43,16 +43,16 @@
         <div class="col" *ngIf="form.controls.mode.value=='hsm'">
           <!--div *ngIf="!form.controls.coilSelectOption.value"-->
           <div>
-            <label for="coilSelection"><strong>Choose option to select your coil ID:</strong></label>
+            <label for="coilSelection"><strong>Individual coils or a range?</strong></label>
             <select class="form-control" formControlName="coilSelectOption">
-                  <option value="add">Add</option>
-                  <option value="interval">Interval</option>
+                  <option value="interval">Range</option>
+                  <option value="add">Individual</option>
               </select>
           </div>
 
           <div *ngIf="form.controls.coilSelectOption.value=='add'">
 
-            <label for="coilSelection"><strong>Add your coil ID:</strong></label>
+            <label for="coilSelection"><strong>Browse coils to be added:</strong></label>
             <div class="list-group">
 
               <div class="list-group-item flex-column align-items-start" *ngFor="let coilID of coilIDs.controls; index as idx;" formArrayName="coilIDs">
@@ -88,7 +88,7 @@
           </div>
 
           <div *ngIf="form.controls.coilSelectOption.value=='interval'">
-            <label for="coilSelection"><strong>Interval for your coil ID:</strong></label>
+            <label for="coilSelection"><strong>Range of coil IDs:</strong></label>
             <div class="row" formArrayName="coilIDs">
               <div class="col" *ngFor="let coilID of coilIDs.controls; index as idx;">
                 <input class="form-control" type="text" [formControlName]="idx" (focus)="search(idx,'coilIDs')" (keyup)="search(idx,'coilIDs')">
@@ -122,7 +122,7 @@
 
         <div class="col" *ngIf="form.controls.mode.value=='hsm'">
 
-          <label for="varSelect"><strong>Search your HSM variable:</strong></label>
+          <label for="varSelect"><strong>Browse HSM variables to be added:</strong></label>
           <div class="list-group">
 
             <div class="list-group-item flex-column align-items-start" *ngFor="let hsmVar of hsmVariables.controls; index as idx;" formArrayName="hsmVariables">
@@ -158,7 +158,7 @@
         </div>
 
         <div class="col">
-          <label><strong>Calculations:</strong></label>
+          <label><strong>Select calculations to visualize:</strong></label>
           <select multiple class="form-control" formControlName="calculations" name="calculations">
             <option *ngFor="let c of calculations()" [value]="c.value">{{c.label}}</option>
           </select>
