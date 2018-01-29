@@ -15,3 +15,35 @@ table.form-group-table{
 li.form-list {
   margin-top: 10px;
 }
+
+.list-group {
+  .form-control {
+    width: 75%;
+  }
+}
+
+.btn-danger {
+  color: white;
+}
+
+.autocomplete-container {
+  position: relative;
+}
+
+.autocomplete {
+  position: absolute;
+  max-height: 200px;
+  overflow: auto;
+  z-index: 9999;
+  border: 1px solid #eeeeee;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0px 1px 6px 1px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.autocomplete-item {
+  font-weight: normal;
+  color: #333333;
+  z-index: 999;
+}
