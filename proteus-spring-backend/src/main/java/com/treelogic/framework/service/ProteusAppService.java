@@ -3,6 +3,7 @@ package com.treelogic.framework.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.treelogic.framework.domain.LASSOResult;
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.Pair;
 import com.treelogic.framework.domain.ProteusAppData;
@@ -20,7 +21,7 @@ public class ProteusAppService {
 	private PublishSubject<Pair<String, Integer>> coilSubject = PublishSubject.create();
 	private PublishSubject<Pair<String, Long>> messageCounterSubject = PublishSubject.create();
 
-	public void update(long counter, MomentsResult moment, SensorMeasurement sensor, SAXResult saxResult) {
+	public void update(long counter, MomentsResult moment, SensorMeasurement sensor, SAXResult saxResult, LASSOResult lassoResult) {
 		LOGGER.debug("Updating app data...");
 		this.updateMessageCounter(counter);
 		if (moment != null) {

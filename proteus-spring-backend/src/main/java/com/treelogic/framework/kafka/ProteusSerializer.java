@@ -1,5 +1,11 @@
 package com.treelogic.framework.kafka;
 
+import java.io.Closeable;
+import java.util.Map;
+
+import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.serialization.Serializer;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
@@ -12,12 +18,6 @@ import com.treelogic.framework.domain.SAXResult;
 import com.treelogic.framework.domain.SensorMeasurement;
 import com.treelogic.framework.domain.SensorMeasurement1D;
 import com.treelogic.framework.domain.SensorMeasurement2D;
-
-import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.Serializer;
-
-import java.io.Closeable;
-import java.util.Map;
 
 public class ProteusSerializer
 		implements Closeable, AutoCloseable, Serializer<SensorMeasurement>, Deserializer<Object> {
@@ -33,6 +33,7 @@ public class ProteusSerializer
 			SensorMeasurementInternalSerializer sensorInternal = new SensorMeasurementInternalSerializer();
 			MomentsInternalSerializer momentsInternal = new MomentsInternalSerializer();
 			SAXInternalSerializer saxInternal = new SAXInternalSerializer();
+			//TODO: LASSO . Create a new serializer for LASSO messages
 			
 			kryo.addDefaultSerializer(SensorMeasurement.class, sensorInternal);
 			kryo.addDefaultSerializer(SensorMeasurement1D.class, sensorInternal);

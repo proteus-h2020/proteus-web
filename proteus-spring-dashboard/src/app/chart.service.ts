@@ -1,3 +1,4 @@
+
 import { Annotation, AnnotationTypes } from './pages/visualizations/components/annotations/annotation';
 import { Statistics } from './pages/visualizations/components/statistics/statistics';
 import { ComponentSet } from './pages/visualizations/components/componentSet';
@@ -108,6 +109,61 @@ export class ChartService {
             ]),
             legendCells: 6,
             legendTitle: 'Similarity',
+            displayValues: true,
+            valuesFormat: '.4f',
+            },
+            components,
+            '2',
+            calculations,
+            endpoints,
+        );
+        chart.layout = '12';
+        chart.mode = 'streaming';
+
+        this.push(chart);
+
+
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        components = new ComponentSet();
+        components.annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/lasso');
+
+        chart = new RealtimeChart(
+            'C0002 - LASSO',
+            'Swimlane',
+            {
+            marginRight: 160,
+            marginLeft: 40,
+            xAxisType: 'linear',
+            xAxisFormat: '',
+            xTicksTextRotation: -65,
+            propertyStart: 'x1',
+            propertyEnd: 'x2',
+            propertyKey: 'classId',
+            propertyY: 'classId',
+            propertyZ: 'similarity',
+            colorScaleType: 'sequential',
+            colorScale: scaleQuantize().range([
+                /// '#edf7e7',
+                 '#c8e3d2',
+                // '#91cdbf',
+                /// '#41b5ab',
+                 '#218ba4',
+                // '#145d94',
+                /// '#0c3183',
+                 '#0d2d76',
+                // '#0d2a6a',
+                ///'#0e265e',
+                 '#0d2253',
+                // '#0c1e47',
+                '#0b1a3c',
+            ]),
+            legendCells: 6,
+            legendTitle: 'LASSO Test',
             displayValues: true,
             valuesFormat: '.4f',
             },

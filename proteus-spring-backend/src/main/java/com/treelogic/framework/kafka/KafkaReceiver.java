@@ -2,6 +2,7 @@ package com.treelogic.framework.kafka;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -11,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 
-import com.treelogic.framework.domain.ProteusJsonizableRecord;
+import com.treelogic.framework.domain.LASSOResult;
 import com.treelogic.framework.domain.MomentsResult;
+import com.treelogic.framework.domain.ProteusJsonizableRecord;
 import com.treelogic.framework.domain.SAXResult;
 import com.treelogic.framework.domain.SensorMeasurement;
 import com.treelogic.framework.service.ProteusAppService;
@@ -35,15 +37,18 @@ public class KafkaReceiver {
 	private PublishSubject<ProteusJsonizableRecord> subjectRealtime = PublishSubject.create();
 	private PublishSubject<ProteusJsonizableRecord> subjectMoments = PublishSubject.create();
 	private PublishSubject<ProteusJsonizableRecord> subjectSAX = PublishSubject.create();
+	private PublishSubject<ProteusJsonizableRecord> subjectLASSO = PublishSubject.create();
 
 	private SensorMeasurement lastSensorMeasurement;
 	private MomentsResult lastMomentResult;
-	private SAXResult lastSAXResult;
+	private SAXResult lastSAXResult;	
+	private LASSOResult lastLASSOResult;
 
 	private static volatile long messageCounter = 0;
 	private static volatile long momentsMessageCounter = 0;
 	private static volatile long realTimeMessageCounter = 0;
 	private static volatile long saxMessageCounter = 0;
+	private static volatile long lassoMessageCounter = 0;
 
 	public KafkaReceiver() {
 		LOGGER.info("Initializing KafkaReceiver");
@@ -56,8 +61,8 @@ public class KafkaReceiver {
 
 			@Override
 			public void run() {
-				messageCounter = momentsMessageCounter + realTimeMessageCounter + saxMessageCounter;
-				app.update(messageCounter, lastMomentResult, lastSensorMeasurement, lastSAXResult);
+				messageCounter = momentsMessageCounter + realTimeMessageCounter + saxMessageCounter + lassoMessageCounter;
+				app.update(messageCounter, lastMomentResult, lastSensorMeasurement, lastSAXResult, lastLASSOResult);
 			}
 		};
 
@@ -76,6 +81,10 @@ public class KafkaReceiver {
 	public PublishSubject<ProteusJsonizableRecord> sax() {
 		return this.subjectSAX;
 	}
+	
+	public PublishSubject<ProteusJsonizableRecord> lasso() {
+		return this.subjectLASSO;
+	}
 
 	@KafkaListener(topics = "${kafka.topicName}", id = "topicRealtimeName")
 	public void receive(ConsumerRecord<String, SensorMeasurement> record) {
@@ -91,6 +100,15 @@ public class KafkaReceiver {
 		saxMessageCounter++;
 		this.lastSAXResult = saxPrediction;
 		this.subjectSAX.onNext(saxPrediction);
+	}
+	
+	//TODO: LASSO. cambiar SAXResult y lastSAXResult por LASSO vars
+	@KafkaListener(topics = "${kafka.topicNameLASSO}", id = "topicNameLASSO")
+	public void receiveLASSO(ConsumerRecord<String, SAXResult> record) {
+		SAXResult lassoPrediction = record.value();
+		lassoMessageCounter++;
+		this.lastSAXResult = lassoPrediction;
+		this.subjectLASSO.onNext(lassoPrediction);
 	}
 
 	@KafkaListener(topics = "${kafka.topicNameMoments}", id="topicMoments" )

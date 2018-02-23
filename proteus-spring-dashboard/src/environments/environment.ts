@@ -18,6 +18,7 @@ export const environment = {
         flink: {
           moments: '/topic/flink/var/',
           sax: '/topic/flink/sax',
+          lasso: '/topic/flink/lasso',
         },
       },
       batch: {
@@ -42,3 +43,5 @@ export const environment = {
 
 // wsEndpoint: 'http://localhost:8080/wsEndpoint
 // wsEndpoint: 'http://192.168.3.31:8081/wsEndpoint',
+// wsEndpoint: 'http://localhost:8090/wsEndpoint',
+// wsEndpoint: './wsEndpoint',
