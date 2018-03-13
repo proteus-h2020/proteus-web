@@ -102,17 +102,15 @@ public class KafkaReceiver {
 		this.subjectSAX.onNext(saxPrediction);
 	}
 	
-	//TODO: LASSO. cambiar SAXResult y lastSAXResult por LASSO vars
 	@KafkaListener(topics = "${kafka.topicNameLASSO}", id = "topicNameLASSO")
-	public void receiveLASSO(ConsumerRecord<String, SAXResult> record) {
-		SAXResult lassoPrediction = record.value();
+	public void receiveLASSO(ConsumerRecord<String, LASSOResult> record) {
+		LASSOResult lassoPrediction = record.value();
 		lassoMessageCounter++;
-		this.lastSAXResult = lassoPrediction;
+		this.lastLASSOResult = lassoPrediction;
 		this.subjectLASSO.onNext(lassoPrediction);
 	}
 
-	@KafkaListener(topics = "${kafka.topicNameMoments}", id="topicMoments" )
-	
+	@KafkaListener(topics = "${kafka.topicNameMoments}", id="topicMoments" )	
 	public void receiveMoments(ConsumerRecord<String, MomentsResult> record) {
 		MomentsResult moment = record.value();
 		momentsMessageCounter++;

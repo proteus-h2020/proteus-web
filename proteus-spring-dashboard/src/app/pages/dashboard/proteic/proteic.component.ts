@@ -124,10 +124,11 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
       for (const websocketEndpoint of this.chart.endpoints) {
         const subs = this.websocketService.subscribe(websocketEndpoint);
         const subscription = subs.subscribe((data: any) => {
-          const json = JSON.parse(data);
+          const json = JSON.parse(data);  
+            //console.log(json)          
           if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
-            json.key = '' + json.varId;
-          }
+            json.key = '' + json.varId;            
+          } 
           if (typeof json.mean !== 'undefined') {
             // TODO: add alarm factor
           }

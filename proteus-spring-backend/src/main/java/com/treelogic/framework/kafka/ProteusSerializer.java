@@ -11,6 +11,7 @@ import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.treelogic.framework.domain.LASSOResult;
 import com.treelogic.framework.domain.MomentsResult;
 import com.treelogic.framework.domain.MomentsResult1D;
 import com.treelogic.framework.domain.MomentsResult2D;
@@ -33,7 +34,7 @@ public class ProteusSerializer
 			SensorMeasurementInternalSerializer sensorInternal = new SensorMeasurementInternalSerializer();
 			MomentsInternalSerializer momentsInternal = new MomentsInternalSerializer();
 			SAXInternalSerializer saxInternal = new SAXInternalSerializer();
-			//TODO: LASSO . Create a new serializer for LASSO messages
+			LASSOInternalSerializer lassoInternal = new LASSOInternalSerializer();
 			
 			kryo.addDefaultSerializer(SensorMeasurement.class, sensorInternal);
 			kryo.addDefaultSerializer(SensorMeasurement1D.class, sensorInternal);
@@ -44,6 +45,7 @@ public class ProteusSerializer
 			kryo.addDefaultSerializer(MomentsResult2D.class, momentsInternal);
 
 			kryo.addDefaultSerializer(SAXResult.class, saxInternal);
+			kryo.addDefaultSerializer(LASSOResult.class, lassoInternal);
 			
 			return kryo;
 		};
@@ -74,6 +76,8 @@ public class ProteusSerializer
 			return kryos.get().readObject(new ByteBufferInput(bytes), MomentsResult.class);
 		} else if (topic.equals("sax-results")) {
 			return kryos.get().readObject(new ByteBufferInput(bytes), SAXResult.class);
+		} else if (topic.equals("lasso-results")) {
+			return kryos.get().readObject(new ByteBufferInput(bytes), LASSOResult.class);
 		}
 		else {
 			throw new IllegalArgumentException("Invalid topic name: " + topic);
@@ -179,6 +183,26 @@ public class ProteusSerializer
 			double sim = input.readDouble();
 			
 			return new SAXResult(coil, var, classId, sim, x1, x2);			
+		}
+	}
+	
+	
+	private static class LASSOInternalSerializer extends com.esotericsoftware.kryo.Serializer<LASSOResult> {
+		@Override
+		public void write(Kryo kryo, Output output, LASSOResult row) {
+		}
+
+		@Override
+		public LASSOResult read(Kryo kryo, Input input, Class<LASSOResult> clazz) {
+			int magicNumber = input.readInt();
+			assert (magicNumber == MAGIC_NUMBER);			
+
+			Long coil = input.readLong();
+			int var = input.readInt();
+			double x = input.readDouble();
+			double label = input.readDouble();
+						
+			return new LASSOResult(Integer.valueOf(coil.toString()), var, label, x);			
 		}
 	}
 
