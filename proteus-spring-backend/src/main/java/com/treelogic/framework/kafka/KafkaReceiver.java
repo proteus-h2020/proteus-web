@@ -49,7 +49,7 @@ public class KafkaReceiver {
 	private static volatile long realTimeMessageCounter = 0;
 	private static volatile long saxMessageCounter = 0;
 	private static volatile long lassoMessageCounter = 0;
-
+	
 	public KafkaReceiver() {
 		LOGGER.info("Initializing KafkaReceiver");
 	}
@@ -85,13 +85,15 @@ public class KafkaReceiver {
 	public PublishSubject<ProteusJsonizableRecord> lasso() {
 		return this.subjectLASSO;
 	}
+	
 
 	@KafkaListener(topics = "${kafka.topicName}", id = "topicRealtimeName")
 	public void receive(ConsumerRecord<String, SensorMeasurement> record) {
 		SensorMeasurement measure = record.value();
 		realTimeMessageCounter++;
 		this.lastSensorMeasurement = measure;
-		this.subjectRealtime.onNext(measure);
+		this.subjectRealtime.onNext(measure);		
+		//LOGGER.info("RT: " + measure.getCoilId());
 	}
 
 	@KafkaListener(topics = "${kafka.topicNameSAX}", id = "topicNameSAX")
@@ -108,6 +110,7 @@ public class KafkaReceiver {
 		lassoMessageCounter++;
 		this.lastLASSOResult = lassoPrediction;
 		this.subjectLASSO.onNext(lassoPrediction);
+		//LOGGER.info("LASSO: " + lassoPrediction.toString());
 	}
 
 	@KafkaListener(topics = "${kafka.topicNameMoments}", id="topicMoments" )	
@@ -118,5 +121,6 @@ public class KafkaReceiver {
 		moment.setStdDeviation(Math.sqrt(moment.getVariance())); // TODO: remove
 																	// trick
 		this.subjectMoments.onNext(moment);
+		//LOGGER.info("SM: " + moment.getCoilId());
 	}
 }

@@ -16,5 +16,18 @@
 	<logger name="com.treelogic.framework">
 		<appender-ref ref="STDOUT"/>
 	</logger>
+	
+	<!-- 
+	<appender name="logFileAppender" class="ch.qos.logback.core.FileAppender">
+		<file>/home/rosario.priego/PROTEUS/log.txt</file>
+		<append>true</append>
+  		<encoder>
+    		<pattern>%d - %msg%n</pattern>
+  		</encoder>
+	</appender>
 
+	<root level="INFO">
+ 		<appender-ref ref="logFileAppender" />
+	</root>
+ 	-->
 </configuration>

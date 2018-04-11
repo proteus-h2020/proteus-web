@@ -72,6 +72,8 @@ public class ProteusSerializer
 	public Object deserialize(String topic, byte[] bytes) {
 		if (topic.equals("proteus-realtime")) {
 			return kryos.get().readObject(new ByteBufferInput(bytes), SensorMeasurement.class);
+		} else if (topic.equals("proteus-processed-realtime")) {
+			return kryos.get().readObject(new ByteBufferInput(bytes), SensorMeasurement.class);			
 		} else if (topic.equals("simple-moments")) {
 			return kryos.get().readObject(new ByteBufferInput(bytes), MomentsResult.class);
 		} else if (topic.equals("sax-results")) {
