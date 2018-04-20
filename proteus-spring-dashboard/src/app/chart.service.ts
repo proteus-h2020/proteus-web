@@ -81,14 +81,14 @@ export class ChartService {
             'C0002 - LASSO',
             'Linechart',
             {
-                propertyX: 'x',
-                propertyY: 'label',
+                propertyX: 'label',
+                propertyY: 'x',
                 propertyKey: 'key',
-                maxNumberOfElements: 500,
+                maxNumberOfElements: 1500,
                 marginRight: 100,
             },
             components,
-            '3',
+            '2',
             calculations,
             endpoints,
         );
