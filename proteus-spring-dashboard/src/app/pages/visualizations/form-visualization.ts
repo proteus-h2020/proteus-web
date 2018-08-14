@@ -1,6 +1,6 @@
 import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { RealtimeChart } from './../../realtime-chart';
-import { getDefaultOptions } from 'proteic';
+import { getDefaultOptions } from '@proteus-h2020/proteic';
 import { PairForm } from './VisualizationForm';
 
 export class FormVisualization {

@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  wsEndpoint: 'http://localhost:8090/wsEndpoint',
+  wsEndpoint: 'http://192.168.3.31:8081/proteus/wsEndpoint',
   wsReconnectionTime: 10000,
   websocketTopics: {
     coilNotification: '/topic/coil',
