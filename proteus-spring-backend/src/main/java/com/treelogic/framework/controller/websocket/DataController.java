@@ -1,7 +1,9 @@
 package com.treelogic.framework.controller.websocket;
 
 import java.security.InvalidParameterException;
+
 import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
 import com.treelogic.framework.domain.ProteusJsonizableRecord;
 import com.treelogic.framework.domain.ProteusJsonizableRecordMapper;
 import com.treelogic.framework.domain.tuples.Tuple3;
 import com.treelogic.framework.kafka.KafkaReceiver;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
@@ -29,6 +33,9 @@ public class DataController {
 
 	@Value("${websocket.topic.flink.sax}")
 	private String TOPIC_SAX_REALTIME;
+	
+	@Value("${websocket.topic.flink.lasso}")
+	private String TOPIC_LASSO_REALTIME;
 
 	@Value("${websocket.buffer.interval.ms}")
 	private int BUFFER_INTERVAL;
@@ -56,7 +63,8 @@ public class DataController {
 		realtimeReceiver.moments().map(mapper).subscribe(new KafkaValuesObserver(TOPIC_MOMENTS_REALTIME));
 
 		realtimeReceiver.sax().map(mapper).subscribe(new KafkaValuesObserver(TOPIC_SAX_REALTIME));
-
+		
+		realtimeReceiver.lasso().map(mapper).subscribe(new KafkaValuesObserver(TOPIC_LASSO_REALTIME));
 	}
 
 	/**
@@ -97,6 +105,8 @@ public class DataController {
 				endpoint = String.format(TOPIC_REALTIME_TEMPLATE, varId);
 			} else if (this.websocketEndpoint.equals(TOPIC_SAX_REALTIME)) {
 				endpoint = TOPIC_SAX_REALTIME;
+			} else if (this.websocketEndpoint.equals(TOPIC_LASSO_REALTIME)) {
+				endpoint = TOPIC_LASSO_REALTIME;
 			} else {
 				throw new InvalidParameterException("Invalid websocket endpoint: " + this.websocketEndpoint);
 			}

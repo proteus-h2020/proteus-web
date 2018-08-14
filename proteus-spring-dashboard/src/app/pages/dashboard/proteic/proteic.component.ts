@@ -20,7 +20,7 @@ import {
   Swimlane,
   Colors,
   ParallelCoordinates,
-} from 'proteic';
+} from '@proteus-h2020/proteic';
 
 @Component({
   selector: 'proteic',
@@ -38,6 +38,8 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
   @Input() private chart: RealtimeChart;
 
   private proteicChart: Chart;
+
+  private coilChanged: boolean;
 
   constructor(
     private websocketService: WebsocketService,
@@ -58,10 +60,10 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
 
     const alertCallback: Function = (data: any) => {
       this.notificationService.push({
-          id: data.varId,
-          label: 'Alarm',
-          text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key,
-        },
+        id: data.varId,
+        label: 'Alarm',
+        text: 'Value out of range: ' + data.value + ' units in x= ' + data.x + ' for variable : ' + data.key,
+      },
       );
     };
 
@@ -88,15 +90,15 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
               return value < events.get('mean') - events.get('stdDeviation') ||
                 value > events.get('mean') + events.get('stdDeviation');
             }, alertCallback, {
-              click: (data: any) => window.alert(
-                'Variable = ' + data.key  + ', value = ' + data.value + ', position(x) = ' + data.x,
-              ),
-            });
+                click: (data: any) => window.alert(
+                  'Variable = ' + data.key + ', value = ' + data.value + ', position(x) = ' + data.x,
+                ),
+              });
         } else {
-            this.proteicChart = new Linechart([], this.chart.configuration)
-              .annotations(annotations)
-              .statistics(statistics)
-              .unpivot(unpivot);
+          this.proteicChart = new Linechart([], this.chart.configuration)
+            .annotations(annotations)
+            .statistics(statistics)
+            .unpivot(unpivot);
         }
         break;
       case 'Network':
@@ -125,18 +127,30 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         const subs = this.websocketService.subscribe(websocketEndpoint);
         const subscription = subs.subscribe((data: any) => {
           const json = JSON.parse(data);
+          //console.log(json)          
           if (typeof json.type !== 'undefined') { // Check if it is a real-time value. If so, add a key.
+            json.key = '' + json.varId;
+          }
+          if (json.varId === 28) {
             json.key = '' + json.varId;
           }
           if (typeof json.mean !== 'undefined') {
             // TODO: add alarm factor
           }
           if (json.coilId !== this.lastCoilReceived && this.lastCoilReceived !== -1) {
-            this.proteicChart.clear();
-            this.notificationService.clear();
+            this.coilChanged = true;
+            if (this.proteicChart.paused === undefined || !this.proteicChart.paused) {
+              this.proteicChart.clear();
+              this.notificationService.clear();
+            }
             this.proteicChart.keepDrawing(json);
           } else {
             this.proteicChart.keepDrawing(json);
+          }
+
+          if (!this.proteicChart.paused && this.coilChanged) {
+            this.proteicChart.clear();
+            this.coilChanged = false;
           }
 
           this.lastCoilReceived = json.coilId;
@@ -153,25 +167,25 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHistoricalData(coilID, varID);
           historicalDataSubscription = this.appSubscriptionsService
-          .historicalData(coilID, varID)
-          .subscribe((data: any) => {
-            const json = data.value;
-            if (json) {
-              json.key = '' + json.varId;
-              this.proteicChart.keepDrawing(json);
-            }
-          });
+            .historicalData(coilID, varID)
+            .subscribe((data: any) => {
+              const json = data.value;
+              if (json) {
+                json.key = '' + json.varId;
+                this.proteicChart.keepDrawing(json);
+              }
+            });
         }
         if (calc == 'mean' || calc == 'variance') {
           this.appSubscriptionsService.requestSimpleMomentsData(coilID, varID);
           historicalDataSubscription = this.appSubscriptionsService
-          .simpleMomentsData(coilID, varID)
-          .subscribe((data: any) => {
-            const json = data.value;
-            if (json) {
-              this.proteicChart.keepDrawing(json);
-            }
-          });
+            .simpleMomentsData(coilID, varID)
+            .subscribe((data: any) => {
+              const json = data.value;
+              if (json) {
+                this.proteicChart.keepDrawing(json);
+              }
+            });
         }
 
         this.subscriptions.push(historicalDataSubscription);
@@ -186,13 +200,13 @@ export class Proteic implements OnInit, AfterViewInit, OnDestroy {
         if (calc == 'raw') {
           this.appSubscriptionsService.requestHSMData(coilIDs, hsmVars);
           hsmDataSubscription = this.appSubscriptionsService
-          .HSMData(coilIDs, hsmVars)
-          .subscribe((data: any) => {
-            if (data) {
-              json = json.concat(data); // This is suitable data type for parallel coordinates
-              this.proteicChart.keepDrawing(json);
-            }
-          });
+            .HSMData(coilIDs, hsmVars)
+            .subscribe((data: any) => {
+              if (data) {
+                json = json.concat(data); // This is suitable data type for parallel coordinates
+                this.proteicChart.keepDrawing(json);
+              }
+            });
         }
       }
       this.subscriptions.push(hsmDataSubscription);

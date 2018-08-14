@@ -1,11 +1,8 @@
-import { Annotation, AnnotationTypes } from './pages/visualizations/components/annotations/annotation';
-import { Statistics } from './pages/visualizations/components/statistics/statistics';
 import { ComponentSet } from './pages/visualizations/components/componentSet';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { RealtimeChart } from './realtime-chart';
-import { Colors } from 'proteic';
 import { scaleQuantize } from 'd3';
 
 @Injectable()
@@ -13,7 +10,6 @@ export class ChartService {
 
     private charts: Array<RealtimeChart> = new Array<RealtimeChart>();
     private notifier: BehaviorSubject<RealtimeChart[]> = new BehaviorSubject(this.charts);
-    private id: number = 1;
 
     constructor() {
 
@@ -43,8 +39,6 @@ export class ChartService {
         endpoints.push('/topic/realtime/var/2');
         endpoints.push('/topic/flink/var/2');
 
-        let mode = 'streaming'; // default value is 'streaming', it also can be set to 'historical', 'hsm'
-
         let chart = new RealtimeChart(
             'C0002 - Raw / Mean',
             'Linechart',
@@ -62,10 +56,40 @@ export class ChartService {
         );
         chart.alarms = true;
         chart.layout = '12';
+        // default value is 'streaming', it also can be set to 'historical', 'hsm'
         chart.mode = 'streaming';
 
         this.charts.push(chart);
 
+        calculations = new Array<string>();
+        calculations.push('raw');
+
+        components = new ComponentSet();
+        components.annotations.push(a);
+
+        endpoints = new Array<string>();
+        endpoints.push('/topic/flink/lasso');
+
+        chart = new RealtimeChart(
+            'C0002 - LASSO',
+            'Linechart',
+            {
+                propertyX: 'x',
+                propertyY: 'label',
+                propertyKey: 'key',
+                maxNumberOfElements: 1500,
+                marginRight: 100,
+            },
+            components,
+            '28',
+            calculations,
+            endpoints,
+        );
+        chart.alarms = false;
+        chart.layout = '12';
+        chart.mode = 'streaming';
+
+        this.push(chart);
 
         calculations = new Array<string>();
         calculations.push('raw');
@@ -80,36 +104,36 @@ export class ChartService {
             'C0002 - SAX',
             'Swimlane',
             {
-            marginRight: 160,
-            marginLeft: 40,
-            xAxisType: 'linear',
-            xAxisFormat: '',
-            xTicksTextRotation: -65,
-            propertyStart: 'x1',
-            propertyEnd: 'x2',
-            propertyKey: 'classId',
-            propertyY: 'classId',
-            propertyZ: 'similarity',
-            colorScaleType: 'sequential',
-            colorScale: scaleQuantize().range([
-                '#edf7e7',
-                // '#c8e3d2',
-                // '#91cdbf',
-                '#41b5ab',
-                // '#218ba4',
-                // '#145d94',
-                '#0c3183',
-                // '#0d2d76',
-                // '#0d2a6a',
-                '#0e265e',
-                // '#0d2253',
-                // '#0c1e47',
-                '#0b1a3c',
-            ]),
-            legendCells: 6,
-            legendTitle: 'Similarity',
-            displayValues: true,
-            valuesFormat: '.4f',
+                marginRight: 160,
+                marginLeft: 40,
+                xAxisType: 'linear',
+                xAxisFormat: '',
+                xTicksTextRotation: -65,
+                propertyStart: 'x1',
+                propertyEnd: 'x2',
+                propertyKey: 'classId',
+                propertyY: 'classId',
+                propertyZ: 'similarity',
+                colorScaleType: 'sequential',
+                colorScale: scaleQuantize().range([
+                    '#edf7e7',
+                    // '#c8e3d2',
+                    // '#91cdbf',
+                    '#41b5ab',
+                    // '#218ba4',
+                    // '#145d94',
+                    '#0c3183',
+                    // '#0d2d76',
+                    // '#0d2a6a',
+                    '#0e265e',
+                    // '#0d2253',
+                    // '#0c1e47',
+                    '#0b1a3c',
+                ]),
+                legendCells: 6,
+                legendTitle: 'Similarity',
+                displayValues: true,
+                valuesFormat: '.4f',
             },
             components,
             '2',
@@ -121,13 +145,13 @@ export class ChartService {
 
         this.push(chart);
 
-
         calculations = new Array<string>();
         calculations.push('raw');
         calculations.push('mean');
 
         components = new ComponentSet();
         components.annotations.push(a);
+        components.statistics.push(s);
 
         endpoints = new Array<string>();
         endpoints.push('/topic/realtime/var/3');
@@ -202,25 +226,25 @@ export class ChartService {
                 xAxisType: 'linear',
                 yAxisType: 'linear',
                 xStep: 100,
-               // maxNumberOfElements: 20,
+                // maxNumberOfElements: 20,
                 colorScale: scaleQuantize().range([
-                '#edf7e7',
-                // '#c8e3d2',
-                // '#91cdbf',
-                '#41b5ab',
-                // '#218ba4',
-                // '#145d94',
-                '#0c3183',
-                // '#0d2d76',
-                // '#0d2a6a',
-                '#0e265e',
-                // '#0d2253',
-                // '#0c1e47',
-                '#0b1a3c',
-            ]),
-            onClick: (data: any) => window.alert(
-              'Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y
-              ),
+                    '#edf7e7',
+                    // '#c8e3d2',
+                    // '#91cdbf',
+                    '#41b5ab',
+                    // '#218ba4',
+                    // '#145d94',
+                    '#0c3183',
+                    // '#0d2d76',
+                    // '#0d2a6a',
+                    '#0e265e',
+                    // '#0d2253',
+                    // '#0c1e47',
+                    '#0b1a3c',
+                ]),
+                onClick: (data: any) => window.alert(
+                    'Value = ' + data.value + ', position(x) = ' + data.x + ', position(y) = ' + data.y
+                ),
             }, // config
             components,
             '8',
@@ -380,24 +404,24 @@ export class ChartService {
                 maxNumberOfElements: 20,
                 xAxisTicksRotation: -90,
                 xStep: 100,
-                 colorScale: scaleQuantize().range([
-                '#edf7e7',
-                // '#c8e3d2',
-                // '#91cdbf',
-                '#41b5ab',
-                // '#218ba4',
-                // '#145d94',
-                '#0c3183',
-                // '#0d2d76',
-                // '#0d2a6a',
-                '#0e265e',
-                // '#0d2253',
-                // '#0c1e47',
-                '#0b1a3c',
-            ]),
-            onClick: (data: any) => window.alert(
-              'Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y
-              ),
+                colorScale: scaleQuantize().range([
+                    '#edf7e7',
+                    // '#c8e3d2',
+                    // '#91cdbf',
+                    '#41b5ab',
+                    // '#218ba4',
+                    // '#145d94',
+                    '#0c3183',
+                    // '#0d2d76',
+                    // '#0d2a6a',
+                    '#0e265e',
+                    // '#0d2253',
+                    // '#0c1e47',
+                    '#0b1a3c',
+                ]),
+                onClick: (data: any) => window.alert(
+                    'Value = ' + data.value + ',position(x) = ' + data.x + ', position(y) = ' + data.y
+                ),
             }, // config
             components,
             '25',
@@ -502,7 +526,7 @@ export class ChartService {
 
         let coilIDs = [];
         for (let i = 40304076; i < 40304140; i++) {
-          coilIDs.push(i);
+            coilIDs.push(i);
         }
 
         chart = new RealtimeChart(
@@ -526,7 +550,6 @@ export class ChartService {
         chart.hsmVariables = ['V1825', 'V4018', 'V1827', 'V6679', 'V1829'];
 
         this.charts.push(chart);
-
     }
 
     getChart(id: number): RealtimeChart {
@@ -539,7 +562,7 @@ export class ChartService {
     }
 
     getCharts(): RealtimeChart[] {
-      return this.charts;
+        return this.charts;
     }
 
     getChartsSubscription(): Subject<RealtimeChart[]> {

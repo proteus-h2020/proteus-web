@@ -1,17 +1,28 @@
 package com.treelogic.framework.kafka;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.kafka.test.rule.KafkaEmbedded;
+import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.treelogic.framework.domain.SensorMeasurement1D;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles(value="test")
 public class KafkaReceiverTests {
-/**
+
 	@Value("${kafka.topicName}")
 	private static String TEST_TOPIC = "proteus-realtime";
 
@@ -46,11 +57,11 @@ public class KafkaReceiverTests {
 		sender.send(TEST_TOPIC, new SensorMeasurement1D(1, 12, 12, 121D));
 
 	}
-	**/
-	
-	@Test
-	public void testReceive() throws Exception {
-		//TODO: Add tests
-		Assert.assertEquals(1, 1);
-	}
+//	
+//	
+//	@Test
+//	public void testReceive() throws Exception {
+//		//TODO: Add tests
+//		Assert.assertEquals(1, 1);
+//	}
 }
